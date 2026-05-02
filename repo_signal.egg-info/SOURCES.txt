@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+repo_signal/__init__.py
+repo_signal/cli.py
+repo_signal.egg-info/PKG-INFO
+repo_signal.egg-info/SOURCES.txt
+repo_signal.egg-info/dependency_links.txt
+repo_signal.egg-info/entry_points.txt
+repo_signal.egg-info/top_level.txt

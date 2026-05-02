@@ -1,2 +1,10 @@
 #!/usr/bin/env bash
-python3 -m repo_signal.cli "$@"
+set -euo pipefail
+
+# Resolve this script location, then repo root.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Make repo_signal importable no matter where the command is run from.
+PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" \
+  python3 -m repo_signal.cli "$@"

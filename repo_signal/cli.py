@@ -554,6 +554,201 @@ def analyze_hygiene(repo: Path) -> str:
     return "\n".join(lines)
 
 
+
+def repo_has_any(repo: Path, paths: list[str]) -> bool:
+    return any((repo / path).exists() for path in paths)
+
+
+def readme_title_and_summary(repo: Path) -> tuple[str, str]:
+    readme = repo / "README.md"
+
+    if not readme.exists():
+        return repo.name, "No README summary found."
+
+    text = read_text_safe(readme)
+    title = repo.name
+    summary = "No README summary found."
+
+    for line in text.splitlines():
+        clean = line.strip()
+        if clean.startswith("# "):
+            title = clean.removeprefix("# ").strip()
+            break
+
+    for line in text.splitlines():
+        clean = line.strip()
+        if not clean:
+            continue
+        if clean.startswith("#"):
+            continue
+        if clean.startswith("!"):
+            continue
+        if clean.startswith("[!"):
+            continue
+        if len(clean) > 20:
+            summary = clean
+            break
+
+    return title, summary
+
+
+def detect_repo_track(repo: Path) -> str:
+    if repo_has_any(repo, ["repo_signal", "pyproject.toml"]) and repo_has_any(repo, ["bin/repo-signal"]):
+        return "Python CLI / repo intelligence"
+
+    if repo_has_any(repo, ["docs/index.html"]) and repo_has_any(repo, ["helper", "helpers"]):
+        return "GitHub Pages dashboard with local helper agents"
+
+    if repo_has_any(repo, ["docs/index.html"]):
+        return "GitHub Pages / static web project"
+
+    if repo_has_any(repo, ["bin", "tools", "scripts"]):
+        return "Command-line tools / automation"
+
+    if repo_has_any(repo, ["package.json"]):
+        return "JavaScript / web application"
+
+    if repo_has_any(repo, ["requirements.txt"]):
+        return "Python project"
+
+    return "General repository"
+
+
+def recommended_wiki_pages(repo: Path) -> list[tuple[str, str]]:
+    pages = [
+        ("Home", "Project overview, purpose, key links, and current status"),
+        ("Usage", "How to run, test, and operate the project"),
+        ("Roadmap", "Near-term improvements and long-term direction"),
+    ]
+
+    if repo_has_any(repo, ["docs/index.html", "docs"]):
+        pages.append(("GitHub Pages", "Live site structure, routing, deployment, and demo notes"))
+
+    if repo_has_any(repo, ["bin", "tools", "scripts"]):
+        pages.append(("Command Surface", "CLI commands, local workflows, and script entry points"))
+
+    if repo_has_any(repo, ["repo_signal", "src", "helper", "helpers"]):
+        pages.append(("Architecture", "Internal structure, modules, data flow, and design decisions"))
+
+    if repo_has_any(repo, ["README.md"]):
+        pages.append(("Documentation Model", "README, examples, wiki, and public positioning strategy"))
+
+    pages.append(("Maintenance", "Cleanup, release, repo hygiene, and contribution notes"))
+
+    return pages
+
+
+def generate_home_draft(repo: Path) -> str:
+    title, summary = readme_title_and_summary(repo)
+    track = detect_repo_track(repo)
+
+    lines = []
+    lines.append(f"# {title} Wiki")
+    lines.append("")
+    lines.append(summary)
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("## Purpose")
+    lines.append("")
+    lines.append(f"`{repo.name}` is part of a broader system of small, practical tools that make technical work clearer, more structured, and easier to repeat.")
+    lines.append("")
+    lines.append("This wiki explains:")
+    lines.append("")
+    lines.append("- what the project does")
+    lines.append("- why it exists")
+    lines.append("- how it is structured")
+    lines.append("- how to run it")
+    lines.append("- what should be improved next")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("## Project track")
+    lines.append("")
+    lines.append(f"```text\n{track}\n```")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("## Main pages")
+    lines.append("")
+
+    for page, purpose in recommended_wiki_pages(repo):
+        lines.append(f"| {page} | {purpose} |")
+
+    lines.insert(lines.index("## Main pages") + 2, "| Page | Purpose |")
+    lines.insert(lines.index("## Main pages") + 3, "|---|---|")
+
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("## Current status")
+    lines.append("")
+    lines.append("```text")
+    lines.append("early working system")
+    lines.append("local-first")
+    lines.append("documentation-driven")
+    lines.append("safe to iterate")
+    lines.append("```")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append("## North star")
+    lines.append("")
+    lines.append("```text")
+    lines.append("turn unclear project state into clear next actions")
+    lines.append("```")
+
+    return "\n".join(lines)
+
+
+def generate_wiki_plan(repo: Path) -> str:
+    title, summary = readme_title_and_summary(repo)
+    track = detect_repo_track(repo)
+    pages = recommended_wiki_pages(repo)
+
+    lines = []
+    lines.append("# Wiki Signal Report")
+    lines.append("")
+    lines.append(f"Repo: `{repo.name}`")
+    lines.append(f"Detected track: `{track}`")
+    lines.append("")
+    lines.append("## README signal")
+    lines.append("")
+    lines.append(f"- Title: `{title}`")
+    lines.append(f"- Summary: {summary}")
+    lines.append("")
+    lines.append("## Recommended wiki pages")
+    lines.append("")
+    lines.append("| Page | Purpose |")
+    lines.append("|---|---|")
+
+    for page, purpose in pages:
+        lines.append(f"| {page} | {purpose} |")
+
+    lines.append("")
+    lines.append("## Suggested creation order")
+    lines.append("")
+
+    for index, (page, _) in enumerate(pages, start=1):
+        lines.append(f"{index}. {page}")
+
+    lines.append("")
+    lines.append("## Wiki Home draft")
+    lines.append("")
+    lines.append("Copy this into the GitHub Wiki Home page:")
+    lines.append("")
+    lines.append("```markdown")
+    lines.append(generate_home_draft(repo))
+    lines.append("```")
+    lines.append("")
+    lines.append("## Suggested edit message")
+    lines.append("")
+    lines.append("```text")
+    lines.append("Create wiki home page")
+    lines.append("```")
+
+    return "\n".join(lines)
+
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
     repo = Path.cwd()
@@ -570,8 +765,12 @@ def main() -> None:
         print(analyze_hygiene(repo))
         return
 
+    if command == "wiki":
+        print(generate_wiki_plan(repo))
+        return
+
     print(f"Unknown command: {command}")
-    print("Available commands: scan, readme, hygiene")
+    print("Available commands: scan, readme, hygiene, wiki")
     raise SystemExit(1)
 
 

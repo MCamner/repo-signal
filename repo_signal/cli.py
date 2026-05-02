@@ -1,5 +1,7 @@
 from pathlib import Path
+import fnmatch
 import re
+import subprocess
 import sys
 
 
@@ -23,6 +25,49 @@ README_SECTIONS = [
 ]
 
 
+HYGIENE_IGNORE_RULES = [
+    ".DS_Store",
+    "__pycache__/",
+    "*.pyc",
+    ".venv/",
+    ".env",
+    "node_modules/",
+]
+
+
+JUNK_NAMES = {
+    ".DS_Store",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "node_modules",
+    ".venv",
+    "venv",
+}
+
+
+JUNK_PATTERNS = [
+    "*.pyc",
+    "*.pyo",
+    "*.swp",
+    "*.tmp",
+    "*.log",
+]
+
+
+SKIP_DIRS = {
+    ".git",
+    "node_modules",
+    ".venv",
+    "venv",
+    "__pycache__",
+}
+
+
+LARGE_FILE_LIMIT_MB = 5
+
+
 def exists(path: Path, target: str) -> bool:
     return (path / target).exists()
 
@@ -32,6 +77,109 @@ def read_text_safe(path: Path) -> str:
         return path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
         return path.read_text(errors="ignore")
+
+
+def run_git(repo: Path, args: list[str]) -> tuple[int, str]:
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=repo,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+        return result.returncode, result.stdout.strip()
+    except FileNotFoundError:
+        return 1, ""
+
+
+def is_git_repo(repo: Path) -> bool:
+    code, output = run_git(repo, ["rev-parse", "--is-inside-work-tree"])
+    return code == 0 and output == "true"
+
+
+def git_tracked_files(repo: Path) -> set[str]:
+    if not is_git_repo(repo):
+        return set()
+
+    code, output = run_git(repo, ["ls-files"])
+    if code != 0 or not output:
+        return set()
+
+    return set(output.splitlines())
+
+
+def git_status(repo: Path) -> list[str]:
+    if not is_git_repo(repo):
+        return []
+
+    code, output = run_git(repo, ["status", "--porcelain"])
+    if code != 0 or not output:
+        return []
+
+    return output.splitlines()
+
+
+def read_gitignore(repo: Path) -> str:
+    path = repo / ".gitignore"
+    if not path.exists():
+        return ""
+
+    return read_text_safe(path)
+
+
+def gitignore_has_rule(gitignore_text: str, rule: str) -> bool:
+    lines = [line.strip() for line in gitignore_text.splitlines()]
+    return rule in lines
+
+
+def iter_files(repo: Path):
+    for path in repo.rglob("*"):
+        try:
+            rel_parts = path.relative_to(repo).parts
+        except ValueError:
+            continue
+
+        if any(part in SKIP_DIRS for part in rel_parts):
+            continue
+
+        yield path
+
+
+def find_junk(repo: Path) -> list[Path]:
+    found = []
+
+    for path in iter_files(repo):
+        name = path.name
+
+        if name in JUNK_NAMES:
+            found.append(path)
+            continue
+
+        if any(fnmatch.fnmatch(name, pattern) for pattern in JUNK_PATTERNS):
+            found.append(path)
+
+    return sorted(found)
+
+
+def find_large_files(repo: Path, limit_mb: int = LARGE_FILE_LIMIT_MB) -> list[tuple[Path, float]]:
+    found = []
+    limit_bytes = limit_mb * 1024 * 1024
+
+    for path in iter_files(repo):
+        if not path.is_file():
+            continue
+
+        try:
+            size = path.stat().st_size
+        except OSError:
+            continue
+
+        if size >= limit_bytes:
+            found.append((path, size / 1024 / 1024))
+
+    return sorted(found, key=lambda item: item[1], reverse=True)
 
 
 def scan_repo(repo: Path) -> str:
@@ -229,6 +377,183 @@ def analyze_readme(repo: Path) -> str:
     return "\n".join(lines)
 
 
+def analyze_hygiene(repo: Path) -> str:
+    lines = []
+    lines.append("# Hygiene Signal Report")
+    lines.append("")
+    lines.append(f"Repo: `{repo.name}`")
+    lines.append("")
+
+    git_repo = is_git_repo(repo)
+    tracked = git_tracked_files(repo)
+    status_lines = git_status(repo)
+    gitignore_text = read_gitignore(repo)
+
+    junk = find_junk(repo)
+    large_files = find_large_files(repo)
+
+    tracked_junk = [
+        item for item in tracked
+        if item.endswith(".DS_Store")
+        or "__pycache__" in item
+        or item.endswith(".pyc")
+        or item.startswith(".venv/")
+        or item.startswith("node_modules/")
+    ]
+
+    missing_ignore_rules = [
+        rule for rule in HYGIENE_IGNORE_RULES
+        if not gitignore_has_rule(gitignore_text, rule)
+    ]
+
+    issue_count = 0
+
+    lines.append("## Summary")
+    lines.append("")
+
+    if git_repo:
+        lines.append("- [OK] Git repository detected")
+    else:
+        lines.append("- [WARN] This folder is not a Git repository")
+        issue_count += 1
+
+    if gitignore_text:
+        lines.append("- [OK] `.gitignore` exists")
+    else:
+        lines.append("- [HIGH] `.gitignore` is missing")
+        issue_count += 1
+
+    if not junk:
+        lines.append("- [OK] No obvious junk files found")
+    else:
+        lines.append(f"- [WARN] Obvious junk files/folders found: `{len(junk)}`")
+        issue_count += 1
+
+    if not tracked_junk:
+        lines.append("- [OK] No tracked junk files detected")
+    else:
+        lines.append(f"- [HIGH] Tracked junk files detected: `{len(tracked_junk)}`")
+        issue_count += 1
+
+    if not large_files:
+        lines.append(f"- [OK] No files over `{LARGE_FILE_LIMIT_MB} MB` found")
+    else:
+        lines.append(f"- [WARN] Large files found: `{len(large_files)}`")
+        issue_count += 1
+
+    if not status_lines:
+        lines.append("- [OK] Working tree appears clean")
+    else:
+        lines.append(f"- [MED] Working tree has changes: `{len(status_lines)}`")
+        issue_count += 1
+
+    lines.append("")
+    lines.append("## .gitignore check")
+    lines.append("")
+
+    if not missing_ignore_rules:
+        lines.append("- [OK] Common ignore rules are present")
+    else:
+        for rule in missing_ignore_rules:
+            lines.append(f"- [MISSING] `{rule}`")
+
+    lines.append("")
+    lines.append("## Junk files")
+    lines.append("")
+
+    if not junk:
+        lines.append("- [OK] No junk files found")
+    else:
+        for item in junk[:30]:
+            lines.append(f"- [WARN] `{item.relative_to(repo)}`")
+        if len(junk) > 30:
+            lines.append(f"- [INFO] Additional junk entries hidden: `{len(junk) - 30}`")
+
+    lines.append("")
+    lines.append("## Tracked junk")
+    lines.append("")
+
+    if not tracked_junk:
+        lines.append("- [OK] No tracked junk files")
+    else:
+        for item in tracked_junk[:30]:
+            lines.append(f"- [HIGH] `{item}`")
+        if len(tracked_junk) > 30:
+            lines.append(f"- [INFO] Additional tracked junk entries hidden: `{len(tracked_junk) - 30}`")
+
+    lines.append("")
+    lines.append("## Large files")
+    lines.append("")
+
+    if not large_files:
+        lines.append(f"- [OK] No files over `{LARGE_FILE_LIMIT_MB} MB`")
+    else:
+        for path, size_mb in large_files[:20]:
+            lines.append(f"- [WARN] `{path.relative_to(repo)}` — `{size_mb:.1f} MB`")
+        if len(large_files) > 20:
+            lines.append(f"- [INFO] Additional large files hidden: `{len(large_files) - 20}`")
+
+    lines.append("")
+    lines.append("## Git status")
+    lines.append("")
+
+    if not git_repo:
+        lines.append("- [WARN] Not a Git repository")
+    elif not status_lines:
+        lines.append("- [OK] Working tree clean")
+    else:
+        for line in status_lines[:30]:
+            lines.append(f"- `{line}`")
+        if len(status_lines) > 30:
+            lines.append(f"- [INFO] Additional status lines hidden: `{len(status_lines) - 30}`")
+
+    lines.append("")
+    lines.append("## Suggested next actions")
+    lines.append("")
+
+    actions = []
+
+    if not gitignore_text:
+        actions.append("Create `.gitignore` with common local/system ignores")
+
+    if missing_ignore_rules:
+        actions.append("Add missing `.gitignore` rules")
+
+    if tracked_junk:
+        actions.append("Remove tracked junk files with `git rm --cached`")
+
+    if junk:
+        actions.append("Delete local junk files if they are not needed")
+
+    if large_files:
+        actions.append("Review large files and move heavy assets out of the repo if needed")
+
+    if status_lines:
+        actions.append("Review uncommitted changes with `git status --short`")
+
+    if not actions:
+        actions.append("No immediate hygiene action needed")
+
+    for index, action in enumerate(actions, start=1):
+        lines.append(f"{index}. {action}")
+
+    lines.append("")
+    lines.append("## Safe cleanup examples")
+    lines.append("")
+    lines.append("```bash")
+    lines.append("# Remove tracked .DS_Store files but keep local files")
+    lines.append('find . -name ".DS_Store" -print -exec git rm --cached {} \\;')
+    lines.append("")
+    lines.append("# Add common ignore rules")
+    lines.append('grep -qxF ".DS_Store" .gitignore || echo ".DS_Store" >> .gitignore')
+    lines.append('grep -qxF "__pycache__/" .gitignore || echo "__pycache__/" >> .gitignore')
+    lines.append('grep -qxF "*.pyc" .gitignore || echo "*.pyc" >> .gitignore')
+    lines.append('grep -qxF ".venv/" .gitignore || echo ".venv/" >> .gitignore')
+    lines.append("```")
+
+    return "\n".join(lines)
+
+
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
     repo = Path.cwd()
@@ -241,8 +566,12 @@ def main() -> None:
         print(analyze_readme(repo))
         return
 
+    if command == "hygiene":
+        print(analyze_hygiene(repo))
+        return
+
     print(f"Unknown command: {command}")
-    print("Available commands: scan, readme")
+    print("Available commands: scan, readme, hygiene")
     raise SystemExit(1)
 
 

@@ -4,6 +4,39 @@ import re
 import subprocess
 import sys
 
+from repo_signal import __version__
+
+
+HELP_TEXT = """repo-signal
+
+AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects.
+
+Usage:
+  repo-signal scan
+  repo-signal readme
+  repo-signal hygiene
+  repo-signal wiki
+  repo-signal roadmap
+  repo-signal --help
+  repo-signal --version
+
+Commands:
+  scan       Scan repo structure and basic project signals
+  readme     Analyze README clarity and missing sections
+  hygiene    Check junk files, .gitignore, large files, and Git status
+  wiki       Generate suggested GitHub Wiki structure and Home draft
+  roadmap    Generate a practical roadmap based on repo state
+
+Examples:
+  repo-signal scan
+  repo-signal readme
+  repo-signal hygiene
+  repo-signal wiki
+  repo-signal roadmap
+
+Run from any repository root.
+"""
+
 
 CHECKS = [
     ("README.md", "README exists"),
@@ -945,6 +978,14 @@ def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
     repo = Path.cwd()
 
+    if command in {"--help", "-h", "help"}:
+        print(HELP_TEXT)
+        return
+
+    if command in {"--version", "-v", "version"}:
+        print(f"repo-signal {__version__}")
+        return
+
     if command == "scan":
         print(scan_repo(repo))
         return
@@ -966,7 +1007,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: scan, readme, hygiene, wiki, roadmap")
+    print("Available commands: scan, readme, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

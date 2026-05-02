@@ -1,5 +1,7 @@
 # repo-signal
 
+[![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml)
+
 AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects.
 
 `repo-signal` scans a local repository and produces a practical signal report:

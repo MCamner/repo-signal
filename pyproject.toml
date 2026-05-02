@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "repo-signal"
+version = "0.1.0"
+description = "AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Mattias Camner" }
+]
+keywords = [
+  "cli",
+  "github",
+  "repo-analysis",
+  "documentation",
+  "automation",
+  "developer-tools"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Software Development :: Documentation",
+  "Topic :: Utilities"
+]
+
+[project.urls]
+Homepage = "https://mcamner.github.io/repo-signal/"
+Repository = "https://github.com/MCamner/repo-signal"
+
+[project.scripts]
+repo-signal = "repo_signal.cli:main"
+
+[tool.setuptools]
+packages = ["repo_signal"]

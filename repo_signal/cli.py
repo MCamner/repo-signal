@@ -749,6 +749,198 @@ def generate_wiki_plan(repo: Path) -> str:
 
     return "\n".join(lines)
 
+
+def roadmap_has(repo: Path, target: str) -> bool:
+    return (repo / target).exists()
+
+
+def roadmap_readme_has(repo: Path, phrase: str) -> bool:
+    readme = repo / "README.md"
+
+    if not readme.exists():
+        return False
+
+    return phrase.lower() in read_text_safe(readme).lower()
+
+
+def roadmap_detect_track(repo: Path) -> str:
+    try:
+        return detect_repo_track(repo)
+    except NameError:
+        pass
+
+    if roadmap_has(repo, "docs/index.html"):
+        return "GitHub Pages / static web project"
+
+    if roadmap_has(repo, "bin") or roadmap_has(repo, "tools") or roadmap_has(repo, "scripts"):
+        return "Command-line tools / automation"
+
+    if roadmap_has(repo, "repo_signal"):
+        return "Python CLI"
+
+    if roadmap_has(repo, "package.json"):
+        return "JavaScript / web application"
+
+    if roadmap_has(repo, "requirements.txt") or roadmap_has(repo, "pyproject.toml"):
+        return "Python project"
+
+    return "General repository"
+
+
+def generate_roadmap_plan(repo: Path) -> str:
+    track = roadmap_detect_track(repo)
+
+    has_readme = roadmap_has(repo, "README.md")
+    has_license = roadmap_has(repo, "LICENSE")
+    has_gitignore = roadmap_has(repo, ".gitignore")
+    has_docs = roadmap_has(repo, "docs")
+    has_docs_index = roadmap_has(repo, "docs/index.html")
+    has_examples = roadmap_has(repo, "examples")
+    has_bin = roadmap_has(repo, "bin")
+    has_cli_package = roadmap_has(repo, "repo_signal")
+    has_tests = roadmap_has(repo, "tests")
+    has_pyproject = roadmap_has(repo, "pyproject.toml")
+    has_requirements = roadmap_has(repo, "requirements.txt")
+    has_roadmap_text = roadmap_readme_has(repo, "roadmap")
+
+    status_lines = git_status(repo) if is_git_repo(repo) else []
+
+    lines = []
+    lines.append("# Roadmap Signal Report")
+    lines.append("")
+    lines.append(f"Repo: `{repo.name}`")
+    lines.append(f"Detected track: `{track}`")
+    lines.append("")
+
+    lines.append("## Current signals")
+    lines.append("")
+    lines.append(f"- README: `{'yes' if has_readme else 'no'}`")
+    lines.append(f"- LICENSE: `{'yes' if has_license else 'no'}`")
+    lines.append(f"- .gitignore: `{'yes' if has_gitignore else 'no'}`")
+    lines.append(f"- docs/: `{'yes' if has_docs else 'no'}`")
+    lines.append(f"- docs/index.html: `{'yes' if has_docs_index else 'no'}`")
+    lines.append(f"- examples/: `{'yes' if has_examples else 'no'}`")
+    lines.append(f"- bin/: `{'yes' if has_bin else 'no'}`")
+    lines.append(f"- Python package folder: `{'yes' if has_cli_package else 'no'}`")
+    lines.append(f"- tests/: `{'yes' if has_tests else 'no'}`")
+    lines.append(f"- pyproject.toml: `{'yes' if has_pyproject else 'no'}`")
+    lines.append(f"- requirements.txt: `{'yes' if has_requirements else 'no'}`")
+    lines.append(f"- README roadmap: `{'yes' if has_roadmap_text else 'no'}`")
+    lines.append(f"- Working tree changes: `{len(status_lines)}`")
+    lines.append("")
+
+    lines.append("## Immediate next actions")
+    lines.append("")
+
+    actions = []
+
+    if status_lines:
+        actions.append("Review and commit or discard current working tree changes")
+
+    if not has_license:
+        actions.append("Add a LICENSE file")
+
+    if not has_gitignore:
+        actions.append("Add a .gitignore with common local/system ignores")
+
+    if not has_docs_index:
+        actions.append("Add a docs/index.html landing page or clarify that no live demo is needed")
+
+    if not has_examples:
+        actions.append("Add example reports or example usage output")
+
+    if not has_tests:
+        actions.append("Add a small tests/ folder for core scanner behavior")
+
+    if not has_pyproject and has_cli_package:
+        actions.append("Add pyproject.toml so the CLI can be installed cleanly")
+
+    if not has_roadmap_text:
+        actions.append("Add a Roadmap section to README.md")
+
+    if not actions:
+        actions.append("No urgent foundation gaps detected; move to feature depth")
+
+    for index, action in enumerate(actions, start=1):
+        lines.append(f"{index}. {action}")
+
+    lines.append("")
+    lines.append("## Suggested roadmap")
+    lines.append("")
+
+    lines.append("### Phase 1 — Stabilize the foundation")
+    lines.append("")
+    lines.append("- keep CLI commands working from any directory")
+    lines.append("- keep README, LICENSE, docs, and examples in sync")
+    lines.append("- verify GitHub Pages deployment")
+    lines.append("- make output predictable and copy-paste friendly")
+    lines.append("")
+
+    lines.append("### Phase 2 — Improve analysis depth")
+    lines.append("")
+    lines.append("- improve project type detection")
+    lines.append("- detect GitHub Pages structure more accurately")
+    lines.append("- detect missing screenshots or preview assets")
+    lines.append("- detect broken obvious local links")
+    lines.append("- detect stale planned commands in README")
+    lines.append("")
+
+    lines.append("### Phase 3 — Add installable CLI packaging")
+    lines.append("")
+    lines.append("- add `pyproject.toml`")
+    lines.append("- expose `repo-signal` as a console script")
+    lines.append("- support `pipx install .`")
+    lines.append("- add version output")
+    lines.append("- add basic tests")
+    lines.append("")
+
+    lines.append("### Phase 4 — Safe patch mode")
+    lines.append("")
+    lines.append("- generate safe cleanup commands")
+    lines.append("- generate README section patches")
+    lines.append("- generate docs/README.md")
+    lines.append("- generate wiki drafts")
+    lines.append("- never modify files without explicit confirmation")
+    lines.append("")
+
+    lines.append("### Phase 5 — AI-assisted handoff")
+    lines.append("")
+    lines.append("- export structured prompts for deeper analysis")
+    lines.append("- generate positioning drafts")
+    lines.append("- generate release notes")
+    lines.append("- generate GitHub Wiki pages")
+    lines.append("- generate LinkedIn/GitHub launch posts")
+    lines.append("")
+
+    lines.append("## Recommended next commit")
+    lines.append("")
+
+    if has_cli_package and not has_pyproject:
+        lines.append("```text")
+        lines.append("Add installable CLI packaging")
+        lines.append("```")
+    elif not has_tests:
+        lines.append("```text")
+        lines.append("Add tests for repo-signal commands")
+        lines.append("```")
+    elif not has_examples:
+        lines.append("```text")
+        lines.append("Add real repo-signal example reports")
+        lines.append("```")
+    else:
+        lines.append("```text")
+        lines.append("Improve repo-signal analysis depth")
+        lines.append("```")
+
+    lines.append("")
+    lines.append("## North star")
+    lines.append("")
+    lines.append("```text")
+    lines.append("turn unclear project state into clear next actions")
+    lines.append("```")
+
+    return "\n".join(lines)
+
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
     repo = Path.cwd()
@@ -769,8 +961,12 @@ def main() -> None:
         print(generate_wiki_plan(repo))
         return
 
+    if command == "roadmap":
+        print(generate_roadmap_plan(repo))
+        return
+
     print(f"Unknown command: {command}")
-    print("Available commands: scan, readme, hygiene, wiki")
+    print("Available commands: scan, readme, hygiene, wiki, roadmap")
     raise SystemExit(1)
 
 

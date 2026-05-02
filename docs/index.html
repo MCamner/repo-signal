@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>repo-signal</title>
+  <style>
+    :root {
+      --bg: #080b10;
+      --panel: #101722;
+      --text: #e8eef8;
+      --muted: #94a3b8;
+      --line: rgba(255,255,255,.12);
+      --green: #7dff9a;
+      --blue: #6ee7ff;
+      --yellow: #ffe66d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(110,231,255,.15), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(125,255,154,.12), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    main {
+      width: min(980px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0;
+    }
+
+    .shell {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 30px 90px rgba(0,0,0,.35);
+    }
+
+    .bar {
+      display: flex;
+      gap: 8px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .dot:nth-child(1) { background: #ff5f57; }
+    .dot:nth-child(2) { background: #ffbd2e; }
+    .dot:nth-child(3) { background: #28c840; }
+
+    .content {
+      padding: clamp(24px, 5vw, 56px);
+    }
+
+    .eyebrow {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 13px;
+      margin: 0 0 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 9vw, 96px);
+      line-height: .9;
+      letter-spacing: -.08em;
+    }
+
+    .lead {
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 18px;
+      margin: 24px 0 0;
+    }
+
+    .prompt {
+      margin-top: 34px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(0,0,0,.24);
+      color: var(--yellow);
+      overflow-x: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 132px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--blue);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 11px 14px;
+      background: rgba(255,255,255,.06);
+    }
+
+    a:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    @media (max-width: 760px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        padding: 24px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="shell">
+      <div class="bar">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+
+      <div class="content">
+        <p class="eyebrow">AI-assisted repo intelligence</p>
+        <h1>repo-signal</h1>
+
+        <p class="lead">
+          A local CLI for scanning rough repositories and turning them into clear,
+          documented, publishable GitHub projects.
+        </p>
+
+        <div class="prompt">repo-signal scan</div>
+
+        <div class="grid">
+          <div class="card">
+            <h2>Scan</h2>
+            <p>Detect README, LICENSE, docs, .gitignore, and common repo hygiene issues.</p>
+          </div>
+
+          <div class="card">
+            <h2>Report</h2>
+            <p>Generate a Markdown signal report with findings and suggested next actions.</p>
+          </div>
+
+          <div class="card">
+            <h2>Improve</h2>
+            <p>Plan README, Wiki, roadmap, screenshots, and positioning improvements.</p>
+          </div>
+        </div>
+
+        <div class="links">
+          <a href="https://github.com/MCamner/repo-signal">GitHub repo</a>
+          <a href="https://github.com/MCamner">MCamner</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

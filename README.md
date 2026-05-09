@@ -73,6 +73,7 @@ The first version can run a local scan and print a Markdown report.
 
 ```bash
 ./bin/repo-signal scan
+./bin/repo-signal readme-score .
 ```
 
 ---
@@ -128,6 +129,7 @@ Repo: `coolThing`
 
 - local repo scan
 - README detection
+- README quality scoring
 - LICENSE detection
 - `.gitignore` detection
 - `docs/` detection
@@ -138,7 +140,6 @@ Repo: `coolThing`
 
 ## Planned features
 
-- README quality scoring
 - GitHub Pages detection
 - project type detection
 - script/tool discovery
@@ -155,6 +156,7 @@ Repo: `coolThing`
 ```bash
 repo-signal scan
 repo-signal readme
+repo-signal readme-score .
 repo-signal wiki
 repo-signal roadmap
 repo-signal hygiene

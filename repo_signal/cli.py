@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 from repo_signal import __version__
+from repo_signal.readme_score import format_readme_score, score_readme
 
 
 HELP_TEXT = """repo-signal
@@ -14,6 +15,7 @@ AI-assisted repo analysis for turning rough prototypes into clear, documented, p
 Usage:
   repo-signal scan
   repo-signal readme
+  repo-signal readme-score [path]
   repo-signal hygiene
   repo-signal wiki
   repo-signal roadmap
@@ -23,6 +25,8 @@ Usage:
 Commands:
   scan       Scan repo structure and basic project signals
   readme     Analyze README clarity and missing sections
+  readme-score
+             Score README quality with a 100-point checklist
   hygiene    Check junk files, .gitignore, large files, and Git status
   wiki       Generate suggested GitHub Wiki structure and Home draft
   roadmap    Generate a practical roadmap based on repo state
@@ -30,6 +34,7 @@ Commands:
 Examples:
   repo-signal scan
   repo-signal readme
+  repo-signal readme-score .
   repo-signal hygiene
   repo-signal wiki
   repo-signal roadmap
@@ -976,7 +981,7 @@ def generate_roadmap_plan(repo: Path) -> str:
 
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
-    repo = Path.cwd()
+    repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command in {"--help", "-h", "help"}:
         print(HELP_TEXT)
@@ -994,6 +999,10 @@ def main() -> None:
         print(analyze_readme(repo))
         return
 
+    if command == "readme-score":
+        print(format_readme_score(score_readme(str(repo))))
+        return
+
     if command == "hygiene":
         print(analyze_hygiene(repo))
         return
@@ -1007,7 +1016,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: scan, readme, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: scan, readme, readme-score, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

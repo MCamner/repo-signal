@@ -5,6 +5,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from repo_signal.readme_score import score_readme
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -122,6 +124,67 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("[OK] quick start", result.stdout)
         self.assertIn("[OK] roadmap", result.stdout)
         self.assertIn("[OK] license", result.stdout)
+
+    def test_score_readme_returns_100_point_checklist(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        readme = """# sample-repo
+
+[![Tests](https://example.com/tests.svg)](https://example.com)
+
+A useful command-line helper for checking repository documentation health.
+
+## Installation
+
+Install with pipx.
+
+## Usage
+
+Run the CLI against a repo.
+
+## Examples
+
+```bash
+repo-signal readme-score .
+```
+
+## Screenshots
+
+![demo](docs/demo.png)
+
+## License
+
+MIT
+
+## Roadmap
+
+- Improve recommendations
+
+## Contributing
+
+Issues and patches are welcome.
+"""
+        (root / "README.md").write_text(readme, encoding="utf-8")
+
+        result = score_readme(str(root))
+
+        self.assertEqual(result["score"], 100)
+        self.assertEqual(result["missing"], [])
+        self.assertTrue(result["checks"]["title"])
+        self.assertTrue(result["checks"]["short_pitch"])
+
+    def test_readme_score_command_accepts_path(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(["readme-score", str(root)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# README Score Report", result.stdout)
+        self.assertIn("README score:", result.stdout)
+        self.assertIn("[OK] title", result.stdout)
+        self.assertIn("Missing:", result.stdout)
 
     def test_hygiene_command_detects_ds_store(self):
         temp, root = make_sample_repo()

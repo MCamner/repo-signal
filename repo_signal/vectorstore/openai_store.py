@@ -143,7 +143,7 @@ def upload_repository_memory(
 
     client = openai_client()
 
-    with tempfile.NamedTemporaryFile("wb", suffix=".md", delete=True) as file:
+    with tempfile.NamedTemporaryFile("w+b", suffix=".md", delete=True) as file:
         file.write(encoded)
         file.flush()
         file.seek(0)
@@ -166,4 +166,3 @@ def upload_repository_memory(
         status=getattr(result, "status", "unknown"),
         file_id=getattr(result, "id", ""),
     )
-

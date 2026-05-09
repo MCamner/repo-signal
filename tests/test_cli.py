@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from repo_signal.ask import build_ask_prompt
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
@@ -410,6 +411,41 @@ class CoreScannerTests(unittest.TestCase):
         self.assertIn("Markdown", repo.languages)
         self.assertIn("docs", repo.top_directories)
         self.assertEqual(repo.git.is_repo, False)
+
+
+class AskCommandTests(unittest.TestCase):
+    def test_build_ask_prompt_uses_repoaware_context(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def route_request():\n"
+                "    return 'ok'\n",
+                encoding="utf-8",
+            )
+
+            prompt = build_ask_prompt(root, "how does routing work")
+
+        self.assertIn("You are repo-signal", prompt)
+        self.assertIn("<question>", prompt)
+        self.assertIn("how does routing work", prompt)
+        self.assertIn("# RepoAware Context", prompt)
+        self.assertIn("router.py", prompt)
+
+    def test_ask_command_dry_run_does_not_require_provider(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def route_request():\n"
+                "    return 'ok'\n",
+                encoding="utf-8",
+            )
+
+            result = run_repo_signal(["ask", "--dry-run", "how does routing work"], root)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("You are repo-signal", result.stdout)
+        self.assertIn("# RepoAware Context", result.stdout)
+        self.assertIn("router.py", result.stdout)
 
 
 if __name__ == "__main__":

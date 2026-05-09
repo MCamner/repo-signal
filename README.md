@@ -182,6 +182,7 @@ repo-signal positioning
 ```text
 repo-signal
 ├── analyze
+├── ask
 ├── repoaware
 ├── readme
 ├── roadmap
@@ -257,6 +258,35 @@ Modes tune the context instructions without adding agent complexity:
 | `explain` | clear grounded explanation |
 | `architect` | structure, modularity, coupling, roadmap |
 | `review` | risks, maintainability, shell pitfalls, test gaps |
+
+---
+
+## Ask
+
+`ask` is the first AI-backed workflow:
+
+```text
+repo scan
+→ ranking
+→ signal selection
+→ context shrinking
+→ AI answer
+```
+
+```bash
+repo-signal ask "how does routing work"
+repo-signal ask --dry-run "how does routing work"
+```
+
+AI providers are optional adapters. The core architecture still works without API keys, embeddings, or a vector database. Vector stores should accelerate semantic recall later, not replace ranking and signal selection.
+
+Install optional AI dependencies when needed:
+
+```bash
+pip install "repo-signal[ai]"
+```
+
+`repo-signal ask` reads `OPENAI_API_KEY` from the process environment or an ignored local env file if `python-dotenv` is installed. Do not commit API keys.
 
 ---
 

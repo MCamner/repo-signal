@@ -35,9 +35,24 @@ classifiers = [
 Homepage = "https://mcamner.github.io/repo-signal/"
 Repository = "https://github.com/MCamner/repo-signal"
 
+[project.optional-dependencies]
+ai = [
+  "openai>=1.0",
+  "python-dotenv>=1.0"
+]
+
 [project.scripts]
 repo-signal = "repo_signal.cli:main"
 repoaware = "repo_signal.repoaware.__main__:main"
 
 [tool.setuptools]
-packages = ["repo_signal", "repo_signal.core", "repo_signal.repoaware"]
+packages = [
+  "repo_signal",
+  "repo_signal.ai",
+  "repo_signal.ai.embeddings",
+  "repo_signal.ai.prompts",
+  "repo_signal.ai.providers",
+  "repo_signal.ai.vectorstore",
+  "repo_signal.core",
+  "repo_signal.repoaware"
+]

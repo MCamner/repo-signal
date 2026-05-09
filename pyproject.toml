@@ -37,6 +37,7 @@ Repository = "https://github.com/MCamner/repo-signal"
 
 [project.scripts]
 repo-signal = "repo_signal.cli:main"
+repoaware = "repo_signal.repoaware.__main__:main"
 
 [tool.setuptools]
-packages = ["repo_signal"]
+packages = ["repo_signal", "repo_signal.repoaware"]

@@ -2,7 +2,9 @@
 
 [![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml) [![Release](https://img.shields.io/github/v/release/MCamner/repo-signal?label=release)](https://github.com/MCamner/repo-signal/releases)
 
-AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects.
+AI-native repository intelligence for structured reasoning systems.
+
+`repo-signal` turns local repository state into clear reports and high-signal AI context exports.
 
 `repo-signal` scans a local repository and produces a practical signal report:
 
@@ -74,7 +76,7 @@ The first version can run a local scan and print a Markdown report.
 ```bash
 ./bin/repo-signal scan
 ./bin/repo-signal readme-score .
-python -m repo_signal.repoaware "how does routing work"
+repo-signal repoaware --mode debug "how does routing work"
 ```
 
 ---
@@ -132,6 +134,8 @@ Repo: `coolThing`
 - README detection
 - README quality scoring
 - RepoAware context export for AI-assisted code questions
+- RepoAware modes for debug, explain, architect, and review workflows
+- ranked relevant files with summaries and focused snippets
 - LICENSE detection
 - `.gitignore` detection
 - `docs/` detection
@@ -162,10 +166,39 @@ repo-signal readme-score .
 repo-signal wiki
 repo-signal roadmap
 repo-signal hygiene
-python -m repo_signal.repoaware "how does routing work"
+repo-signal repoaware --mode debug "how does routing work"
+repoaware --mode review --format markdown "what should I inspect first"
 repo-signal patch
 repo-signal positioning
 ```
+
+---
+
+## RepoAware
+
+RepoAware builds high-signal context exports for AI systems by combining:
+
+- repo structure
+- git state
+- semantic relevance
+- file ranking
+- focused snippets
+
+```bash
+repo-signal repoaware --mode explain "how does dispatch work"
+repo-signal repoaware --mode architect --format markdown "where is this coupled"
+repo-signal repoaware --mode review --format claude "what are the risks"
+repo-signal repoaware --copy "how does routing work"
+```
+
+Modes tune the context instructions without adding agent complexity:
+
+| Mode | Focus |
+|---|---|
+| `debug` | errors, routing, stack flow, modified files |
+| `explain` | clear grounded explanation |
+| `architect` | structure, modularity, coupling, roadmap |
+| `review` | risks, maintainability, shell pitfalls, test gaps |
 
 ---
 

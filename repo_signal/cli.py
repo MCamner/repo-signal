@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 from repo_signal import __version__
+from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
 
 
@@ -16,6 +17,7 @@ Usage:
   repo-signal scan
   repo-signal readme
   repo-signal readme-score [path]
+  repo-signal repoaware [--mode mode] [--format format] "question"
   repo-signal hygiene
   repo-signal wiki
   repo-signal roadmap
@@ -27,6 +29,7 @@ Commands:
   readme     Analyze README clarity and missing sections
   readme-score
              Score README quality with a 100-point checklist
+  repoaware  Build high-signal repo context for AI-assisted code questions
   hygiene    Check junk files, .gitignore, large files, and Git status
   wiki       Generate suggested GitHub Wiki structure and Home draft
   roadmap    Generate a practical roadmap based on repo state
@@ -35,6 +38,7 @@ Examples:
   repo-signal scan
   repo-signal readme
   repo-signal readme-score .
+  repo-signal repoaware --mode debug "how does routing work"
   repo-signal hygiene
   repo-signal wiki
   repo-signal roadmap
@@ -981,7 +985,6 @@ def generate_roadmap_plan(repo: Path) -> str:
 
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
-    repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command in {"--help", "-h", "help"}:
         print(HELP_TEXT)
@@ -990,6 +993,12 @@ def main() -> None:
     if command in {"--version", "-v", "version"}:
         print(f"repo-signal {__version__}")
         return
+
+    if command == "repoaware":
+        repoaware_main(sys.argv[2:])
+        return
+
+    repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command == "scan":
         print(scan_repo(repo))
@@ -1016,7 +1025,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: scan, readme, readme-score, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: scan, readme, readme-score, repoaware, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

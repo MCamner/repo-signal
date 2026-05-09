@@ -233,7 +233,7 @@ class RepoAwareTests(unittest.TestCase):
     def test_extract_keywords_preserves_order_and_deduplicates(self):
         result = extract_keywords("How does mqlaunch routing routing work?")
 
-        self.assertEqual(result, ["how", "does", "mqlaunch", "routing", "work"])
+        self.assertEqual(result, ["mqlaunch", "routing"])
 
     def test_build_context_includes_repo_state_and_relevant_snippet(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -247,15 +247,66 @@ class RepoAwareTests(unittest.TestCase):
 
             result = build_context(root, "how does mqlaunch routing work")
 
+        self.assertIn("<repoaware>", result)
         self.assertIn("<repo>", result)
+        self.assertIn("<mode>", result)
+        self.assertIn("explain", result)
         self.assertIn("<git>", result)
         self.assertIn("<question>", result)
+        self.assertIn("<keywords>", result)
         self.assertIn("<tree>", result)
         self.assertIn("<relevant_files>", result)
         self.assertIn("README.md", result)
         self.assertIn("launcher.py", result)
         self.assertIn('file path="launcher.py"', result)
+        self.assertIn("<summary>", result)
+        self.assertIn("<score>", result)
         self.assertIn("def route_mqlaunch", result)
+
+    def test_build_context_supports_modes_and_markdown_format(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "terminal").mkdir()
+            (root / "terminal" / "mqlaunch-router.py").write_text(
+                "def dispatch_mqlaunch_route(command):\n"
+                "    # routing routing routing\n"
+                "    return command\n",
+                encoding="utf-8",
+            )
+
+            result = build_context(
+                root,
+                "how does mqlaunch routing work",
+                mode="debug",
+                output_format="markdown",
+            )
+
+        self.assertIn("# RepoAware Context", result)
+        self.assertIn("- Mode: `debug`", result)
+        self.assertIn("Focus on errors", result)
+        self.assertIn("terminal/mqlaunch-router.py", result)
+        self.assertIn("Summary:", result)
+        self.assertIn("score", result)
+
+    def test_repoaware_command_runs_through_main_cli(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def route_request():\n"
+                "    return 'ok'\n",
+                encoding="utf-8",
+            )
+
+            result = run_repo_signal(
+                ["repoaware", "--mode", "review", "--format", "markdown", "route request"],
+                root,
+            )
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# RepoAware Context", result.stdout)
+        self.assertIn("- Mode: `review`", result.stdout)
+        self.assertIn("router.py", result.stdout)
+        self.assertIn("route_request", result.stdout)
 
 
 if __name__ == "__main__":

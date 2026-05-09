@@ -14,7 +14,10 @@ from repo_signal.pipeline.context import rank_files
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
 from repo_signal.readme_score import score_readme
+from repo_signal.semantic import lexical_search
 from repo_signal.symbols.symbol_extractor import extract_symbols
+from repo_signal.symbols.summarizer import summarize_symbol
+from repo_signal.vectorstore.chunks import build_symbol_chunks
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -100,6 +103,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("Usage:", result.stdout)
         self.assertIn("scan", result.stdout)
         self.assertIn("readme", result.stdout)
+        self.assertIn("semantic", result.stdout)
 
     def test_version_command(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -525,6 +529,80 @@ class SymbolExtractorTests(unittest.TestCase):
         self.assertEqual(by_name["dispatch_cli_command"].kind, "shell_function")
         self.assertEqual(by_name["dispatch_cli_command"].file_path, "tool.sh")
         self.assertEqual(by_name["mq_repoaware"].kind, "shell_function")
+
+
+class SemanticMemoryTests(unittest.TestCase):
+    def test_symbol_chunks_use_symbol_metadata_and_small_snippets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_cli_command(command):\n"
+                "    if command == 'routing':\n"
+                "        return 'route'\n",
+                encoding="utf-8",
+            )
+
+            repo = Repository.load(root)
+            chunks = build_symbol_chunks(repo)
+
+        self.assertEqual(len(chunks), 1)
+        chunk = chunks[0]
+        self.assertEqual(chunk.symbol, "dispatch_cli_command")
+        self.assertEqual(chunk.metadata["file"], "router.py")
+        self.assertEqual(chunk.metadata["kind"], "function")
+        self.assertIn("summary:", chunk.text)
+        self.assertIn("snippet:", chunk.text)
+        self.assertIn("dispatch_cli_command", chunk.text)
+
+    def test_symbol_summary_compresses_symbol_meaning(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "scanner.py"
+            path.write_text("def scan_repository():\n    pass\n", encoding="utf-8")
+            symbol = extract_symbols(path, repo_path=root)[0]
+
+        summary = summarize_symbol(symbol)
+
+        self.assertIn("scan_repository", summary)
+        self.assertIn("scans repository", summary)
+
+    def test_semantic_lexical_search_matches_symbol_chunks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_cli_command(command):\n"
+                "    if command == 'routing':\n"
+                "        return 'route'\n",
+                encoding="utf-8",
+            )
+            (root / "readme.py").write_text(
+                "def format_readme():\n"
+                "    return 'docs'\n",
+                encoding="utf-8",
+            )
+
+            repo = Repository.load(root)
+            chunks = build_symbol_chunks(repo)
+            matches = lexical_search(chunks, "routing command execution", limit=1)
+
+        self.assertEqual(matches[0]["chunk"].symbol, "dispatch_cli_command")
+
+    def test_semantic_command_runs_without_chroma(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_cli_command(command):\n"
+                "    if command == 'routing':\n"
+                "        return 'route'\n",
+                encoding="utf-8",
+            )
+
+            result = run_repo_signal(["semantic", "routing command execution"], root)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# Semantic Signal Report", result.stdout)
+        self.assertIn("dispatch_cli_command", result.stdout)
+        self.assertIn("symbol chunks", result.stdout)
 
 
 class AskCommandTests(unittest.TestCase):

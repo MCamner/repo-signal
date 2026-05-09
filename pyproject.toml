@@ -40,6 +40,9 @@ ai = [
   "openai>=1.0",
   "python-dotenv>=1.0"
 ]
+vector = [
+  "chromadb>=0.5"
+]
 
 [project.scripts]
 repo-signal = "repo_signal.cli:main"
@@ -57,5 +60,6 @@ packages = [
   "repo_signal.graph",
   "repo_signal.pipeline",
   "repo_signal.repoaware",
-  "repo_signal.symbols"
+  "repo_signal.symbols",
+  "repo_signal.vectorstore"
 ]

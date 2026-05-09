@@ -13,6 +13,7 @@ from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
 from repo_signal.semantic import main as semantic_main
 from repo_signal.semantic_upload import main as semantic_upload_main
+from repo_signal.skill import main as skill_main
 
 
 HELP_TEXT = """repo-signal
@@ -24,6 +25,7 @@ Usage:
   repo-signal ask [--mode mode] "question"
   repo-signal doctor [path]
   repo-signal scan
+  repo-signal skill new <name> [--description text]
   repo-signal readme
   repo-signal readme-score [path]
   repo-signal repoaware [--mode mode] [--format format] "question"
@@ -41,6 +43,7 @@ Commands:
   ask       Ask an AI provider using ranked RepoAware context
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
   scan       Scan repo structure and basic project signals
+  skill      Create repo-local Codex skills
   readme     Analyze README clarity and missing sections
   readme-score
              Score README quality with a 100-point checklist
@@ -59,6 +62,7 @@ Examples:
   repo-signal doctor
   repo-signal ask --dry-run "how does routing work"
   repo-signal scan
+  repo-signal skill new repo-aware
   repo-signal readme
   repo-signal readme-score .
   repo-signal repoaware --mode debug "how does routing work"
@@ -1040,6 +1044,10 @@ def main() -> None:
         export_codex_main(sys.argv[2:])
         return
 
+    if command == "skill":
+        skill_main(sys.argv[2:])
+        return
+
     repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command == "scan":
@@ -1075,7 +1083,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: analyze, ask, doctor, scan, readme, readme-score, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: analyze, ask, doctor, scan, skill, readme, readme-score, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

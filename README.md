@@ -168,6 +168,7 @@ Repo: `coolThing`
 repo-signal scan
 repo-signal analyze
 repo-signal doctor
+repo-signal skill new repo-aware
 repo-signal readme
 repo-signal readme-score .
 repo-signal wiki
@@ -188,6 +189,7 @@ repo-signal
 ├── analyze
 ├── ask
 ├── doctor
+├── skill new
 ├── repoaware
 ├── readme
 ├── roadmap
@@ -216,6 +218,25 @@ It reports:
 - AI readiness
 - suggested skills
 - RepoAware priority context
+
+`skill new` creates a repo-local Codex skill scaffold:
+
+```bash
+repo-signal skill new repo-aware
+repo-signal skill new release-readiness --description "Use when preparing a repo release."
+```
+
+It writes:
+
+```text
+skills/<name>/SKILL.md
+```
+
+Then export it into Codex skill storage:
+
+```bash
+repo-signal export-codex <name>
+```
 
 ---
 

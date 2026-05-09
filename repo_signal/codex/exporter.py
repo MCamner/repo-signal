@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
+import re
 import shutil
 from typing import List, Optional
 
@@ -14,6 +15,12 @@ class SkillExportResult:
     source: Path
     target: Path
     files: int
+
+
+@dataclass
+class SkillCreateResult:
+    name: str
+    path: Path
 
 
 def repo_root_from_path(path: Optional[Path] = None) -> Path:
@@ -40,7 +47,77 @@ def available_skills(repo_root: Path) -> List[str]:
 def validate_skill_name(name: str) -> str:
     if not name or "/" in name or "\\" in name or name in {".", ".."}:
         raise SkillExportError(f"Invalid skill name: {name}")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9_-]*", name):
+        raise SkillExportError(
+            "Invalid skill name: use lowercase letters, numbers, hyphens, or underscores"
+        )
     return name
+
+
+def default_skill_description(name: str) -> str:
+    label = name.replace("-", " ").replace("_", " ")
+    return f"Use when working on {label} tasks that need a repeatable Codex workflow."
+
+
+def skill_template(name: str, description: str) -> str:
+    title = " ".join(part.capitalize() for part in name.replace("_", "-").split("-"))
+
+    return f"""---
+name: {name}
+description: {description}
+---
+
+# {title}
+
+Use this skill when the user asks for work that should follow the `{name}` workflow.
+
+## When to use
+
+Use this skill when:
+
+- the task matches this workflow
+- repeatable steps matter
+- repo-specific context should guide the answer
+
+## Workflow
+
+1. Inspect the relevant files before acting.
+2. Identify the user's goal and the repo constraints.
+3. Make the smallest useful change or recommendation.
+4. Verify important behavior with a lightweight check when possible.
+5. Report what changed, what was verified, and what remains uncertain.
+
+## Output style
+
+Be concise, practical, and grounded in the files or evidence available.
+
+Do not invent repo details. If something cannot be confirmed, say so briefly and continue with the best grounded next step.
+"""
+
+
+def create_codex_skill(
+    name: str,
+    repo_root: Optional[Path] = None,
+    description: Optional[str] = None,
+) -> SkillCreateResult:
+    root = repo_root_from_path(repo_root)
+    skill_name = validate_skill_name(name)
+    target = skills_root(root) / skill_name
+
+    if target.exists():
+        raise SkillExportError(f"Skill already exists: {skill_name}")
+
+    try:
+        target.mkdir(parents=True)
+        skill_description = description or default_skill_description(skill_name)
+        (target / "SKILL.md").write_text(
+            skill_template(skill_name, skill_description),
+            encoding="utf-8",
+        )
+    except OSError as exc:
+        raise SkillExportError(f"Could not create skill at {target}: {exc}") from exc
+
+    return SkillCreateResult(name=skill_name, path=target)
 
 
 def resolve_source(repo_root: Path, name: str) -> Path:

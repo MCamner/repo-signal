@@ -8,7 +8,7 @@ from pathlib import Path
 from repo_signal.ask import build_ask_prompt
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
-from repo_signal.codex.exporter import available_skills, export_codex_skill
+from repo_signal.codex.exporter import SkillExportError, available_skills, create_codex_skill, export_codex_skill
 from repo_signal.doctor import doctor_repo
 from repo_signal.graph.graph_builder import build_repository_graph
 from repo_signal.pipeline.ask import run_ask_pipeline
@@ -107,6 +107,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("Usage:", result.stdout)
         self.assertIn("scan", result.stdout)
         self.assertIn("doctor", result.stdout)
+        self.assertIn("skill", result.stdout)
         self.assertIn("readme", result.stdout)
         self.assertIn("semantic", result.stdout)
         self.assertIn("export-codex", result.stdout)
@@ -428,9 +429,54 @@ class RepoAwareTests(unittest.TestCase):
 
 
 class CodexExportTests(unittest.TestCase):
+    def test_create_codex_skill_scaffolds_skill_md(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = create_codex_skill(
+                "repo-aware",
+                repo_root=root,
+                description="Use when testing repo-aware workflows.",
+            )
+
+            skill_md = root / "skills" / "repo-aware" / "SKILL.md"
+
+            self.assertEqual(result.name, "repo-aware")
+            self.assertTrue(skill_md.exists())
+            self.assertIn("name: repo-aware", skill_md.read_text(encoding="utf-8"))
+            self.assertIn("Use when testing repo-aware workflows.", skill_md.read_text(encoding="utf-8"))
+
+    def test_create_codex_skill_refuses_existing_skill(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            create_codex_skill("repo-aware", repo_root=root)
+
+            with self.assertRaises(SkillExportError):
+                create_codex_skill("repo-aware", repo_root=root)
+
+    def test_skill_new_command_creates_repo_local_skill(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = run_repo_signal(
+                [
+                    "skill",
+                    "new",
+                    "demo-skill",
+                    "--description",
+                    "Use when testing command scaffolding.",
+                ],
+                Path(tmp),
+            )
+
+            skill_md = Path(tmp) / "skills" / "demo-skill" / "SKILL.md"
+
+            self.assertEqual(result.returncode, 0)
+            self.assertIn("# Codex Skill Created", result.stdout)
+            self.assertTrue(skill_md.exists())
+            self.assertIn("name: demo-skill", skill_md.read_text(encoding="utf-8"))
+
     def test_available_skills_reads_repo_skill_dirs(self):
         skills = available_skills(REPO_ROOT)
 
+        self.assertIn("repo-aware", skills)
         self.assertIn("repo-product-auditor", skills)
         self.assertIn("terminal-ui-polisher", skills)
 

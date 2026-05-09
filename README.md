@@ -197,6 +197,28 @@ repo-signal analyze
 
 ---
 
+## Core Model
+
+The shared intelligence layer starts with one repository model:
+
+```python
+from repo_signal.core.models import Repository
+
+repo = Repository.load(".")
+
+repo.files
+repo.languages
+repo.entrypoints
+repo.git.branch
+repo.top_directories
+repo.signals
+repo.graph
+```
+
+`analyze` already uses this model. RepoAware, roadmap, wiki, and hygiene can move onto the same foundation incrementally.
+
+---
+
 ## RepoAware
 
 RepoAware builds high-signal context exports for AI systems by combining:

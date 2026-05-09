@@ -1,12 +1,13 @@
 from collections import Counter
 from pathlib import Path
+import re
 import subprocess
 from typing import Union
 
-from repo_signal.core.models import GitHealth, RepoSummary
+from repo_signal.core.models import FileNode, GitContext, Repository
 
 
-SKIP_DIRS = {
+IGNORE_DIRS = {
     ".git",
     ".mypy_cache",
     ".pytest_cache",
@@ -19,22 +20,22 @@ SKIP_DIRS = {
     "venv",
 }
 
-LANGUAGE_EXTENSIONS = {
+LANGUAGE_MAP = {
     ".py": "Python",
     ".sh": "Shell",
     ".bash": "Shell",
     ".zsh": "Shell",
     ".js": "JavaScript",
+    ".jsx": "JavaScript",
     ".ts": "TypeScript",
     ".tsx": "TypeScript",
-    ".jsx": "JavaScript",
     ".html": "HTML",
     ".css": "CSS",
     ".md": "Markdown",
-    ".toml": "TOML",
-    ".yml": "YAML",
-    ".yaml": "YAML",
     ".json": "JSON",
+    ".toml": "TOML",
+    ".yaml": "YAML",
+    ".yml": "YAML",
 }
 
 TOOLING_FILES = {
@@ -50,165 +51,128 @@ TOOLING_FILES = {
     "LICENSE": "License",
 }
 
+ENTRYPOINT_NAME_KEYWORDS = {
+    "app",
+    "cli",
+    "launch",
+    "main",
+    "run",
+}
+
 ENTRYPOINT_NAMES = {
-    "cli.py",
     "__main__.py",
-    "main.py",
     "app.py",
-    "server.py",
+    "cli.py",
+    "main.py",
     "manage.py",
+    "server.py",
 }
 
 
-def run_git(repo: Path, args: list[str]) -> tuple[int, str]:
+def run(cmd: list[str], cwd: Union[Path, None] = None) -> str:
     try:
         result = subprocess.run(
-            ["git", *args],
-            cwd=repo,
+            cmd,
+            cwd=cwd,
+            capture_output=True,
             text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
             check=False,
         )
-        return result.returncode, result.stdout.strip()
-    except FileNotFoundError:
-        return 1, ""
+        return result.stdout.strip()
+    except Exception:
+        return ""
 
 
-def should_skip(path: Path) -> bool:
-    return any(part in SKIP_DIRS or part.endswith(".egg-info") for part in path.parts)
+def should_ignore(path: Path) -> bool:
+    return any(part in IGNORE_DIRS or part.endswith(".egg-info") for part in path.parts)
 
 
-def iter_repo_files(repo: Path):
-    for path in repo.rglob("*"):
-        try:
-            relative = path.relative_to(repo)
-        except ValueError:
-            continue
-
-        if should_skip(relative) or not path.is_file():
-            continue
-
-        yield relative, path
+def extract_keywords(path: Path) -> list[str]:
+    words = re.findall(r"[a-zA-Z0-9_-]+", path.stem.lower())
+    return list(dict.fromkeys(word for word in words if len(word) > 1))
 
 
-def scan_git_health(repo: Path) -> GitHealth:
-    code, inside = run_git(repo, ["rev-parse", "--is-inside-work-tree"])
-    if code != 0 or inside != "true":
-        return GitHealth(is_repo=False)
+def build_git_context(repo_path: Path) -> GitContext:
+    inside = run(["git", "rev-parse", "--is-inside-work-tree"], cwd=repo_path)
+    is_repo = inside == "true"
 
-    _, branch = run_git(repo, ["branch", "--show-current"])
-    _, status = run_git(repo, ["status", "--short"])
-    status_lines = status.splitlines() if status else []
+    if not is_repo:
+        return GitContext()
 
-    return GitHealth(
+    return GitContext(
+        branch=run(["git", "branch", "--show-current"], cwd=repo_path),
+        status=run(["git", "status", "--short"], cwd=repo_path),
         is_repo=True,
-        branch=branch,
-        changed_files=len(status_lines),
-        status_lines=status_lines,
     )
 
 
-def detect_languages(files: list[tuple[Path, Path]]) -> list[tuple[str, int]]:
-    counts = Counter()
+def detect_project_type(repo: Repository) -> str:
+    path = repo.path
 
-    for relative, _ in files:
-        language = LANGUAGE_EXTENSIONS.get(relative.suffix.lower())
-        if language:
-            counts[language] += 1
-
-    return counts.most_common(6)
-
-
-def detect_project_type(repo: Path) -> str:
-    if (repo / "pyproject.toml").exists() and (repo / "repo_signal").exists():
+    if (path / "pyproject.toml").exists() and (path / "repo_signal").exists():
         return "Python CLI / repo intelligence toolkit"
-    if (repo / "pyproject.toml").exists():
+    if (path / "pyproject.toml").exists():
         return "Python project"
-    if (repo / "package.json").exists() and (repo / "docs" / "index.html").exists():
+    if (path / "package.json").exists() and (path / "docs" / "index.html").exists():
         return "JavaScript / static web project"
-    if (repo / "package.json").exists():
+    if (path / "package.json").exists():
         return "JavaScript / Node project"
-    if (repo / "docs" / "index.html").exists():
+    if (path / "docs" / "index.html").exists():
         return "GitHub Pages / static web project"
-    if (repo / "bin").exists() or (repo / "tools").exists() or (repo / "scripts").exists():
+    if (path / "bin").exists() or (path / "tools").exists() or (path / "scripts").exists():
         return "Command-line tools / automation"
     return "General repository"
 
 
-def detect_entrypoints(repo: Path, files: list[tuple[Path, Path]]) -> list[str]:
-    found = []
-
-    for relative, path in files:
-        path_text = relative.as_posix()
-        if relative.name in ENTRYPOINT_NAMES:
-            found.append(path_text)
-            continue
-        if path_text.startswith(("bin/", "scripts/", "tools/")):
-            found.append(path_text)
-            continue
-        if "launcher" in path_text.lower() or "command-mode" in path_text.lower():
-            found.append(path_text)
-            continue
-        if path.suffix.lower() in {".sh", ".bash", ".zsh"}:
-            try:
-                first_line = path.read_text(encoding="utf-8", errors="ignore").splitlines()[0]
-            except (IndexError, OSError):
-                first_line = ""
-            if first_line.startswith("#!"):
-                found.append(path_text)
-
-    return sorted(dict.fromkeys(found))[:10]
-
-
-def detect_tooling(repo: Path) -> list[str]:
+def detect_tooling(repo_path: Path) -> list[str]:
     found = []
 
     for target, label in TOOLING_FILES.items():
-        if (repo / target).exists():
+        if (repo_path / target).exists():
             found.append(label)
 
     return found
 
 
-def top_directories(files: list[tuple[Path, Path]]) -> list[tuple[str, int]]:
-    counts = Counter()
+def is_entrypoint(relative: Path, full_path: Path) -> bool:
+    path_text = relative.as_posix()
+    name_lower = relative.name.lower()
 
-    for relative, _ in files:
-        top = relative.parts[0] if len(relative.parts) > 1 else "."
-        counts[top] += 1
+    if path_text.startswith("tests/") or "/tests/" in path_text:
+        return False
 
-    return counts.most_common(8)
-
-
-def repo_size(files: list[tuple[Path, Path]]) -> tuple[int, float]:
-    total_bytes = 0
-
-    for _, path in files:
+    if relative.name in ENTRYPOINT_NAMES:
+        return True
+    if path_text.startswith(("bin/", "scripts/", "tools/")):
+        return True
+    if any(keyword in name_lower for keyword in ENTRYPOINT_NAME_KEYWORDS):
+        return True
+    if full_path.suffix.lower() in {".sh", ".bash", ".zsh"}:
         try:
-            total_bytes += path.stat().st_size
-        except OSError:
-            continue
+            first_line = full_path.read_text(encoding="utf-8", errors="ignore").splitlines()[0]
+        except (IndexError, OSError):
+            first_line = ""
+        return first_line.startswith("#!")
 
-    return len(files), total_bytes / 1024 / 1024
+    return False
 
 
-def suggest_focus_areas(repo: Path, summary: RepoSummary) -> list[str]:
+def suggest_focus_areas(repo: Repository) -> list[str]:
     focus = []
 
-    if not (repo / "README.md").exists():
+    if not (repo.path / "README.md").exists():
         focus.append("Create README.md with purpose, install, usage, and examples")
-    if not (repo / "LICENSE").exists():
+    if not (repo.path / "LICENSE").exists():
         focus.append("Add a LICENSE file")
-    if not (repo / ".gitignore").exists():
+    if not (repo.path / ".gitignore").exists():
         focus.append("Add .gitignore for local and build artifacts")
-    if not (repo / "tests").exists():
+    if not (repo.path / "tests").exists():
         focus.append("Add focused tests for the main command surface")
-    if not summary.key_entrypoints:
+    if not repo.entrypoints:
         focus.append("Document or add a clear executable entrypoint")
-    if summary.git.changed_files:
+    if repo.git.changed_files:
         focus.append("Review current working tree changes before release or demo")
-    if "GitHub Pages docs" not in summary.detected_tooling:
+    if "GitHub Pages docs" not in repo.detected_tooling:
         focus.append("Add or clarify whether a public docs/demo page is needed")
 
     if not focus:
@@ -217,24 +181,62 @@ def suggest_focus_areas(repo: Path, summary: RepoSummary) -> list[str]:
     return focus[:6]
 
 
-def scan_repository(repo_path: Union[Path, str]) -> RepoSummary:
-    repo = Path(repo_path).expanduser().resolve()
-    files = list(iter_repo_files(repo))
-    git = scan_git_health(repo)
-    file_count, size_mb = repo_size(files)
-
-    partial = RepoSummary(
-        path=repo,
-        project_type=detect_project_type(repo),
-        languages=detect_languages(files),
-        key_entrypoints=detect_entrypoints(repo, files),
-        git=git,
-        repo_size_files=file_count,
-        repo_size_mb=size_mb,
-        top_directories=top_directories(files),
-        detected_tooling=detect_tooling(repo),
-        focus_areas=[],
+def scan_repository(path: Union[str, Path] = ".") -> Repository:
+    repo_path = Path(path).expanduser().resolve()
+    repo = Repository(
+        name=repo_path.name,
+        path=repo_path,
+        git=build_git_context(repo_path),
     )
-    partial.focus_areas = suggest_focus_areas(repo, partial)
 
-    return partial
+    language_counter = Counter()
+    top_directory_counter = Counter()
+
+    for full_path in repo_path.rglob("*"):
+        if not full_path.is_file():
+            continue
+
+        try:
+            relative = full_path.relative_to(repo_path)
+        except ValueError:
+            continue
+
+        if should_ignore(relative):
+            continue
+
+        try:
+            size = full_path.stat().st_size
+        except OSError:
+            size = 0
+
+        extension = full_path.suffix.lower()
+        language = LANGUAGE_MAP.get(extension)
+        if language:
+            language_counter[language] += 1
+
+        top_directory = relative.parts[0] if len(relative.parts) > 1 else "."
+        top_directory_counter[top_directory] += 1
+
+        relative_path = relative.as_posix()
+        repo.files.append(
+            FileNode(
+                path=relative_path,
+                extension=extension,
+                size=size,
+                keywords=extract_keywords(relative),
+            )
+        )
+        repo.size_bytes += size
+
+        if is_entrypoint(relative, full_path):
+            repo.entrypoints.append(relative_path)
+
+    repo.languages = dict(language_counter.most_common())
+    repo.top_directory_counts = dict(top_directory_counter.most_common())
+    repo.top_directories = list(repo.top_directory_counts.keys())
+    repo.entrypoints = sorted(dict.fromkeys(repo.entrypoints))[:10]
+    repo.detected_tooling = detect_tooling(repo_path)
+    repo.project_type = detect_project_type(repo)
+    repo.focus_areas = suggest_focus_areas(repo)
+
+    return repo

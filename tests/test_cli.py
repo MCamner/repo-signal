@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
@@ -389,14 +390,26 @@ class CoreScannerTests(unittest.TestCase):
         (root / "bin").mkdir()
         (root / "bin" / "sample").write_text("#!/usr/bin/env bash\necho sample\n", encoding="utf-8")
 
-        summary = scan_repository(root)
+        repo = scan_repository(root)
 
-        self.assertEqual(summary.project_type, "Python CLI / repo intelligence toolkit")
-        self.assertIn(("Python", 1), summary.languages)
-        self.assertIn("repo_signal/cli.py", summary.key_entrypoints)
-        self.assertIn("bin/sample", summary.key_entrypoints)
-        self.assertIn("Python packaging", summary.detected_tooling)
-        self.assertGreater(summary.repo_size_files, 0)
+        self.assertEqual(repo.project_type, "Python CLI / repo intelligence toolkit")
+        self.assertEqual(repo.languages["Python"], 1)
+        self.assertIn("repo_signal/cli.py", repo.entrypoints)
+        self.assertIn("bin/sample", repo.entrypoints)
+        self.assertIn("Python packaging", repo.detected_tooling)
+        self.assertGreater(repo.repo_size_files, 0)
+
+    def test_repository_load_is_the_central_entrypoint(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        repo = Repository.load(root)
+
+        self.assertEqual(repo.name, root.name)
+        self.assertTrue(repo.files)
+        self.assertIn("Markdown", repo.languages)
+        self.assertIn("docs", repo.top_directories)
+        self.assertEqual(repo.git.is_repo, False)
 
 
 if __name__ == "__main__":

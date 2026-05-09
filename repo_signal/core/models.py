@@ -34,6 +34,24 @@ class Signal:
 
 
 @dataclass
+class Edge:
+    source: str
+    target: str
+    relation: str
+
+
+@dataclass
+class RepositoryGraph:
+    edges: List[Edge] = field(default_factory=list)
+
+    def outgoing(self, file_path: str) -> List[Edge]:
+        return [edge for edge in self.edges if edge.source == file_path]
+
+    def incoming(self, file_path: str) -> List[Edge]:
+        return [edge for edge in self.edges if edge.target == file_path]
+
+
+@dataclass
 class Repository:
     name: str
     path: Path
@@ -44,7 +62,7 @@ class Repository:
     languages: Dict[str, int] = field(default_factory=dict)
     entrypoints: List[str] = field(default_factory=list)
     signals: List[Signal] = field(default_factory=list)
-    graph: Dict[str, List[str]] = field(default_factory=dict)
+    graph: RepositoryGraph = field(default_factory=RepositoryGraph)
     git: GitContext = field(default_factory=GitContext)
 
     project_type: str = "General repository"

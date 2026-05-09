@@ -239,4 +239,8 @@ def scan_repository(path: Union[str, Path] = ".") -> Repository:
     repo.project_type = detect_project_type(repo)
     repo.focus_areas = suggest_focus_areas(repo)
 
+    from repo_signal.graph.graph_builder import build_repository_graph
+
+    repo.graph = build_repository_graph(repo)
+
     return repo

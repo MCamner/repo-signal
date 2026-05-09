@@ -55,6 +55,7 @@ def build_focused_context(
     lines.append(f"- Languages: `{repo.languages if repo.languages else {}}`")
     lines.append(f"- Entry points: `{', '.join(repo.entrypoints[:8]) if repo.entrypoints else 'none detected'}`")
     lines.append(f"- Top directories: `{', '.join(repo.top_directories[:8]) if repo.top_directories else 'none detected'}`")
+    lines.append(f"- Graph edges: `{len(repo.graph.edges)}`")
     lines.append("")
     lines.append("## Git")
     lines.append("")
@@ -78,6 +79,21 @@ def build_focused_context(
         for signal in signals:
             summary = _signal_summary(signal, keywords)
             lines.append(f"- `{signal.file_path}` score `{signal.score}` - {summary}")
+
+    graph_edges = []
+    selected_files = {signal.file_path for signal in signals}
+    for edge in repo.graph.edges:
+        if edge.source in selected_files or edge.target in selected_files:
+            graph_edges.append(edge)
+
+    lines.append("")
+    lines.append("## Structural Relations")
+    lines.append("")
+    if graph_edges:
+        for edge in graph_edges[:20]:
+            lines.append(f"- `{edge.source}` -> `{edge.target}` ({edge.relation})")
+    else:
+        lines.append("- No graph edges connected to selected files.")
 
     for signal in signals:
         full_path = repo.path / Path(signal.file_path)

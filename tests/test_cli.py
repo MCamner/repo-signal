@@ -8,6 +8,7 @@ from pathlib import Path
 from repo_signal.ask import build_ask_prompt
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
+from repo_signal.graph.graph_builder import build_repository_graph
 from repo_signal.pipeline.ask import run_ask_pipeline
 from repo_signal.pipeline.context import rank_files
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
@@ -413,6 +414,62 @@ class CoreScannerTests(unittest.TestCase):
         self.assertIn("Markdown", repo.languages)
         self.assertIn("docs", repo.top_directories)
         self.assertEqual(repo.git.is_repo, False)
+
+    def test_repository_load_builds_graph_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "repo_signal").mkdir()
+            (root / "repo_signal" / "__init__.py").write_text("", encoding="utf-8")
+            (root / "repo_signal" / "scanner.py").write_text("def scan_repository():\n    pass\n", encoding="utf-8")
+            (root / "repo_signal" / "ask.py").write_text(
+                "from repo_signal.scanner import scan_repository\n",
+                encoding="utf-8",
+            )
+            (root / "scripts").mkdir()
+            (root / "scripts" / "main.sh").write_text(
+                "#!/usr/bin/env bash\n"
+                "source lib.sh\n",
+                encoding="utf-8",
+            )
+            (root / "scripts" / "lib.sh").write_text("helper() { echo ok; }\n", encoding="utf-8")
+
+            repo = Repository.load(root)
+
+        edges = {(edge.source, edge.target, edge.relation) for edge in repo.graph.edges}
+        self.assertIn(("repo_signal/ask.py", "repo_signal/scanner.py", "python_import"), edges)
+        self.assertIn(("scripts/main.sh", "scripts/lib.sh", "shell_source"), edges)
+
+
+class GraphBuilderTests(unittest.TestCase):
+    def test_build_repository_graph_extracts_python_and_shell_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "pkg").mkdir()
+            (root / "pkg" / "__init__.py").write_text("", encoding="utf-8")
+            (root / "pkg" / "scanner.py").write_text("def scan_repository():\n    pass\n", encoding="utf-8")
+            (root / "pkg" / "ask.py").write_text(
+                "from pkg.scanner import scan_repository\n"
+                "import pkg.scanner\n",
+                encoding="utf-8",
+            )
+            (root / "bin").mkdir()
+            (root / "bin" / "run.sh").write_text(
+                "#!/usr/bin/env bash\n"
+                ". ../scripts/env.sh\n"
+                "bash ../scripts/tool.sh\n",
+                encoding="utf-8",
+            )
+            (root / "scripts").mkdir()
+            (root / "scripts" / "env.sh").write_text("export DEMO=1\n", encoding="utf-8")
+            (root / "scripts" / "tool.sh").write_text("echo tool\n", encoding="utf-8")
+
+            repo = scan_repository(root)
+            graph = build_repository_graph(repo)
+
+        edges = {(edge.source, edge.target, edge.relation) for edge in graph.edges}
+        self.assertIn(("pkg/ask.py", "pkg/scanner.py", "python_import"), edges)
+        self.assertIn(("bin/run.sh", "scripts/env.sh", "shell_source"), edges)
+        self.assertIn(("bin/run.sh", "scripts/tool.sh", "shell_exec"), edges)
 
 
 class AskCommandTests(unittest.TestCase):

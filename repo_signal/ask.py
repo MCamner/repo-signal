@@ -3,20 +3,19 @@ from pathlib import Path
 import sys
 from typing import Optional
 
-from repo_signal.ai.prompts.repo_question import build_repo_question_prompt
 from repo_signal.ai.providers.base import ProviderConfigurationError
-from repo_signal.ai.providers.openai_provider import OpenAIProvider
-from repo_signal.repoaware.context_builder import build_context
+from repo_signal.pipeline.ask import run_ask_pipeline
+from repo_signal.pipeline.response import format_pipeline_output
 
 
 def build_ask_prompt(repo_path: Path, question: str, mode: str = "explain") -> str:
-    context = build_context(
+    result = run_ask_pipeline(
         repo_path=repo_path,
         question=question,
         mode=mode,
-        output_format="markdown",
+        dry_run=True,
     )
-    return build_repo_question_prompt(context=context, question=question)
+    return result.prompt
 
 
 def ask_repo(
@@ -26,16 +25,14 @@ def ask_repo(
     provider_name: str = "openai",
     dry_run: bool = False,
 ) -> str:
-    prompt = build_ask_prompt(repo_path=repo_path, question=question, mode=mode)
-
-    if dry_run:
-        return prompt
-
-    if provider_name != "openai":
-        raise ProviderConfigurationError(f"Unknown provider: {provider_name}")
-
-    provider = OpenAIProvider()
-    return provider.generate(prompt)
+    result = run_ask_pipeline(
+        repo_path=repo_path,
+        question=question,
+        mode=mode,
+        provider_name=provider_name,
+        dry_run=dry_run,
+    )
+    return format_pipeline_output(result, dry_run=dry_run)
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -85,4 +82,3 @@ def main(argv: Optional[list[str]] = None) -> None:
 
 if __name__ == "__main__":
     main()
-

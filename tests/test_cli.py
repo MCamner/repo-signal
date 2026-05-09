@@ -8,6 +8,8 @@ from pathlib import Path
 from repo_signal.ask import build_ask_prompt
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
+from repo_signal.pipeline.ask import run_ask_pipeline
+from repo_signal.pipeline.context import rank_files
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
 from repo_signal.readme_score import score_readme
@@ -446,6 +448,67 @@ class AskCommandTests(unittest.TestCase):
         self.assertIn("You are repo-signal", result.stdout)
         self.assertIn("# RepoAware Context", result.stdout)
         self.assertIn("router.py", result.stdout)
+
+    def test_pipeline_rank_files_populates_repository_signals(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_route(command):\n"
+                "    if command == 'routing':\n"
+                "        return 'ok'\n",
+                encoding="utf-8",
+            )
+
+            repo = Repository.load(root)
+            signals = rank_files(repo, "how does routing dispatch work")
+
+        self.assertGreater(len(signals), 0)
+        self.assertEqual(repo.signals, signals)
+        self.assertEqual(signals[0].file_path, "router.py")
+        self.assertGreater(signals[0].score, 0)
+        self.assertTrue(signals[0].reasons)
+
+    def test_ask_pipeline_runs_scan_rank_context_and_provider(self):
+        class FakeProvider:
+            def __init__(self):
+                self.prompt = ""
+
+            def generate(self, prompt):
+                self.prompt = prompt
+                return (
+                    "Summary\n"
+                    "Uses routing code.\n\n"
+                    "Referenced files\n"
+                    "- router.py\n\n"
+                    "Architecture notes\n"
+                    "- Small command surface.\n\n"
+                    "Answer\n"
+                    "The dispatch route function handles routing."
+                )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_route(command):\n"
+                "    if command == 'routing':\n"
+                "        return 'ok'\n",
+                encoding="utf-8",
+            )
+            provider = FakeProvider()
+
+            result = run_ask_pipeline(
+                repo_path=root,
+                question="how does routing work",
+                mode="debug",
+                provider=provider,
+            )
+
+        self.assertEqual(result.repo.name, root.name)
+        self.assertIn("router.py", result.referenced_files)
+        self.assertIn("# RepoAware Context", result.context)
+        self.assertIn("routing and control flow", result.prompt)
+        self.assertIn("router.py", provider.prompt)
+        self.assertIn("The dispatch route function", result.answer)
 
 
 if __name__ == "__main__":

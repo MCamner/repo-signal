@@ -54,5 +54,6 @@ packages = [
   "repo_signal.ai.providers",
   "repo_signal.ai.vectorstore",
   "repo_signal.core",
+  "repo_signal.pipeline",
   "repo_signal.repoaware"
 ]

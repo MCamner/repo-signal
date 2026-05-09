@@ -64,7 +64,7 @@ def format_lexical_results(repo: Repository, query: str, matches: List[dict]) ->
     return "\n".join(lines)
 
 
-def format_chroma_results(repo: Repository, query: str, matches: List[dict]) -> str:
+def format_chroma_results(repo: Repository, query: str, matches: List[dict], store_path: Path) -> str:
     lines = []
     lines.append("# Semantic Signal Report")
     lines.append("")
@@ -72,6 +72,8 @@ def format_chroma_results(repo: Repository, query: str, matches: List[dict]) -> 
     lines.append(f"Query: {query}")
     lines.append(f"Symbols indexed: `{len(repo.symbols)}`")
     lines.append("Mode: `chroma symbol chunks`")
+    lines.append(f"Store: `{store_path}`")
+    lines.append("Collection: `symbols`")
     lines.append("")
     lines.append("## Matches")
     lines.append("")
@@ -95,15 +97,16 @@ def semantic_repo(
     limit: int = 5,
     use_chroma: bool = False,
     include_tests: bool = False,
+    store_path: Optional[Path] = None,
 ) -> str:
     repo = Repository.load(repo_path)
     chunks = build_symbol_chunks(repo, include_tests=include_tests)
 
     if use_chroma:
-        store = build_default_store(repo.path)
+        store = build_default_store(repo.path, store_path=store_path)
         store.reset()
         store.upsert_chunks(chunks)
-        return format_chroma_results(repo, query, store.query(query, limit=limit))
+        return format_chroma_results(repo, query, store.query(query, limit=limit), store.path)
 
     return format_lexical_results(repo, query, lexical_search(chunks, query, limit=limit))
 
@@ -117,6 +120,12 @@ def parse_args(argv: List[str]) -> argparse.Namespace:
     parser.add_argument("--limit", type=int, default=5, help="Maximum matches to print.")
     parser.add_argument("--use-chroma", action="store_true", help="Use local Chroma store instead of lexical fallback.")
     parser.add_argument("--include-tests", action="store_true", help="Include test symbols in semantic memory.")
+    parser.add_argument(
+        "--store-path",
+        type=Path,
+        default=None,
+        help="Override Chroma store path. Defaults to ~/.repo-signal/vectorstores/<repo>.",
+    )
     return parser.parse_args(argv)
 
 
@@ -132,6 +141,7 @@ def main(argv: Optional[List[str]] = None) -> None:
                 limit=args.limit,
                 use_chroma=args.use_chroma,
                 include_tests=args.include_tests,
+                store_path=args.store_path,
             )
         )
     except ChromaUnavailableError as exc:

@@ -6,8 +6,9 @@ from typing import List, Optional
 from repo_signal.vectorstore.chunks import SymbolChunk
 
 
-DEFAULT_COLLECTION = "repo_signal_symbols"
+DEFAULT_COLLECTION = "symbols"
 DEFAULT_DIMENSIONS = 96
+DEFAULT_VECTORSTORE_ROOT = Path("~/.repo-signal/vectorstores")
 
 
 class ChromaUnavailableError(RuntimeError):
@@ -44,6 +45,7 @@ class ChromaSymbolStore:
             ) from exc
 
         self.client = chromadb.PersistentClient(path=str(path))
+        self.path = path
         self.collection_name = collection_name
         self.collection = self.client.get_or_create_collection(name=collection_name)
 
@@ -92,7 +94,21 @@ class ChromaSymbolStore:
         return matches
 
 
+def safe_repo_store_name(repo_path: Path) -> str:
+    name = repo_path.expanduser().resolve().name
+    return re.sub(r"[^a-zA-Z0-9_.-]+", "-", name).strip("-") or "repository"
+
+
+def default_vectorstore_root() -> Path:
+    return DEFAULT_VECTORSTORE_ROOT.expanduser()
+
+
+def default_repo_store_path(repo_path: Path, root: Optional[Path] = None) -> Path:
+    base = root.expanduser() if root else default_vectorstore_root()
+    return base / safe_repo_store_name(repo_path)
+
+
 def build_default_store(repo_path: Path, store_path: Optional[Path] = None) -> ChromaSymbolStore:
-    path = store_path or (repo_path / ".repo-signal" / "chroma")
+    path = store_path.expanduser() if store_path else default_repo_store_path(repo_path)
     path.mkdir(parents=True, exist_ok=True)
-    return ChromaSymbolStore(path=path)
+    return ChromaSymbolStore(path=path, collection_name=DEFAULT_COLLECTION)

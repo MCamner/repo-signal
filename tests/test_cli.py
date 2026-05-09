@@ -17,7 +17,9 @@ from repo_signal.readme_score import score_readme
 from repo_signal.semantic import lexical_search
 from repo_signal.symbols.symbol_extractor import extract_symbols
 from repo_signal.symbols.summarizer import summarize_symbol
+from repo_signal.vectorstore.chroma_store import DEFAULT_COLLECTION, default_repo_store_path, safe_repo_store_name
 from repo_signal.vectorstore.chunks import build_symbol_chunks
+from repo_signal.vectorstore.openai_store import build_openai_memory_document, upload_repository_memory
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -532,6 +534,14 @@ class SymbolExtractorTests(unittest.TestCase):
 
 
 class SemanticMemoryTests(unittest.TestCase):
+    def test_default_vectorstore_path_is_scoped_per_repo(self):
+        root = Path("/tmp/repo signal demo")
+        store_path = default_repo_store_path(root, root=Path("/tmp/vectorstores"))
+
+        self.assertEqual(DEFAULT_COLLECTION, "symbols")
+        self.assertEqual(safe_repo_store_name(root), "repo-signal-demo")
+        self.assertEqual(store_path, Path("/tmp/vectorstores/repo-signal-demo"))
+
     def test_symbol_chunks_use_symbol_metadata_and_small_snippets(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -603,6 +613,64 @@ class SemanticMemoryTests(unittest.TestCase):
         self.assertIn("# Semantic Signal Report", result.stdout)
         self.assertIn("dispatch_cli_command", result.stdout)
         self.assertIn("symbol chunks", result.stdout)
+
+    def test_openai_memory_document_uses_summaries_not_raw_file_dump(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_cli_command(command):\n"
+                "    if command == 'routing':\n"
+                "        return 'route'\n",
+                encoding="utf-8",
+            )
+
+            repo = Repository.load(root)
+            document = build_openai_memory_document(repo)
+
+        self.assertIn("repository_symbols", document)
+        self.assertIn("## Symbol Summaries", document)
+        self.assertIn("dispatch_cli_command", document)
+        self.assertIn("summary:", document)
+        self.assertNotIn("return 'route'", document)
+
+    def test_openai_upload_dry_run_requires_explicit_store_and_does_not_call_api(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_cli_command(command):\n"
+                "    return command\n",
+                encoding="utf-8",
+            )
+
+            result = upload_repository_memory(
+                repo_path=root,
+                vector_store_id="vs_test",
+                dry_run=True,
+            )
+
+        self.assertEqual(result.vector_store_id, "vs_test")
+        self.assertEqual(result.status, "dry_run")
+        self.assertEqual(result.symbols, 1)
+        self.assertGreater(result.bytes_written, 0)
+
+    def test_semantic_upload_command_dry_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_cli_command(command):\n"
+                "    return command\n",
+                encoding="utf-8",
+            )
+
+            result = run_repo_signal(
+                ["semantic-upload", "--dry-run", "--vector-store-id", "vs_test"],
+                root,
+            )
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# OpenAI Vector Store Upload", result.stdout)
+        self.assertIn("vs_test", result.stdout)
+        self.assertIn("dry_run", result.stdout)
 
 
 class AskCommandTests(unittest.TestCase):

@@ -1,12 +1,15 @@
 from pathlib import Path
-import re
-import shutil
 import subprocess
 from typing import Optional, Union
 
+from repo_signal.repoaware.ranking import (
+    extract_keywords as ranking_extract_keywords,
+    rank_relevant_files as ranking_rank_relevant_files,
+    read_relevant_snippet,
+    should_skip,
+)
 
-MAX_FILES = 10
-MAX_SNIPPET_LINES = 160
+
 DEFAULT_MODE = "explain"
 DEFAULT_FORMAT = "xml"
 VALID_MODES = {"debug", "architect", "explain", "review"}
@@ -35,55 +38,6 @@ MODE_INSTRUCTIONS = {
     ],
 }
 
-PATH_BOOST_TERMS = {
-    "dispatch",
-    "launcher",
-    "launchers",
-    "menu",
-    "menus",
-    "route",
-    "router",
-    "routing",
-}
-
-COMMON_WORDS = {
-    "a",
-    "an",
-    "and",
-    "does",
-    "first",
-    "how",
-    "i",
-    "in",
-    "is",
-    "it",
-    "of",
-    "should",
-    "the",
-    "this",
-    "to",
-    "what",
-    "work",
-    "works",
-}
-
-SKIP_DIRS = {
-    ".git",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".ruff_cache",
-    ".venv",
-    "__pycache__",
-    "dist",
-    "build",
-    "node_modules",
-    "venv",
-}
-
-SKIP_NAMES = {
-    ".DS_Store",
-}
-
 
 def run(cmd: list[str], cwd: Optional[Path] = None) -> str:
     try:
@@ -100,194 +54,7 @@ def run(cmd: list[str], cwd: Optional[Path] = None) -> str:
 
 
 def extract_keywords(question: str) -> list[str]:
-    words = re.findall(r"[a-zA-Z0-9_-]+", question.lower())
-    keywords = [word for word in words if len(word) > 1 and word not in COMMON_WORDS]
-    return list(dict.fromkeys(keywords))
-
-
-def to_repo_relative(repo_path: Path, path_text: str) -> str:
-    path = Path(path_text)
-    if not path.is_absolute():
-        path = repo_path / path
-
-    try:
-        return path.resolve().relative_to(repo_path).as_posix()
-    except ValueError:
-        return path_text
-
-
-def should_skip(path: Path) -> bool:
-    return any(
-        part in SKIP_DIRS
-        or part in SKIP_NAMES
-        or part.endswith(".egg-info")
-        for part in path.parts
-    )
-
-
-def find_files_with_python(repo_path: Path, keyword: str) -> list[str]:
-    matches = []
-
-    for path in repo_path.rglob("*"):
-        try:
-            relative = path.relative_to(repo_path)
-        except ValueError:
-            continue
-
-        if should_skip(relative) or not path.is_file():
-            continue
-
-        try:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-        except OSError:
-            continue
-
-        if keyword in text.lower():
-            matches.append(relative.as_posix())
-
-    return matches
-
-
-def find_candidate_files(repo_path: Path, keywords: list[str]) -> list[str]:
-    matches = set()
-
-    for keyword in keywords:
-        if shutil.which("rg"):
-            output = run(
-                ["rg", "-l", "--glob", "!{.git,node_modules,.venv,venv,__pycache__,*.egg-info}/**", keyword, "."],
-                cwd=repo_path,
-            )
-
-            for line in output.splitlines():
-                clean = line.strip()
-                if clean:
-                    matches.add(to_repo_relative(repo_path, clean))
-        else:
-            matches.update(find_files_with_python(repo_path, keyword))
-
-    return sorted(matches)
-
-
-def modified_files(repo_path: Path) -> set[str]:
-    output = run(["git", "status", "--short"], cwd=repo_path)
-    files = set()
-
-    for line in output.splitlines():
-        path = line[3:].strip()
-        if not path:
-            continue
-        if " -> " in path:
-            path = path.split(" -> ", 1)[1].strip()
-        files.add(path)
-
-    return files
-
-
-def read_text_for_scoring(path: Path) -> str:
-    try:
-        return path.read_text(encoding="utf-8", errors="ignore")
-    except OSError:
-        return ""
-
-
-def score_file(repo_path: Path, file_path: str, keywords: list[str], modified: set[str], mode: str) -> dict:
-    full_path = repo_path / file_path
-    text = read_text_for_scoring(full_path)
-    text_lower = text.lower()
-    path_lower = file_path.lower()
-    name_lower = full_path.name.lower()
-
-    score = 0
-    reasons = []
-
-    filename_hits = [keyword for keyword in keywords if keyword in name_lower]
-    if filename_hits:
-        boost = 5 * len(filename_hits)
-        score += boost
-        reasons.append(f"filename match: {', '.join(filename_hits)}")
-
-    path_hits = sorted(term for term in PATH_BOOST_TERMS if term in path_lower)
-    if path_hits:
-        score += 4
-        reasons.append(f"path signal: {', '.join(path_hits[:3])}")
-
-    keyword_hits = {}
-    for keyword in keywords:
-        count = len(re.findall(rf"\b{re.escape(keyword)}\b", text_lower))
-        if count:
-            keyword_hits[keyword] = count
-
-    if keyword_hits:
-        boost = min(sum(keyword_hits.values()) * 3, 18)
-        score += boost
-        top_hits = sorted(keyword_hits.items(), key=lambda item: item[1], reverse=True)[:4]
-        reasons.append(
-            "keyword hits: "
-            + ", ".join(f"{keyword}={count}" for keyword, count in top_hits)
-        )
-
-    exact_symbols = [
-        keyword for keyword in keywords
-        if re.search(rf"^\s*(def|class|function)\s+.*{re.escape(keyword)}", text_lower, flags=re.MULTILINE)
-    ]
-    if exact_symbols:
-        score += 7
-        reasons.append(f"symbol match: {', '.join(exact_symbols)}")
-
-    if file_path in modified and mode in {"debug", "review"}:
-        score += 5
-        reasons.append("modified file")
-
-    if "test" in path_lower and mode != "review":
-        score -= 4
-
-    return {
-        "path": file_path,
-        "score": score,
-        "reasons": reasons,
-        "summary": summarize_file(file_path, keywords, reasons),
-    }
-
-
-def rank_relevant_files(repo_path: Path, keywords: list[str], mode: str = DEFAULT_MODE) -> list[dict]:
-    modified = modified_files(repo_path)
-    candidates = set(find_candidate_files(repo_path, keywords))
-    if mode in {"debug", "review"}:
-        candidates.update(path for path in modified if (repo_path / path).exists())
-
-    ranked = [
-        score_file(repo_path, file_path, keywords, modified, mode)
-        for file_path in candidates
-        if not should_skip(Path(file_path))
-    ]
-    ranked = [item for item in ranked if item["score"] > 0]
-
-    return sorted(ranked, key=lambda item: (-item["score"], item["path"]))[:MAX_FILES]
-
-
-def summarize_file(file_path: str, keywords: list[str], reasons: list[str]) -> str:
-    path_lower = file_path.lower()
-    keyword_text = ", ".join(keywords[:4]) if keywords else "the question"
-
-    if "test" in path_lower:
-        role = "Test coverage or expected behavior"
-    elif "readme" in path_lower or path_lower.endswith(".md"):
-        role = "Documentation and project explanation"
-    elif "launcher" in path_lower or "launch" in path_lower:
-        role = "Launcher or command entry point"
-    elif "menu" in path_lower:
-        role = "Menu or dispatch surface"
-    elif "route" in path_lower or "dispatch" in path_lower:
-        role = "Routing or dispatch logic"
-    elif path_lower.endswith(".py"):
-        role = "Python implementation"
-    elif path_lower.endswith((".sh", ".zsh", ".bash")):
-        role = "Shell workflow"
-    else:
-        role = "Relevant repository file"
-
-    reason_text = "; ".join(reasons[:3]) if reasons else f"matches {keyword_text}"
-    return f"{role}. Selected because {reason_text}."
+    return ranking_extract_keywords(question)
 
 
 def build_repo_tree(repo_path: Path) -> str:
@@ -327,7 +94,7 @@ def read_file_snippet(path: Path) -> str:
         with path.open("r", encoding="utf-8") as file:
             lines = file.readlines()
 
-        return "".join(lines[:MAX_SNIPPET_LINES]).rstrip()
+        return "".join(lines[:160]).rstrip()
     except Exception:
         return "[unable to read file]"
 
@@ -348,8 +115,8 @@ def build_context_data(repo_path: Union[str, Path], question: str, mode: str = D
     repo = Path(repo_path).expanduser().resolve()
     mode = validate_mode(mode)
 
-    keywords = extract_keywords(question)
-    files = rank_relevant_files(repo, keywords, mode)
+    keywords = ranking_extract_keywords(question)
+    files = ranking_rank_relevant_files(repo, keywords, mode)
     branch, status = build_git_context(repo)
     tree = build_repo_tree(repo)
 
@@ -430,8 +197,12 @@ def format_xml(data: dict) -> str:
         for reason in file_info["reasons"]:
             output.append(f"- {reason}")
         output.append("</reasons>")
+        output.append("<signals>")
+        for signal, value in file_info.get("signals", {}).items():
+            output.append(f"- {signal}: {value}")
+        output.append("</signals>")
         output.append("<snippet>")
-        output.append(read_file_snippet(full_path))
+        output.append(read_relevant_snippet(full_path, data["keywords"]))
         output.append("</snippet>")
         output.append("</file>\n")
 
@@ -489,9 +260,14 @@ def format_markdown(data: dict) -> str:
         lines.append("Reasons:")
         for reason in file_info["reasons"]:
             lines.append(f"- {reason}")
+        if file_info.get("signals"):
+            lines.append("")
+            lines.append("Signals:")
+            for signal, value in file_info["signals"].items():
+                lines.append(f"- {signal}: `{value}`")
         lines.append("")
         lines.append("```text")
-        lines.append(read_file_snippet(full_path))
+        lines.append(read_relevant_snippet(full_path, data["keywords"]))
         lines.append("```")
 
     return "\n".join(lines)

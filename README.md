@@ -136,6 +136,7 @@ Repo: `coolThing`
 - RepoAware context export for AI-assisted code questions
 - RepoAware modes for debug, explain, architect, and review workflows
 - ranked relevant files with summaries and focused snippets
+- Signal Ranking Engine for higher-quality context selection
 - LICENSE detection
 - `.gitignore` detection
 - `docs/` detection
@@ -183,6 +184,19 @@ RepoAware builds high-signal context exports for AI systems by combining:
 - semantic relevance
 - file ranking
 - focused snippets
+
+The important part is not more context. It is better context.
+
+RepoAware ranks files with a small transparent signal model:
+
+| Signal | Purpose |
+|---|---|
+| filename and path matches | favor files that are likely about the question |
+| keyword frequency | keep obvious textual relevance |
+| git modified and recent commit signals | surface active work when useful |
+| launcher/menu/core path bonuses | prioritize operational entry points |
+| shell entrypoint detection | find runnable command surfaces |
+| docs and file-size penalties | reduce low-signal bulk |
 
 ```bash
 repo-signal repoaware --mode explain "how does dispatch work"

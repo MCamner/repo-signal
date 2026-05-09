@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
+from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
 from repo_signal.readme_score import score_readme
 
 
@@ -307,6 +308,55 @@ class RepoAwareTests(unittest.TestCase):
         self.assertIn("- Mode: `review`", result.stdout)
         self.assertIn("router.py", result.stdout)
         self.assertIn("route_request", result.stdout)
+
+    def test_ranking_prioritizes_routing_code_over_docs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "README.md").write_text(
+                "routing\n" * 12,
+                encoding="utf-8",
+            )
+            (root / "terminal").mkdir()
+            (root / "terminal" / "launchers").mkdir()
+            (root / "terminal" / "launchers" / "mqlaunch-command-mode.sh").write_text(
+                "#!/usr/bin/env bash\n"
+                "dispatch_cli_command() {\n"
+                "  case \"$1\" in\n"
+                "    routing) echo route ;;\n"
+                "  esac\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            ranked = rank_relevant_files(root, ["dispatch", "routing"], mode="explain")
+
+        self.assertGreater(len(ranked), 0)
+        self.assertEqual(ranked[0]["path"], "terminal/launchers/mqlaunch-command-mode.sh")
+        self.assertIn("path_priority", ranked[0]["signals"])
+        self.assertIn("shell_entrypoint", ranked[0]["signals"])
+
+    def test_relevant_snippet_prefers_matching_function(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "tool.py"
+            path.write_text(
+                "\n".join(
+                    ["# boring setup"] * 80
+                    + [
+                        "def dispatch_cli_command(command):",
+                        "    if command == 'routing':",
+                        "        return 'route'",
+                    ]
+                    + ["# trailing noise"] * 80
+                ),
+                encoding="utf-8",
+            )
+
+            snippet = read_relevant_snippet(path, ["dispatch", "routing"], max_lines=30)
+
+        self.assertIn("def dispatch_cli_command", snippet)
+        self.assertIn("routing", snippet)
+        self.assertNotIn("\n".join(["# boring setup"] * 40), snippet)
 
 
 if __name__ == "__main__":

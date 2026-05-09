@@ -74,6 +74,7 @@ The first version can run a local scan and print a Markdown report.
 ```bash
 ./bin/repo-signal scan
 ./bin/repo-signal readme-score .
+python -m repo_signal.repoaware "how does routing work"
 ```
 
 ---
@@ -130,6 +131,7 @@ Repo: `coolThing`
 - local repo scan
 - README detection
 - README quality scoring
+- RepoAware context export for AI-assisted code questions
 - LICENSE detection
 - `.gitignore` detection
 - `docs/` detection
@@ -160,6 +162,7 @@ repo-signal readme-score .
 repo-signal wiki
 repo-signal roadmap
 repo-signal hygiene
+python -m repo_signal.repoaware "how does routing work"
 repo-signal patch
 repo-signal positioning
 ```

@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.readme_score import score_readme
 
 
@@ -226,6 +227,35 @@ Issues and patches are welcome.
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Unknown command", result.stdout)
+
+
+class RepoAwareTests(unittest.TestCase):
+    def test_extract_keywords_preserves_order_and_deduplicates(self):
+        result = extract_keywords("How does mqlaunch routing routing work?")
+
+        self.assertEqual(result, ["how", "does", "mqlaunch", "routing", "work"])
+
+    def test_build_context_includes_repo_state_and_relevant_snippet(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "README.md").write_text("# demo\n\nRouting overview.\n", encoding="utf-8")
+            (root / "launcher.py").write_text(
+                "def route_mqlaunch(command):\n"
+                "    return command\n",
+                encoding="utf-8",
+            )
+
+            result = build_context(root, "how does mqlaunch routing work")
+
+        self.assertIn("<repo>", result)
+        self.assertIn("<git>", result)
+        self.assertIn("<question>", result)
+        self.assertIn("<tree>", result)
+        self.assertIn("<relevant_files>", result)
+        self.assertIn("README.md", result)
+        self.assertIn("launcher.py", result)
+        self.assertIn('file path="launcher.py"', result)
+        self.assertIn("def route_mqlaunch", result)
 
 
 if __name__ == "__main__":

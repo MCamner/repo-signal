@@ -40,4 +40,4 @@ repo-signal = "repo_signal.cli:main"
 repoaware = "repo_signal.repoaware.__main__:main"
 
 [tool.setuptools]
-packages = ["repo_signal", "repo_signal.repoaware"]
+packages = ["repo_signal", "repo_signal.core", "repo_signal.repoaware"]

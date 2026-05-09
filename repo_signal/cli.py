@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 from repo_signal import __version__
+from repo_signal.analyze import analyze_repo
 from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
 
@@ -14,6 +15,7 @@ HELP_TEXT = """repo-signal
 AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects.
 
 Usage:
+  repo-signal analyze [path]
   repo-signal scan
   repo-signal readme
   repo-signal readme-score [path]
@@ -25,6 +27,7 @@ Usage:
   repo-signal --version
 
 Commands:
+  analyze   Summarize repo type, stack, health, structure, tooling, and focus areas
   scan       Scan repo structure and basic project signals
   readme     Analyze README clarity and missing sections
   readme-score
@@ -35,6 +38,7 @@ Commands:
   roadmap    Generate a practical roadmap based on repo state
 
 Examples:
+  repo-signal analyze
   repo-signal scan
   repo-signal readme
   repo-signal readme-score .
@@ -1004,6 +1008,10 @@ def main() -> None:
         print(scan_repo(repo))
         return
 
+    if command == "analyze":
+        print(analyze_repo(str(repo)))
+        return
+
     if command == "readme":
         print(analyze_readme(repo))
         return
@@ -1025,7 +1033,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: scan, readme, readme-score, repoaware, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: analyze, scan, readme, readme-score, repoaware, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

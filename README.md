@@ -4,7 +4,7 @@
 
 AI-native repository intelligence for structured reasoning systems.
 
-`repo-signal` turns local repository state into clear reports and high-signal AI context exports.
+`repo-signal` turns local repository state into clear analysis reports and high-signal AI context exports.
 
 `repo-signal` scans a local repository and produces a practical signal report:
 
@@ -51,7 +51,7 @@ Common problems:
 ## Core idea
 
 ```text
-local repo → scan → signal report → safe improvement plan
+local repo → analyze → shared signals → focused next action
 ```
 
 The tool helps answer:
@@ -74,7 +74,7 @@ Early MVP.
 The first version can run a local scan and print a Markdown report.
 
 ```bash
-./bin/repo-signal scan
+repo-signal analyze
 ./bin/repo-signal readme-score .
 repo-signal repoaware --mode debug "how does routing work"
 ```
@@ -83,18 +83,18 @@ repo-signal repoaware --mode debug "how does routing work"
 
 ## Quick start
 
-Run the scanner against this repo:
+Analyze this repo:
 
 ```bash
 cd ~/repo-signal
-./bin/repo-signal scan
+repo-signal analyze
 ```
 
 Run it against another local repo:
 
 ```bash
 cd ~/coolThing
-~/repo-signal/bin/repo-signal scan
+repo-signal analyze
 ```
 
 ---
@@ -131,6 +131,7 @@ Repo: `coolThing`
 ## Current features
 
 - local repo scan
+- front door analyze report
 - README detection
 - README quality scoring
 - RepoAware context export for AI-assisted code questions
@@ -162,6 +163,7 @@ Repo: `coolThing`
 
 ```bash
 repo-signal scan
+repo-signal analyze
 repo-signal readme
 repo-signal readme-score .
 repo-signal wiki
@@ -171,6 +173,26 @@ repo-signal repoaware --mode debug "how does routing work"
 repoaware --mode review --format markdown "what should I inspect first"
 repo-signal patch
 repo-signal positioning
+```
+
+---
+
+## Command Surface
+
+```text
+repo-signal
+├── analyze
+├── repoaware
+├── readme
+├── roadmap
+├── wiki
+└── hygiene
+```
+
+`analyze` is the front door. It summarizes project type, languages, key entrypoints, Git health, repo size, top directories, detected tooling, and suggested focus areas.
+
+```bash
+repo-signal analyze
 ```
 
 ---

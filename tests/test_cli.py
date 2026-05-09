@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from repo_signal.core.scanner import scan_repository
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
 from repo_signal.readme_score import score_readme
@@ -113,6 +114,24 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("[OK] License exists", result.stdout)
         self.assertIn("[OK] .gitignore exists", result.stdout)
         self.assertIn("[OK] docs folder exists", result.stdout)
+
+    def test_analyze_command_reports_front_door_summary(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
+        (root / "repo_signal").mkdir()
+        (root / "repo_signal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
+
+        result = run_repo_signal(["analyze"], root)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# Repo Signal Analyze Report", result.stdout)
+        self.assertIn("Project type:", result.stdout)
+        self.assertIn("Python", result.stdout)
+        self.assertIn("Key Entry Points", result.stdout)
+        self.assertIn("Detected Tooling", result.stdout)
+        self.assertIn("Suggested Focus Areas", result.stdout)
 
     def test_readme_command_scores_readme(self):
         temp, root = make_sample_repo()
@@ -357,6 +376,27 @@ class RepoAwareTests(unittest.TestCase):
         self.assertIn("def dispatch_cli_command", snippet)
         self.assertIn("routing", snippet)
         self.assertNotIn("\n".join(["# boring setup"] * 40), snippet)
+
+
+class CoreScannerTests(unittest.TestCase):
+    def test_scan_repository_detects_shared_repo_signals(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
+        (root / "repo_signal").mkdir()
+        (root / "repo_signal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
+        (root / "bin").mkdir()
+        (root / "bin" / "sample").write_text("#!/usr/bin/env bash\necho sample\n", encoding="utf-8")
+
+        summary = scan_repository(root)
+
+        self.assertEqual(summary.project_type, "Python CLI / repo intelligence toolkit")
+        self.assertIn(("Python", 1), summary.languages)
+        self.assertIn("repo_signal/cli.py", summary.key_entrypoints)
+        self.assertIn("bin/sample", summary.key_entrypoints)
+        self.assertIn("Python packaging", summary.detected_tooling)
+        self.assertGreater(summary.repo_size_files, 0)
 
 
 if __name__ == "__main__":

@@ -34,6 +34,14 @@ class Signal:
 
 
 @dataclass
+class Symbol:
+    name: str
+    kind: str
+    file_path: str
+    line: int
+
+
+@dataclass
 class Edge:
     source: str
     target: str
@@ -62,6 +70,7 @@ class Repository:
     languages: Dict[str, int] = field(default_factory=dict)
     entrypoints: List[str] = field(default_factory=list)
     signals: List[Signal] = field(default_factory=list)
+    symbols: List[Symbol] = field(default_factory=list)
     graph: RepositoryGraph = field(default_factory=RepositoryGraph)
     git: GitContext = field(default_factory=GitContext)
 

@@ -14,6 +14,7 @@ from repo_signal.pipeline.context import rank_files
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
 from repo_signal.readme_score import score_readme
+from repo_signal.symbols.symbol_extractor import extract_symbols
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -390,9 +391,19 @@ class CoreScannerTests(unittest.TestCase):
 
         (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
         (root / "repo_signal").mkdir()
-        (root / "repo_signal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
+        (root / "repo_signal" / "cli.py").write_text(
+            "class CommandRouter:\n"
+            "    pass\n\n"
+            "def main():\n"
+            "    pass\n",
+            encoding="utf-8",
+        )
         (root / "bin").mkdir()
-        (root / "bin" / "sample").write_text("#!/usr/bin/env bash\necho sample\n", encoding="utf-8")
+        (root / "bin" / "sample").write_text(
+            "#!/usr/bin/env bash\n"
+            "run_sample() { echo sample; }\n",
+            encoding="utf-8",
+        )
 
         repo = scan_repository(root)
 
@@ -402,6 +413,10 @@ class CoreScannerTests(unittest.TestCase):
         self.assertIn("bin/sample", repo.entrypoints)
         self.assertIn("Python packaging", repo.detected_tooling)
         self.assertGreater(repo.repo_size_files, 0)
+        symbol_names = {symbol.name for symbol in repo.symbols}
+        self.assertIn("CommandRouter", symbol_names)
+        self.assertIn("main", symbol_names)
+        self.assertIn("run_sample", symbol_names)
 
     def test_repository_load_is_the_central_entrypoint(self):
         temp, root = make_sample_repo()
@@ -414,6 +429,7 @@ class CoreScannerTests(unittest.TestCase):
         self.assertIn("Markdown", repo.languages)
         self.assertIn("docs", repo.top_directories)
         self.assertEqual(repo.git.is_repo, False)
+        self.assertTrue(hasattr(repo, "symbols"))
 
     def test_repository_load_builds_graph_edges(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -470,6 +486,45 @@ class GraphBuilderTests(unittest.TestCase):
         self.assertIn(("pkg/ask.py", "pkg/scanner.py", "python_import"), edges)
         self.assertIn(("bin/run.sh", "scripts/env.sh", "shell_source"), edges)
         self.assertIn(("bin/run.sh", "scripts/tool.sh", "shell_exec"), edges)
+
+
+class SymbolExtractorTests(unittest.TestCase):
+    def test_extract_symbols_finds_python_classes_functions_and_shell_functions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            py_path = root / "tool.py"
+            py_path.write_text(
+                "class Runner:\n"
+                "    pass\n\n"
+                "async def run_async():\n"
+                "    pass\n\n"
+                "def scan_repository():\n"
+                "    pass\n",
+                encoding="utf-8",
+            )
+            sh_path = root / "tool.sh"
+            sh_path.write_text(
+                "#!/usr/bin/env bash\n"
+                "dispatch_cli_command() {\n"
+                "  echo ok\n"
+                "}\n\n"
+                "function mq_repoaware {\n"
+                "  echo context\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            py_symbols = extract_symbols(py_path, repo_path=root)
+            sh_symbols = extract_symbols(sh_path, repo_path=root)
+
+        by_name = {symbol.name: symbol for symbol in py_symbols + sh_symbols}
+        self.assertEqual(by_name["Runner"].kind, "class")
+        self.assertEqual(by_name["Runner"].file_path, "tool.py")
+        self.assertEqual(by_name["run_async"].kind, "function")
+        self.assertEqual(by_name["scan_repository"].line, 6)
+        self.assertEqual(by_name["dispatch_cli_command"].kind, "shell_function")
+        self.assertEqual(by_name["dispatch_cli_command"].file_path, "tool.sh")
+        self.assertEqual(by_name["mq_repoaware"].kind, "shell_function")
 
 
 class AskCommandTests(unittest.TestCase):

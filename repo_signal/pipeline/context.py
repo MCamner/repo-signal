@@ -56,6 +56,7 @@ def build_focused_context(
     lines.append(f"- Entry points: `{', '.join(repo.entrypoints[:8]) if repo.entrypoints else 'none detected'}`")
     lines.append(f"- Top directories: `{', '.join(repo.top_directories[:8]) if repo.top_directories else 'none detected'}`")
     lines.append(f"- Graph edges: `{len(repo.graph.edges)}`")
+    lines.append(f"- Symbols: `{len(repo.symbols)}`")
     lines.append("")
     lines.append("## Git")
     lines.append("")
@@ -94,6 +95,21 @@ def build_focused_context(
             lines.append(f"- `{edge.source}` -> `{edge.target}` ({edge.relation})")
     else:
         lines.append("- No graph edges connected to selected files.")
+
+    selected_symbols = [
+        symbol
+        for symbol in repo.symbols
+        if symbol.file_path in selected_files
+    ]
+
+    lines.append("")
+    lines.append("## Selected Symbols")
+    lines.append("")
+    if selected_symbols:
+        for symbol in selected_symbols[:30]:
+            lines.append(f"- `{symbol.name}` ({symbol.kind}) in `{symbol.file_path}:{symbol.line}`")
+    else:
+        lines.append("- No symbols found in selected files.")
 
     for signal in signals:
         full_path = repo.path / Path(signal.file_path)

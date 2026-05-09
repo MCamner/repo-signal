@@ -5,6 +5,7 @@ import subprocess
 from typing import Union
 
 from repo_signal.core.models import FileNode, GitContext, Repository
+from repo_signal.symbols.symbol_extractor import extract_symbols
 
 
 IGNORE_DIRS = {
@@ -230,6 +231,8 @@ def scan_repository(path: Union[str, Path] = ".") -> Repository:
 
         if is_entrypoint(relative, full_path):
             repo.entrypoints.append(relative_path)
+
+        repo.symbols.extend(extract_symbols(full_path, repo_path=repo_path))
 
     repo.languages = dict(language_counter.most_common())
     repo.top_directory_counts = dict(top_directory_counter.most_common())

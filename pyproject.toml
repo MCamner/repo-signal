@@ -56,5 +56,6 @@ packages = [
   "repo_signal.core",
   "repo_signal.graph",
   "repo_signal.pipeline",
-  "repo_signal.repoaware"
+  "repo_signal.repoaware",
+  "repo_signal.symbols"
 ]

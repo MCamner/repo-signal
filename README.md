@@ -75,6 +75,7 @@ The first version can run a local scan and print a Markdown report.
 
 ```bash
 repo-signal analyze
+repo-signal doctor
 ./bin/repo-signal readme-score .
 repo-signal repoaware --mode debug "how does routing work"
 ```
@@ -88,6 +89,7 @@ Analyze this repo:
 ```bash
 cd ~/repo-signal
 repo-signal analyze
+repo-signal doctor
 ```
 
 Run it against another local repo:
@@ -132,6 +134,7 @@ Repo: `coolThing`
 
 - local repo scan
 - front door analyze report
+- doctor report for repo health, release maturity, docs quality, AI readiness, and suggested skills
 - README detection
 - README quality scoring
 - RepoAware context export for AI-assisted code questions
@@ -164,6 +167,7 @@ Repo: `coolThing`
 ```bash
 repo-signal scan
 repo-signal analyze
+repo-signal doctor
 repo-signal readme
 repo-signal readme-score .
 repo-signal wiki
@@ -183,6 +187,7 @@ repo-signal positioning
 repo-signal
 ├── analyze
 ├── ask
+├── doctor
 ├── repoaware
 ├── readme
 ├── roadmap
@@ -195,6 +200,22 @@ repo-signal
 ```bash
 repo-signal analyze
 ```
+
+`doctor` is the readiness report. It connects the scanner, README scoring, repo graph, and RepoAware priorities into one diagnosis:
+
+```bash
+repo-signal doctor
+```
+
+It reports:
+
+- project type
+- repo health
+- release maturity
+- docs quality
+- AI readiness
+- suggested skills
+- RepoAware priority context
 
 ---
 

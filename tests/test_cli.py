@@ -9,6 +9,7 @@ from repo_signal.ask import build_ask_prompt
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
 from repo_signal.codex.exporter import available_skills, export_codex_skill
+from repo_signal.doctor import doctor_repo
 from repo_signal.graph.graph_builder import build_repository_graph
 from repo_signal.pipeline.ask import run_ask_pipeline
 from repo_signal.pipeline.context import rank_files
@@ -105,6 +106,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("repo-signal", result.stdout)
         self.assertIn("Usage:", result.stdout)
         self.assertIn("scan", result.stdout)
+        self.assertIn("doctor", result.stdout)
         self.assertIn("readme", result.stdout)
         self.assertIn("semantic", result.stdout)
         self.assertIn("export-codex", result.stdout)
@@ -146,6 +148,39 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("Key Entry Points", result.stdout)
         self.assertIn("Detected Tooling", result.stdout)
         self.assertIn("Suggested Focus Areas", result.stdout)
+
+    def test_doctor_command_reports_repo_health_and_ai_readiness(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
+        (root / "tests").mkdir()
+        (root / "tests" / "test_sample.py").write_text("def test_sample():\n    assert True\n", encoding="utf-8")
+        (root / "repo_signal").mkdir()
+        (root / "repo_signal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
+
+        result = run_repo_signal(["doctor"], root)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# Repo Signal Doctor Report", result.stdout)
+        self.assertIn("Repo health", result.stdout)
+        self.assertIn("Release maturity", result.stdout)
+        self.assertIn("Docs quality", result.stdout)
+        self.assertIn("AI readiness", result.stdout)
+        self.assertIn("Suggested Skills", result.stdout)
+        self.assertIn("RepoAware Context", result.stdout)
+
+    def test_doctor_repo_returns_dynamic_priorities_for_thin_repo(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "script.sh").write_text("#!/usr/bin/env bash\necho hi\n", encoding="utf-8")
+
+            result = doctor_repo(root)
+
+        self.assertIn("# Repo Signal Doctor Report", result)
+        self.assertIn("README missing checks", result)
+        self.assertIn("Improve README structure", result)
+        self.assertIn("terminal-ui-polisher", result)
 
     def test_readme_command_scores_readme(self):
         temp, root = make_sample_repo()

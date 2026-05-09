@@ -7,6 +7,7 @@ import sys
 from repo_signal import __version__
 from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
+from repo_signal.doctor import doctor_repo
 from repo_signal.export_codex import main as export_codex_main
 from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
@@ -21,6 +22,7 @@ AI-assisted repo analysis for turning rough prototypes into clear, documented, p
 Usage:
   repo-signal analyze [path]
   repo-signal ask [--mode mode] "question"
+  repo-signal doctor [path]
   repo-signal scan
   repo-signal readme
   repo-signal readme-score [path]
@@ -37,6 +39,7 @@ Usage:
 Commands:
   analyze   Summarize repo type, stack, health, structure, tooling, and focus areas
   ask       Ask an AI provider using ranked RepoAware context
+  doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
   scan       Scan repo structure and basic project signals
   readme     Analyze README clarity and missing sections
   readme-score
@@ -53,6 +56,7 @@ Commands:
 
 Examples:
   repo-signal analyze
+  repo-signal doctor
   repo-signal ask --dry-run "how does routing work"
   repo-signal scan
   repo-signal readme
@@ -1046,6 +1050,10 @@ def main() -> None:
         print(analyze_repo(str(repo)))
         return
 
+    if command == "doctor":
+        print(doctor_repo(repo))
+        return
+
     if command == "readme":
         print(analyze_readme(repo))
         return
@@ -1067,7 +1075,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: analyze, ask, scan, readme, readme-score, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: analyze, ask, doctor, scan, readme, readme-score, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

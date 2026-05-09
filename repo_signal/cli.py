@@ -7,6 +7,7 @@ import sys
 from repo_signal import __version__
 from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
+from repo_signal.export_codex import main as export_codex_main
 from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
 from repo_signal.semantic import main as semantic_main
@@ -26,6 +27,7 @@ Usage:
   repo-signal repoaware [--mode mode] [--format format] "question"
   repo-signal semantic [--limit n] [--use-chroma] "query"
   repo-signal semantic-upload [--dry-run] [--vector-store-id id]
+  repo-signal export-codex [--local] <skill>
   repo-signal hygiene
   repo-signal wiki
   repo-signal roadmap
@@ -43,6 +45,8 @@ Commands:
   semantic   Search smart symbol chunks for semantic repository recall
   semantic-upload
              Upload symbol memory to a scoped OpenAI vector store
+  export-codex
+             Export repo-local skills into Codex skill storage
   hygiene    Check junk files, .gitignore, large files, and Git status
   wiki       Generate suggested GitHub Wiki structure and Home draft
   roadmap    Generate a practical roadmap based on repo state
@@ -56,6 +60,7 @@ Examples:
   repo-signal repoaware --mode debug "how does routing work"
   repo-signal semantic "routing system"
   repo-signal semantic-upload --dry-run
+  repo-signal export-codex repo-product-auditor
   repo-signal hygiene
   repo-signal wiki
   repo-signal roadmap
@@ -1027,6 +1032,10 @@ def main() -> None:
         semantic_upload_main(sys.argv[2:])
         return
 
+    if command == "export-codex":
+        export_codex_main(sys.argv[2:])
+        return
+
     repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command == "scan":
@@ -1058,7 +1067,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: analyze, ask, scan, readme, readme-score, repoaware, semantic, semantic-upload, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: analyze, ask, scan, readme, readme-score, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

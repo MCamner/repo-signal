@@ -8,6 +8,7 @@ from pathlib import Path
 from repo_signal.ask import build_ask_prompt
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
+from repo_signal.codex.exporter import available_skills, export_codex_skill
 from repo_signal.graph.graph_builder import build_repository_graph
 from repo_signal.pipeline.ask import run_ask_pipeline
 from repo_signal.pipeline.context import rank_files
@@ -106,6 +107,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("scan", result.stdout)
         self.assertIn("readme", result.stdout)
         self.assertIn("semantic", result.stdout)
+        self.assertIn("export-codex", result.stdout)
 
     def test_version_command(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -388,6 +390,51 @@ class RepoAwareTests(unittest.TestCase):
         self.assertIn("def dispatch_cli_command", snippet)
         self.assertIn("routing", snippet)
         self.assertNotIn("\n".join(["# boring setup"] * 40), snippet)
+
+
+class CodexExportTests(unittest.TestCase):
+    def test_available_skills_reads_repo_skill_dirs(self):
+        skills = available_skills(REPO_ROOT)
+
+        self.assertIn("repo-product-auditor", skills)
+        self.assertIn("terminal-ui-polisher", skills)
+
+    def test_export_codex_skill_copies_full_skill_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_root = Path(tmp) / "codex-skills"
+            result = export_codex_skill(
+                "terminal-ui-polisher",
+                repo_root=REPO_ROOT,
+                target_root=target_root,
+            )
+
+            self.assertEqual(result.name, "terminal-ui-polisher")
+            self.assertTrue((target_root / "terminal-ui-polisher" / "SKILL.md").exists())
+            self.assertTrue((target_root / "terminal-ui-polisher" / "references").exists())
+            self.assertGreater(result.files, 1)
+
+    def test_export_codex_command_lists_and_installs_to_local_target(self):
+        list_result = run_repo_signal(["export-codex", "--list"], REPO_ROOT)
+
+        self.assertEqual(list_result.returncode, 0)
+        self.assertIn("repo-product-auditor", list_result.stdout)
+        self.assertIn("terminal-ui-polisher", list_result.stdout)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            target_root = Path(tmp) / "skills"
+            install_result = run_repo_signal(
+                [
+                    "export-codex",
+                    "repo-product-auditor",
+                    "--target-root",
+                    str(target_root),
+                ],
+                REPO_ROOT,
+            )
+
+            self.assertEqual(install_result.returncode, 0)
+            self.assertIn("Installed skill", install_result.stdout)
+            self.assertTrue((target_root / "repo-product-auditor" / "SKILL.md").exists())
 
 
 class CoreScannerTests(unittest.TestCase):

@@ -56,6 +56,7 @@ packages = [
   "repo_signal.ai.prompts",
   "repo_signal.ai.providers",
   "repo_signal.ai.vectorstore",
+  "repo_signal.codex",
   "repo_signal.core",
   "repo_signal.graph",
   "repo_signal.pipeline",

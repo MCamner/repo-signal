@@ -4,5 +4,7 @@ __pycache__/
 .venv/
 .env
 *.egg-info/
+build/
+dist/
 .repo-signal/
 .codex/

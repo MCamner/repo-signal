@@ -73,5 +73,33 @@ echo "------------"
 python3 -m repo_signal.cli readme-score .
 echo
 
+echo "Wiki Command-Reference"
+echo "----------------------"
+if python3 tools/generate_wiki_command_ref.py; then
+  WIKI_TMP="$(mktemp -d)"
+  GENERATED="$HOME/repo-signal.wiki/Command-Reference.md"
+  if git clone --quiet git@github.com:MCamner/repo-signal.wiki.git "$WIKI_TMP" 2>/dev/null; then
+    cp "$GENERATED" "$WIKI_TMP/Command-Reference.md"
+    cd "$WIKI_TMP"
+    git add Command-Reference.md
+    if git diff --cached --quiet; then
+      echo "[wiki] Command-Reference unchanged"
+    else
+      VERSION_VAL="$(cat "$ROOT_DIR/VERSION" 2>/dev/null || echo unknown)"
+      git commit -m "Update Command-Reference for v${VERSION_VAL}"
+      git push --quiet
+      echo "[wiki] Command-Reference pushed"
+    fi
+    cd "$ROOT_DIR"
+    rm -rf "$WIKI_TMP"
+  else
+    echo "[wiki] could not clone wiki repo, skipping push"
+    rm -rf "$WIKI_TMP"
+  fi
+else
+  echo "[wiki] generator failed, skipping wiki push"
+fi
+echo
+
 echo "Release check complete."
 echo "This script does not publish, tag, or push."

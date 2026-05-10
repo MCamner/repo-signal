@@ -55,18 +55,27 @@ def detect_skill(text: str):
 
         scores[skill] = score
 
-    best = max(scores, key=scores.get)
+    best_score = max(scores.values())
 
-    if scores[best] == 0:
+    if best_score == 0:
         return "repo-aware"
 
-    return best
+    matches = [skill for skill, score in scores.items() if score == best_score]
+    specific_matches = [skill for skill in matches if skill != "repo-aware"]
+
+    if len(specific_matches) == 1:
+        return specific_matches[0]
+
+    if len(matches) > 1:
+        return "repo-aware"
+
+    return matches[0]
 
 
 def load_skill(skill: str):
     candidates = [
-        Path.home() / ".codex" / "skills" / skill / "SKILL.md",
         Path.cwd() / "skills" / skill / "SKILL.md",
+        Path.home() / ".codex" / "skills" / skill / "SKILL.md",
     ]
 
     for path in candidates:

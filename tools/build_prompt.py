@@ -85,18 +85,12 @@ def load_skill(skill: str):
     return None, None
 
 
-def main():
-    if len(sys.argv) < 2:
-        print("Usage: build_prompt.py '<question>'")
-        sys.exit(1)
-
-    question = " ".join(sys.argv[1:])
+def build_prompt(question: str):
     skill = detect_skill(question)
     skill_content, skill_path = load_skill(skill)
 
     if not skill_content:
-        print(f"ERROR: skill not found: {skill}")
-        sys.exit(1)
+        raise RuntimeError(f"skill not found: {skill}")
 
     final_prompt = f"""Use {skill}.
 
@@ -105,6 +99,33 @@ def main():
 User question:
 {question}
 """
+
+    return skill, skill_path, final_prompt
+
+
+def main():
+    args = sys.argv[1:]
+    raw = False
+
+    if "--raw" in args:
+        raw = True
+        args.remove("--raw")
+
+    if not args:
+        print("Usage: build_prompt.py [--raw] '<question>'")
+        sys.exit(1)
+
+    question = " ".join(args)
+
+    try:
+        skill, skill_path, final_prompt = build_prompt(question)
+    except RuntimeError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    if raw:
+        print(final_prompt)
+        return
 
     print("SKILL")
     print("─────")

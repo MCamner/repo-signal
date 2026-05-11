@@ -75,4 +75,4 @@ The generator must not:
 - [x] `repo-signal wiki export . --output docs/wiki-export` works
 - [x] generated files are safe to review before publishing
 - [x] README mentions wiki generator commands
-- [ ] Roadmap marks Phase 3 as done or mostly done
+- [x] Roadmap marks Phase 3 as done or mostly done

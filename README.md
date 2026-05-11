@@ -518,7 +518,7 @@ See also: [docs/ROADMAP.md](docs/ROADMAP.md)
 - detect missing roadmap
 - detect missing screenshots
 
-### Phase 3 — Wiki Generator
+### Phase 3 — Wiki Generator (mostly done)
 
 - suggest wiki pages
 - generate Home page

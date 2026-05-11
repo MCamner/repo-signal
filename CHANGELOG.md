@@ -4,6 +4,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6] - 2026-05-12
+
+### Added
+
+* Added `repo-signal wiki export . --output docs/wiki-export`.
+* Added generated wiki export pages for review before publishing.
+* Added wiki generator documentation and spec.
+* Added tests and validation flow for the wiki export workflow.
+
+### Changed
+
+* Marked Phase 3 - Wiki Generator as mostly done.
+* Improved README command rendering and wiki workflow documentation.
+
+### Verified
+
+* `repo-signal wiki plan .` works.
+* `repo-signal wiki export . --output docs/wiki-export` works.
+* `python3 -m pytest -q` passes.
+* `repo-signal publish-checklist .` passes.
+* GitHub Pages deployment is successful.
+
+### Scope
+
+This release makes the wiki generator workflow usable and reviewable without
+pushing directly to GitHub Wiki.
+
+---
+
 ## [0.1.5] - 2026-05-11
 
 ### Added

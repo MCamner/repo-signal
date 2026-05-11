@@ -143,6 +143,7 @@ Repo: `coolThing`
 - README quality scoring
 - publish checklist command for checking README, docs, screenshots, roadmap,
   GitHub Pages, and release readiness
+- GitHub Actions workflow initializer for publish checklist quality gates
 - RepoAware context export for AI-assisted code questions
 - RepoAware modes for debug, explain, architect, and review workflows
 - ranked relevant files with summaries and focused snippets
@@ -171,6 +172,7 @@ Repo: `coolThing`
 
 ```bash
 repo-signal scan
+repo-signal actions init
 repo-signal analyze
 repo-signal doctor
 repo-signal skill new repo-aware
@@ -186,6 +188,32 @@ repo-signal repoaware --mode review --format markdown "what should I inspect fir
 repo-signal patch
 repo-signal positioning
 ```
+
+---
+
+## GitHub Actions quality gate
+
+Create a workflow that runs the publish checklist in CI:
+
+```bash
+repo-signal actions init
+repo-signal actions init . --fail-under 14
+```
+
+This writes:
+
+```text
+.github/workflows/publish-checklist.yml
+```
+
+The generated workflow runs:
+
+```bash
+repo-signal publish-checklist . --fail-under 14
+```
+
+Use this when you want a repository to fail CI if public readiness drops below
+the required score.
 
 ---
 
@@ -225,6 +253,7 @@ are available for reports, CI checks, GitHub Actions, and automated audits.
 
 ```text
 repo-signal
+├── actions init
 ├── analyze
 ├── ask
 ├── doctor

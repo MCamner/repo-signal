@@ -107,6 +107,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertIn("repo-signal", result.stdout)
         self.assertIn("Usage:", result.stdout)
+        self.assertIn("actions init", result.stdout)
         self.assertIn("scan", result.stdout)
         self.assertIn("doctor", result.stdout)
         self.assertIn("skill", result.stdout)
@@ -388,6 +389,36 @@ Issues and patches are welcome.
         self.assertIn("PUBLISH CHECKLIST", result)
         self.assertIn("[WARN] Path does not exist", result)
         self.assertIn("Fix: choose an existing repository path", result)
+
+    def test_actions_init_command_writes_workflow(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["actions", "init", str(root), "--fail-under", "13"],
+            REPO_ROOT,
+        )
+
+        workflow = root / ".github" / "workflows" / "publish-checklist.yml"
+        self.assertEqual(result.returncode, 0)
+        self.assertTrue(workflow.exists())
+        self.assertIn("ACTIONS INIT", result.stdout)
+        self.assertIn(
+            "repo-signal publish-checklist . --fail-under 13",
+            workflow.read_text(encoding="utf-8"),
+        )
+
+    def test_actions_init_command_rejects_invalid_fail_under(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["actions", "init", str(root), "--fail-under", "high"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("Invalid actions init --fail-under value: high", result.stdout)
 
     def test_hygiene_command_detects_ds_store(self):
         temp, root = make_sample_repo()

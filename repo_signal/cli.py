@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 from repo_signal import __version__
+from repo_signal.actions_init import init_actions_workflow
 from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
@@ -27,6 +28,7 @@ HELP_TEXT = """repo-signal
 AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects.
 
 Usage:
+  repo-signal actions init [path] [--fail-under score] [--force]
   repo-signal analyze [path]
   repo-signal ask [--mode mode] "question"
   repo-signal doctor [path]
@@ -48,6 +50,8 @@ Usage:
   repo-signal --version
 
 Commands:
+  actions init
+             Create a GitHub Actions publish-checklist workflow
   analyze   Summarize repo type, stack, health, structure, tooling, and focus areas
   ask       Ask an AI provider using ranked RepoAware context
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
@@ -69,6 +73,7 @@ Commands:
   roadmap    Generate a practical roadmap based on repo state
 
 Examples:
+  repo-signal actions init
   repo-signal analyze
   repo-signal doctor
   repo-signal ask --dry-run "how does routing work"
@@ -340,6 +345,57 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str, int | None
         raise SystemExit(2)
 
     return repo, output_format, fail_under
+
+
+def parse_actions_init_args(args: list[str]) -> tuple[Path, int, bool]:
+    if not args or args[0] != "init":
+        print("Usage: repo-signal actions init [path] [--fail-under score] [--force]")
+        raise SystemExit(2)
+
+    repo = Path.cwd()
+    fail_under = 14
+    force = False
+    rest = args[1:]
+
+    if rest and not rest[0].startswith("-"):
+        repo = Path(rest[0]).resolve()
+        rest = rest[1:]
+
+    index = 0
+    while index < len(rest):
+        arg = rest[index]
+
+        if arg == "--force":
+            force = True
+            index += 1
+            continue
+
+        if arg == "--fail-under":
+            if index + 1 >= len(rest):
+                print("Missing value for --fail-under")
+                raise SystemExit(2)
+            try:
+                fail_under = int(rest[index + 1])
+            except ValueError:
+                print(f"Invalid actions init --fail-under value: {rest[index + 1]}")
+                raise SystemExit(2)
+            index += 2
+            continue
+
+        if arg.startswith("--fail-under="):
+            raw_value = arg.split("=", 1)[1]
+            try:
+                fail_under = int(raw_value)
+            except ValueError:
+                print(f"Invalid actions init --fail-under value: {raw_value}")
+                raise SystemExit(2)
+            index += 1
+            continue
+
+        print(f"Unknown actions init option: {arg}")
+        raise SystemExit(2)
+
+    return repo, fail_under, force
 
 
 def parse_wiki_args(args: list[str]) -> tuple[str, Path, str]:
@@ -1243,6 +1299,11 @@ def main() -> None:
         skill_main(sys.argv[2:])
         return
 
+    if command == "actions":
+        repo, fail_under, force = parse_actions_init_args(sys.argv[2:])
+        print(init_actions_workflow(str(repo), fail_under=fail_under, force=force))
+        return
+
     if command == "publish-checklist":
         repo, output_format, fail_under = parse_publish_checklist_args(sys.argv[2:])
         result = build_publish_checklist(str(repo))
@@ -1292,7 +1353,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: analyze, ask, doctor, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, doctor, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

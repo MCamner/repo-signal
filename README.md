@@ -1,10 +1,12 @@
 # repo-signal
 
-[![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml) [![Release](https://img.shields.io/github/v/release/MCamner/repo-signal?label=release)](https://github.com/MCamner/repo-signal/releases)
+[![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml)
+[![Release](https://img.shields.io/github/v/release/MCamner/repo-signal?label=release)](https://github.com/MCamner/repo-signal/releases)
 
 AI-native repository intelligence for structured reasoning systems.
 
-`repo-signal` turns local repository state into clear analysis reports and high-signal AI context exports.
+`repo-signal` turns local repository state into clear analysis reports and
+high-signal AI context exports.
 
 `repo-signal` scans a local repository and produces a practical signal report:
 
@@ -134,10 +136,12 @@ Repo: `coolThing`
 
 - local repo scan
 - front door analyze report
-- doctor report for repo health, release maturity, docs quality, AI readiness, and suggested skills
+- doctor report for repo health, release maturity, docs quality,
+  AI readiness, and suggested skills
 - README detection
 - README quality scoring
-- publish checklist command for checking README, docs, screenshots, roadmap, GitHub Pages, and release readiness
+- publish checklist command for checking README, docs, screenshots, roadmap,
+  GitHub Pages, and release readiness
 - RepoAware context export for AI-assisted code questions
 - RepoAware modes for debug, explain, architect, and review workflows
 - ranked relevant files with summaries and focused snippets
@@ -184,7 +188,8 @@ repo-signal positioning
 
 ## Publish Checklist
 
-`publish-checklist` checks whether a repository has the public-facing basics needed to look understandable and publishable:
+`publish-checklist` checks whether a repository has the public-facing basics
+needed to look understandable and publishable:
 
 - README
 - LICENSE
@@ -202,7 +207,8 @@ repo-signal publish-checklist .
 repo-signal publish-checklist ~/Design-Prototype
 ```
 
-`publish-checklist` is the public readiness check before polishing or releasing a repo.
+`publish-checklist` is the public readiness check before polishing or
+releasing a repo.
 
 ## Command Surface
 
@@ -219,13 +225,16 @@ repo-signal
 └── hygiene
 ```
 
-`analyze` is the front door. It summarizes project type, languages, key entrypoints, Git health, repo size, top directories, detected tooling, and suggested focus areas.
+`analyze` is the front door. It summarizes project type, languages, key
+entrypoints, Git health, repo size, top directories, detected tooling, and
+suggested focus areas.
 
 ```bash
 repo-signal analyze
 ```
 
-`doctor` is the readiness report. It connects the scanner, README scoring, repo graph, and RepoAware priorities into one diagnosis:
+`doctor` is the readiness report. It connects the scanner, README scoring,
+repo graph, and RepoAware priorities into one diagnosis:
 
 ```bash
 repo-signal doctor
@@ -245,7 +254,8 @@ It reports:
 
 ```bash
 repo-signal skill new repo-aware
-repo-signal skill new release-readiness --description "Use when preparing a repo release."
+repo-signal skill new release-readiness \
+  --description "Use when preparing a repo release."
 ```
 
 It writes:
@@ -280,7 +290,8 @@ repo.signals
 repo.graph
 ```
 
-`analyze` already uses this model. RepoAware, roadmap, wiki, and hygiene can move onto the same foundation incrementally.
+`analyze` already uses this model. RepoAware, roadmap, wiki, and hygiene can
+move onto the same foundation incrementally.
 
 ---
 
@@ -299,7 +310,7 @@ The important part is not more context. It is better context.
 RepoAware ranks files with a small transparent signal model:
 
 | Signal | Purpose |
-|---|---|
+| --- | --- |
 | filename and path matches | favor files that are likely about the question |
 | keyword frequency | keep obvious textual relevance |
 | git modified and recent commit signals | surface active work when useful |
@@ -317,7 +328,7 @@ repo-signal repoaware --copy "how does routing work"
 Modes tune the context instructions without adding agent complexity:
 
 | Mode | Focus |
-|---|---|
+| --- | --- |
 | `debug` | errors, routing, stack flow, modified files |
 | `explain` | clear grounded explanation |
 | `architect` | structure, modularity, coupling, roadmap |
@@ -342,7 +353,9 @@ repo-signal ask "how does routing work"
 repo-signal ask --dry-run "how does routing work"
 ```
 
-AI providers are optional adapters. The core architecture still works without API keys, embeddings, or a vector database. Vector stores should accelerate semantic recall later, not replace ranking and signal selection.
+AI providers are optional adapters. The core architecture still works without
+API keys, embeddings, or a vector database. Vector stores should accelerate
+semantic recall later, not replace ranking and signal selection.
 
 Install optional AI dependencies when needed:
 
@@ -350,7 +363,8 @@ Install optional AI dependencies when needed:
 pip install "repo-signal[ai]"
 ```
 
-`repo-signal ask` reads `OPENAI_API_KEY` from the process environment or an ignored local env file if `python-dotenv` is installed. Do not commit API keys.
+`repo-signal ask` reads `OPENAI_API_KEY` from the process environment or an
+ignored local env file if `python-dotenv` is installed. Do not commit API keys.
 
 ---
 
@@ -384,7 +398,7 @@ project links
 Future reports should include simple scores:
 
 | Area | Meaning |
-|---|---|
+| --- | --- |
 | README clarity | Can someone understand the repo quickly? |
 | Project structure | Are files organized clearly? |
 | Demo readiness | Is there a working demo or clear run path? |
@@ -426,7 +440,7 @@ repo-signal/
 ## Design principles
 
 | Principle | Meaning |
-|---|---|
+| --- | --- |
 | Local first | Run against the repo on your machine |
 | Safe by default | Do not change files unless explicitly requested |
 | Explain before patching | Show findings before suggesting edits |
@@ -457,14 +471,15 @@ It helps improve the public shape of a project.
 This project fits into the broader `MCamner` system:
 
 | Project | Relationship |
-|---|---|
+| --- | --- |
 | `macos-scripts` | Command surfaces and repeatable local workflows |
 | `Design-Prototype` | Dashboards, helper agents, endpoint readiness |
 | `atlas-one` | Prompt routing and structured reasoning |
 | `mcamner-journal` | Command surface for thinking |
 | `coolThing` | Retro web experiments and local tool prototypes |
 
-`repo-signal` connects them by improving how repos are explained, cleaned, and positioned.
+`repo-signal` connects them by improving how repos are explained, cleaned, and
+positioned.
 
 ---
 
@@ -521,7 +536,8 @@ See also: [docs/ROADMAP.md](docs/ROADMAP.md)
 Mattias Camner
 
 Infrastructure / Platform Architect  
-Builder of command surfaces, endpoint readiness prototypes, and structured workflow systems.
+Builder of command surfaces, endpoint readiness prototypes, and structured
+workflow systems.
 
 ---
 

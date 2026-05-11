@@ -371,6 +371,28 @@ Issues and patches are welcome.
         self.assertIn("Recommended wiki pages", result.stdout)
         self.assertIn("Wiki Home draft", result.stdout)
 
+    def test_wiki_plan_command_reports_existing_and_missing_pages(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        wiki_export = root / "docs" / "wiki-export"
+        wiki_export.mkdir()
+        (wiki_export / "Home.md").write_text("# Home\n", encoding="utf-8")
+
+        result = run_repo_signal(["wiki", "plan", str(root)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("WIKI PLAN", result.stdout)
+        self.assertIn(f"Repo: {root.name}", result.stdout)
+        self.assertIn("Recommended pages", result.stdout)
+        self.assertIn("- Home.md", result.stdout)
+        self.assertIn("Existing pages", result.stdout)
+        self.assertIn("- Home.md", result.stdout)
+        self.assertIn("Missing pages", result.stdout)
+        self.assertIn("- Command-Reference.md", result.stdout)
+        self.assertIn("Next action", result.stdout)
+        self.assertIn("Create or refresh: Getting-Started.md", result.stdout)
+
     def test_roadmap_command_generates_roadmap(self):
         temp, root = make_sample_repo()
         self.addCleanup(temp.cleanup)

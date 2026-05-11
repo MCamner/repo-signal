@@ -71,8 +71,8 @@ The generator must not:
 
 ## Done When
 
-- [ ] `repo-signal wiki plan .` works
+- [x] `repo-signal wiki plan .` works
 - [ ] `repo-signal wiki export . --output docs/wiki-export` works
 - [ ] generated files are safe to review before publishing
-- [ ] README mentions wiki generator commands
+- [x] README mentions wiki generator commands
 - [ ] Roadmap marks Phase 3 as done or mostly done

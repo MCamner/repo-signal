@@ -35,7 +35,8 @@ Usage:
   repo-signal semantic-upload [--dry-run] [--vector-store-id id]
   repo-signal export-codex [--local] <skill>
   repo-signal hygiene
-  repo-signal wiki
+  repo-signal wiki [path]
+  repo-signal wiki plan [path]
   repo-signal roadmap
   repo-signal --help
   repo-signal --version
@@ -58,7 +59,7 @@ Commands:
   export-codex
              Export repo-local skills into Codex skill storage
   hygiene    Check junk files, .gitignore, large files, and Git status
-  wiki       Generate suggested GitHub Wiki structure and Home draft
+  wiki       Generate suggested GitHub Wiki structure, Home draft, or plan
   roadmap    Generate a practical roadmap based on repo state
 
 Examples:
@@ -77,6 +78,7 @@ Examples:
   repo-signal export-codex repo-product-auditor
   repo-signal hygiene
   repo-signal wiki
+  repo-signal wiki plan .
   repo-signal roadmap
 
 Run from any repository root.
@@ -144,6 +146,18 @@ SKIP_DIRS = {
 
 
 LARGE_FILE_LIMIT_MB = 5
+
+
+WIKI_TARGET_PAGES = [
+    "Home.md",
+    "Getting-Started.md",
+    "Command-Reference.md",
+    "Architecture.md",
+    "Roadmap.md",
+    "Release-Flow.md",
+    "Skills.md",
+    "Troubleshooting.md",
+]
 
 
 def exists(path: Path, target: str) -> bool:
@@ -295,6 +309,22 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str]:
         raise SystemExit(2)
 
     return repo, output_format
+
+
+def parse_wiki_args(args: list[str]) -> tuple[str, Path]:
+    if not args:
+        return "draft", Path.cwd()
+
+    if args[0] == "plan":
+        repo = Path(args[1]).resolve() if len(args) > 1 else Path.cwd()
+        return "plan", repo
+
+    if args[0] == "export":
+        print("wiki export is not implemented yet")
+        raise SystemExit(2)
+
+    repo = Path(args[0]).resolve()
+    return "draft", repo
 
 
 def scan_repo(repo: Path) -> str:
@@ -865,6 +895,70 @@ def generate_wiki_plan(repo: Path) -> str:
     return "\n".join(lines)
 
 
+def wiki_page_locations(repo: Path) -> list[Path]:
+    return [
+        repo / "docs" / "wiki-export",
+        Path.home() / f"{repo.name}.wiki",
+    ]
+
+
+def existing_wiki_pages(repo: Path) -> set[str]:
+    found = set()
+
+    for location in wiki_page_locations(repo):
+        if not location.exists():
+            continue
+
+        for page in location.glob("*.md"):
+            found.add(page.name)
+
+    return found
+
+
+def generate_wiki_plan_report(repo: Path) -> str:
+    track = detect_repo_track(repo)
+    existing = existing_wiki_pages(repo)
+    missing = [page for page in WIKI_TARGET_PAGES if page not in existing]
+
+    if missing:
+        next_action = f"Create or refresh: {missing[0]}"
+    else:
+        next_action = "Create or refresh: Command-Reference.md"
+
+    lines = [
+        "WIKI PLAN",
+        "=========",
+        f"Repo: {repo.name}",
+        f"Detected project type: {track}",
+        "",
+        "Recommended pages",
+        "-----------------",
+    ]
+
+    for page in WIKI_TARGET_PAGES:
+        lines.append(f"- {page}")
+
+    lines.extend(["", "Existing pages", "--------------"])
+
+    if existing:
+        for page in sorted(existing):
+            lines.append(f"- {page}")
+    else:
+        lines.append("- none detected")
+
+    lines.extend(["", "Missing pages", "-------------"])
+
+    if missing:
+        for page in missing:
+            lines.append(f"- {page}")
+    else:
+        lines.append("- none")
+
+    lines.extend(["", "Next action", "-----------", next_action])
+
+    return "\n".join(lines)
+
+
 def roadmap_has(repo: Path, target: str) -> bool:
     return (repo / target).exists()
 
@@ -1096,6 +1190,14 @@ def main() -> None:
         print(check_publish_readiness(str(repo), output_format=output_format))
         return
 
+    if command == "wiki":
+        wiki_command, repo = parse_wiki_args(sys.argv[2:])
+        if wiki_command == "plan":
+            print(generate_wiki_plan_report(repo))
+        else:
+            print(generate_wiki_plan(repo))
+        return
+
     repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command == "scan":
@@ -1120,10 +1222,6 @@ def main() -> None:
 
     if command == "hygiene":
         print(analyze_hygiene(repo))
-        return
-
-    if command == "wiki":
-        print(generate_wiki_plan(repo))
         return
 
     if command == "roadmap":

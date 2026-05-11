@@ -177,6 +177,7 @@ repo-signal skill new repo-aware
 repo-signal readme
 repo-signal readme-score .
 repo-signal wiki
+repo-signal wiki plan .
 repo-signal roadmap
 repo-signal hygiene
 repo-signal repoaware --mode debug "how does routing work"
@@ -227,6 +228,7 @@ repo-signal
 ├── skill new
 ├── repoaware
 ├── readme
+├── publish-checklist
 ├── roadmap
 ├── wiki
 └── hygiene

@@ -180,7 +180,7 @@ repo-signal wiki
 repo-signal roadmap
 repo-signal hygiene
 repo-signal repoaware --mode debug "how does routing work"
-repoaware --mode review --format markdown "what should I inspect first"
+repo-signal repoaware --mode review --format markdown "what should I inspect first"
 repo-signal patch
 repo-signal positioning
 ```
@@ -322,16 +322,14 @@ RepoAware ranks files with a small transparent signal model:
 | shell entrypoint detection | find runnable command surfaces |
 | docs and file-size penalties | reduce low-signal bulk |
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 repo-signal repoaware --mode explain "how does dispatch work"
-repo-signal repoaware --mode architect \
-  --format markdown \
-  "where is this coupled"
-repo-signal repoaware --mode review \
-  --format claude \
-  "what are the risks"
+repo-signal repoaware --mode architect --format markdown "where is this coupled"
+repo-signal repoaware --mode review --format claude "what are the risks"
 repo-signal repoaware --copy "how does routing work"
 ```
+<!-- markdownlint-enable MD013 -->
 
 Modes tune the context instructions without adding agent complexity:
 

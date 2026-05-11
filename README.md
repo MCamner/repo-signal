@@ -209,10 +209,13 @@ needed to look understandable and publishable:
 ```bash
 repo-signal publish-checklist .
 repo-signal publish-checklist ~/design-prototyp
+repo-signal publish-checklist . --format markdown
+repo-signal publish-checklist . --format json
 ```
 
 `publish-checklist` is the public readiness check before polishing or
-releasing a repo.
+releasing a repo. The default output is plain text; Markdown and JSON formats
+are available for reports, CI checks, GitHub Actions, and automated audits.
 
 ## Command Surface
 

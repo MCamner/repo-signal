@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 import sys
@@ -277,6 +278,58 @@ Issues and patches are welcome.
         self.assertIn("[OK] GitHub Pages landing exists", result.stdout)
         self.assertIn("[WARN] issue templates exist", result.stdout)
         self.assertIn("Recommended next action", result.stdout)
+
+    def test_publish_checklist_command_supports_json_format(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+        (root / "VERSION").write_text("0.1.0\n", encoding="utf-8")
+        (root / "docs" / "screenshots").mkdir()
+
+        result = run_repo_signal(
+            ["publish-checklist", str(root), "--format", "json"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 0)
+        data = json.loads(result.stdout)
+        self.assertEqual(data["repo"], root.name)
+        self.assertEqual(data["total"], 16)
+        self.assertEqual(data["status"], "warn")
+        self.assertIn("checks", data)
+        self.assertIn("recommended_next_action", data)
+        self.assertEqual(data["checks"][0]["group"], "Front door")
+        self.assertEqual(data["checks"][0]["name"], "README exists")
+        self.assertEqual(data["checks"][0]["status"], "ok")
+
+    def test_publish_checklist_command_supports_markdown_format(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["publish-checklist", str(root), "--format=markdown"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn(f"# Publish Checklist: {root.name}", result.stdout)
+        self.assertIn("Score:", result.stdout)
+        self.assertIn("## Front door", result.stdout)
+        self.assertIn("- [x] README exists", result.stdout)
+        self.assertIn("- [ ] CHANGELOG exists - add CHANGELOG.md", result.stdout)
+
+    def test_publish_checklist_command_rejects_unknown_format(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["publish-checklist", str(root), "--format", "xml"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("Unknown publish-checklist format: xml", result.stdout)
 
     def test_publish_checklist_function_handles_missing_readme(self):
         with tempfile.TemporaryDirectory() as tmp:

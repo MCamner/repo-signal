@@ -1,6 +1,7 @@
 # Roadmap
 
-repo-signal is a local-first repository intelligence tool for turning rough prototypes into clear, documented, publishable GitHub projects.
+repo-signal is a local-first repository intelligence tool for turning rough
+prototypes into clear, documented, publishable GitHub projects.
 
 ## Current focus
 
@@ -13,15 +14,15 @@ Make repo-signal useful as a practical portfolio quality tool.
 - [x] Add `publish-checklist` command.
 - [x] Add grouped scoring output.
 - [x] Add recommended next action per missing area.
-- [ ] Add JSON output mode.
-- [ ] Add Markdown output mode.
-- [ ] Add examples from real repos.
+- [x] Add JSON output mode.
+- [x] Add Markdown output mode.
+- [x] Add examples from real repos.
 
 ### Documentation
 
 - [ ] Document `publish-checklist` in README.
-- [ ] Add example output for `Design-Prototype`.
-- [ ] Add example output for `macos-scripts`.
+- [x] Add example output for `design-prototyp`.
+- [x] Add example output for `macos-scripts`.
 - [ ] Add command reference page.
 - [ ] Add screenshots or terminal output captures.
 

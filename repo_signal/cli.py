@@ -9,7 +9,7 @@ from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
 from repo_signal.export_codex import main as export_codex_main
-from repo_signal.publish_checklist import check_publish_readiness
+from repo_signal.publish_checklist import VALID_FORMATS, check_publish_readiness
 from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
 from repo_signal.semantic import main as semantic_main
@@ -29,7 +29,7 @@ Usage:
   repo-signal skill new <name> [--description text]
   repo-signal readme
   repo-signal readme-score [path]
-  repo-signal publish-checklist [path]
+  repo-signal publish-checklist [path] [--format text|markdown|json]
   repo-signal repoaware [--mode mode] [--format format] "question"
   repo-signal semantic [--limit n] [--use-chroma] "query"
   repo-signal semantic-upload [--dry-run] [--vector-store-id id]
@@ -70,6 +70,7 @@ Examples:
   repo-signal readme
   repo-signal readme-score .
   repo-signal publish-checklist .
+  repo-signal publish-checklist . --format json
   repo-signal repoaware --mode debug "how does routing work"
   repo-signal semantic "routing system"
   repo-signal semantic-upload --dry-run
@@ -257,6 +258,43 @@ def find_large_files(repo: Path, limit_mb: int = LARGE_FILE_LIMIT_MB) -> list[tu
             found.append((path, size / 1024 / 1024))
 
     return sorted(found, key=lambda item: item[1], reverse=True)
+
+
+def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str]:
+    repo = Path.cwd()
+    output_format = "text"
+    index = 0
+
+    while index < len(args):
+        arg = args[index]
+
+        if arg == "--format":
+            if index + 1 >= len(args):
+                print("Missing value for --format")
+                raise SystemExit(2)
+            output_format = args[index + 1]
+            index += 2
+            continue
+
+        if arg.startswith("--format="):
+            output_format = arg.split("=", 1)[1]
+            index += 1
+            continue
+
+        if arg.startswith("-"):
+            print(f"Unknown publish-checklist option: {arg}")
+            raise SystemExit(2)
+
+        repo = Path(arg).resolve()
+        index += 1
+
+    if output_format not in VALID_FORMATS:
+        formats = ", ".join(sorted(VALID_FORMATS))
+        print(f"Unknown publish-checklist format: {output_format}")
+        print(f"Available formats: {formats}")
+        raise SystemExit(2)
+
+    return repo, output_format
 
 
 def scan_repo(repo: Path) -> str:
@@ -1053,6 +1091,11 @@ def main() -> None:
         skill_main(sys.argv[2:])
         return
 
+    if command == "publish-checklist":
+        repo, output_format = parse_publish_checklist_args(sys.argv[2:])
+        print(check_publish_readiness(str(repo), output_format=output_format))
+        return
+
     repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command == "scan":
@@ -1073,10 +1116,6 @@ def main() -> None:
 
     if command == "readme-score":
         print(format_readme_score(score_readme(str(repo))))
-        return
-
-    if command == "publish-checklist":
-        print(check_publish_readiness(str(repo)))
         return
 
     if command == "hygiene":

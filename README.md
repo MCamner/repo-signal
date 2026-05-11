@@ -78,8 +78,14 @@ The first version can run a local scan and print a Markdown report.
 ```bash
 repo-signal analyze
 repo-signal doctor
+```
+
+```bash
 repo-signal publish-checklist .
 repo-signal readme-score .
+```
+
+```bash
 repo-signal repoaware --mode debug "how does routing work"
 ```
 
@@ -173,16 +179,28 @@ Repo: `coolThing`
 repo-signal scan
 repo-signal analyze
 repo-signal doctor
+```
+
+```bash
 repo-signal skill new repo-aware
 repo-signal readme
 repo-signal readme-score .
+```
+
+```bash
 repo-signal wiki
 repo-signal wiki plan .
 repo-signal wiki export . --output docs/wiki-export
 repo-signal roadmap
 repo-signal hygiene
+```
+
+```bash
 repo-signal repoaware --mode debug "how does routing work"
 repo-signal repoaware --mode review --format markdown "what should I inspect first"
+```
+
+```bash
 repo-signal patch
 repo-signal positioning
 ```
@@ -211,6 +229,9 @@ needed to look understandable and publishable:
 ```bash
 repo-signal publish-checklist .
 repo-signal publish-checklist ~/design-prototyp
+```
+
+```bash
 repo-signal publish-checklist . --format markdown
 repo-signal publish-checklist . --format json
 ```

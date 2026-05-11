@@ -137,6 +137,7 @@ Repo: `coolThing`
 - doctor report for repo health, release maturity, docs quality, AI readiness, and suggested skills
 - README detection
 - README quality scoring
+- publish checklist command for checking README, docs, screenshots, roadmap, GitHub Pages, and release readiness
 - RepoAware context export for AI-assisted code questions
 - RepoAware modes for debug, explain, architect, and review workflows
 - ranked relevant files with summaries and focused snippets
@@ -158,7 +159,6 @@ Repo: `coolThing`
 - roadmap suggestion generator
 - safe patch suggestions
 - positioning report
-- screenshot/docs checklist
 
 ---
 
@@ -181,6 +181,28 @@ repo-signal positioning
 ```
 
 ---
+
+## Publish Checklist
+
+`publish-checklist` checks whether a repository has the public-facing basics needed to look understandable and publishable:
+
+- README
+- LICENSE
+- CHANGELOG
+- VERSION
+- docs folder
+- GitHub Pages landing page
+- screenshots or demo gallery
+- roadmap
+- issue templates
+- safe sharing/security notes
+
+```bash
+repo-signal publish-checklist .
+repo-signal publish-checklist ~/Design-Prototype
+```
+
+`publish-checklist` is the public readiness check before polishing or releasing a repo.
 
 ## Command Surface
 
@@ -447,6 +469,8 @@ This project fits into the broader `MCamner` system:
 ---
 
 ## Roadmap
+
+See also: [docs/ROADMAP.md](docs/ROADMAP.md)
 
 ### Phase 1 — Static scanner
 

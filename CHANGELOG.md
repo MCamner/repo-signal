@@ -4,6 +4,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.3] - 2026-05-11
+
+### Changed
+
+* docs: fix design-prototyp checklist example
+* docs: add publish checklist examples
+* docs: polish README command examples
+* update documentation
+* docs: add platform skills map
+* update project files
+* docs: add roadmap issue templates and screenshots folder
+* feat: add publish checklist command
+* add: wiki Command-Reference generator and auto-update on release check
+* update project files
+* update project files
+* update project files
+* update project files
+* update documentation
+* docs: add changelog section for 0.1.3
+
+---
+
 ## [0.1.2] - 2026-05-10
 
 ### Added

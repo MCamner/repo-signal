@@ -4,6 +4,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.7] - 2026-05-12
+
+### Added
+
+* Added `--fail-under` support for `repo-signal publish-checklist`.
+* Added CI-friendly threshold behavior for publish-readiness scores.
+* Added support for fail-under checks across text, Markdown, and JSON output modes.
+* Added tests for pass and fail threshold behavior.
+
+### Changed
+
+* Documented `--fail-under` usage in README and roadmap.
+
+### Verified
+
+* `repo-signal publish-checklist . --fail-under 16` exits with `0`.
+* `repo-signal publish-checklist . --fail-under 17` exits with non-zero.
+* JSON output works with fail-under thresholds.
+* Test suite passes.
+
+### Scope
+
+This release makes `publish-checklist` usable as an automated quality gate for
+CI and GitHub Actions.
+
+---
+
 ## [0.1.6] - 2026-05-12
 
 ### Added

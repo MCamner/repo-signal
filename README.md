@@ -228,7 +228,7 @@ needed to look understandable and publishable:
 
 ```bash
 repo-signal publish-checklist .
-repo-signal publish-checklist ~/design-prototyp
+repo-signal publish-checklist ~/Design-Prototype
 ```
 
 ```bash

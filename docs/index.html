@@ -101,6 +101,54 @@
       overflow-x: auto;
     }
 
+    .section {
+      margin-top: 28px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .section p {
+      max-width: 780px;
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .section code {
+      color: var(--yellow);
+    }
+
+    .code-block {
+      margin: 18px 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(0,0,0,.24);
+      color: var(--yellow);
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+
+    .gate-list {
+      margin: 18px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .gate-list strong {
+      color: var(--text);
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -179,7 +227,7 @@
           reports and high-signal context exports.
         </p>
 
-        <div class="prompt">repo-signal doctor</div>
+        <div class="prompt">repo-signal publish-checklist . --fail-under 14</div>
 
         <div class="grid">
           <div class="card">
@@ -198,8 +246,34 @@
           </div>
         </div>
 
+        <section class="section">
+          <h2>Publish Checklist CI Gate</h2>
+          <p>
+            repo-signal turns local repository state into clear release-readiness signals.
+            Use <code>--fail-under</code> to fail a workflow when a repository drops below
+            the required public quality score.
+          </p>
+
+          <pre class="code-block"><code>repo-signal publish-checklist . --fail-under 14
+repo-signal publish-checklist . --format json --fail-under 14</code></pre>
+
+          <p>
+            This makes repo quality measurable before release: README, docs, roadmap,
+            screenshots, GitHub Pages readiness, issue templates, and safe-sharing signals.
+          </p>
+
+          <ul class="gate-list">
+            <li>Latest release: <strong>0.1.7 - Publish checklist CI threshold</strong></li>
+            <li>Use it locally before release</li>
+            <li>Use JSON output for GitHub Actions and automated audits</li>
+          </ul>
+        </section>
+
         <div class="links">
           <a href="https://github.com/MCamner/repo-signal">GitHub repo</a>
+          <a href="https://github.com/MCamner/repo-signal#readme">README</a>
+          <a href="https://github.com/MCamner/repo-signal/tree/main/examples/publish-checklist">Examples</a>
+          <a href="https://github.com/MCamner/repo-signal/releases/tag/0.1.7">Release 0.1.7</a>
           <a href="https://github.com/MCamner">MCamner</a>
         </div>
       </div>

@@ -5,7 +5,16 @@ prototypes into clear, documented, publishable GitHub projects.
 
 ## Current focus
 
-Close Phase 3 by making the wiki generator repeatable and reviewable.
+Prepare v0.1.7 as a publish checklist CI threshold release.
+
+## v0.1.7 - Publish Checklist CI Threshold
+
+### Quality Gate
+
+- [x] Add `repo-signal publish-checklist . --fail-under <score>`.
+- [x] Preserve report output for passing and failing thresholds.
+- [x] Support JSON output with fail-under exit codes.
+- [x] Cover pass, fail, and invalid threshold values in tests.
 
 ## v0.1.6 - Wiki Generator
 

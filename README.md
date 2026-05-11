@@ -235,6 +235,7 @@ repo-signal publish-checklist ~/Design-Prototype
 repo-signal publish-checklist . --format markdown
 repo-signal publish-checklist . --format json
 repo-signal publish-checklist . --fail-under 14
+repo-signal publish-checklist . --format json --fail-under 14
 ```
 
 `publish-checklist` is the public readiness check before polishing or

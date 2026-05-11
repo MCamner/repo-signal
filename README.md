@@ -78,7 +78,8 @@ The first version can run a local scan and print a Markdown report.
 ```bash
 repo-signal analyze
 repo-signal doctor
-./bin/repo-signal readme-score .
+repo-signal publish-checklist .
+repo-signal readme-score .
 repo-signal repoaware --mode debug "how does routing work"
 ```
 
@@ -320,8 +321,12 @@ RepoAware ranks files with a small transparent signal model:
 
 ```bash
 repo-signal repoaware --mode explain "how does dispatch work"
-repo-signal repoaware --mode architect --format markdown "where is this coupled"
-repo-signal repoaware --mode review --format claude "what are the risks"
+repo-signal repoaware --mode architect \
+  --format markdown \
+  "where is this coupled"
+repo-signal repoaware --mode review \
+  --format claude \
+  "what are the risks"
 repo-signal repoaware --copy "how does routing work"
 ```
 

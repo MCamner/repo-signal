@@ -18,6 +18,11 @@ All notable changes to this project will be documented in this file.
 
 * Updated README and roadmap to document publish checklist output formats.
 
+### Scope
+
+This is a feature release for making `publish-checklist` machine-readable and
+report-friendly.
+
 ---
 
 ## [0.1.4] - 2026-05-11

@@ -13,6 +13,7 @@ from repo_signal.doctor import doctor_repo
 from repo_signal.graph.graph_builder import build_repository_graph
 from repo_signal.pipeline.ask import run_ask_pipeline
 from repo_signal.pipeline.context import rank_files
+from repo_signal.publish_checklist import check_publish_readiness
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
 from repo_signal.readme_score import score_readme
@@ -256,6 +257,43 @@ Issues and patches are welcome.
         self.assertIn("README score:", result.stdout)
         self.assertIn("[OK] title", result.stdout)
         self.assertIn("Missing:", result.stdout)
+
+    def test_publish_checklist_command_reports_static_publish_readiness(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+        (root / "VERSION").write_text("0.1.0\n", encoding="utf-8")
+        (root / "docs" / "screenshots").mkdir()
+
+        result = run_repo_signal(["publish-checklist", str(root)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("PUBLISH CHECKLIST", result.stdout)
+        self.assertIn(f"Repo: {root.name}", result.stdout)
+        self.assertIn("Front door", result.stdout)
+        self.assertIn("[OK] README exists", result.stdout)
+        self.assertIn("[OK] LICENSE exists", result.stdout)
+        self.assertIn("[OK] GitHub Pages landing exists", result.stdout)
+        self.assertIn("[WARN] issue templates exist", result.stdout)
+        self.assertIn("Recommended next action", result.stdout)
+
+    def test_publish_checklist_function_handles_missing_readme(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = check_publish_readiness(tmp)
+
+        self.assertIn("PUBLISH CHECKLIST", result)
+        self.assertIn("[WARN] README exists: add README.md", result)
+        self.assertIn("Fix: README exists", result)
+
+    def test_publish_checklist_function_reports_missing_path(self):
+        missing_path = Path(tempfile.gettempdir()) / "repo-signal-missing-publish-checklist-path"
+
+        result = check_publish_readiness(str(missing_path))
+
+        self.assertIn("PUBLISH CHECKLIST", result)
+        self.assertIn("[WARN] Path does not exist", result)
+        self.assertIn("Fix: choose an existing repository path", result)
 
     def test_hygiene_command_detects_ds_store(self):
         temp, root = make_sample_repo()

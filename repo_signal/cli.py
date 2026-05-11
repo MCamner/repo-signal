@@ -9,6 +9,7 @@ from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
 from repo_signal.export_codex import main as export_codex_main
+from repo_signal.publish_checklist import check_publish_readiness
 from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
 from repo_signal.semantic import main as semantic_main
@@ -28,6 +29,7 @@ Usage:
   repo-signal skill new <name> [--description text]
   repo-signal readme
   repo-signal readme-score [path]
+  repo-signal publish-checklist [path]
   repo-signal repoaware [--mode mode] [--format format] "question"
   repo-signal semantic [--limit n] [--use-chroma] "query"
   repo-signal semantic-upload [--dry-run] [--vector-store-id id]
@@ -47,6 +49,8 @@ Commands:
   readme     Analyze README clarity and missing sections
   readme-score
              Score README quality with a 100-point checklist
+  publish-checklist
+             Check public-facing docs, demo, release, and GitHub Pages signals
   repoaware  Build high-signal repo context for AI-assisted code questions
   semantic   Search smart symbol chunks for semantic repository recall
   semantic-upload
@@ -65,6 +69,7 @@ Examples:
   repo-signal skill new repo-aware
   repo-signal readme
   repo-signal readme-score .
+  repo-signal publish-checklist .
   repo-signal repoaware --mode debug "how does routing work"
   repo-signal semantic "routing system"
   repo-signal semantic-upload --dry-run
@@ -1070,6 +1075,10 @@ def main() -> None:
         print(format_readme_score(score_readme(str(repo))))
         return
 
+    if command == "publish-checklist":
+        print(check_publish_readiness(str(repo)))
+        return
+
     if command == "hygiene":
         print(analyze_hygiene(repo))
         return
@@ -1083,7 +1092,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: analyze, ask, doctor, scan, skill, readme, readme-score, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: analyze, ask, doctor, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

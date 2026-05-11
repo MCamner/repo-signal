@@ -393,6 +393,40 @@ Issues and patches are welcome.
         self.assertIn("Next action", result.stdout)
         self.assertIn("Create or refresh: Getting-Started.md", result.stdout)
 
+    def test_wiki_export_command_writes_target_pages(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["wiki", "export", str(root), "--output", "docs/wiki-export"],
+            REPO_ROOT,
+        )
+
+        output = root / "docs" / "wiki-export"
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("WIKI EXPORT", result.stdout)
+        self.assertIn(f"Repo: {root.name}", result.stdout)
+        self.assertIn("docs/wiki-export/Home.md", result.stdout)
+        self.assertTrue((output / "Home.md").exists())
+        self.assertTrue((output / "Getting-Started.md").exists())
+        self.assertTrue((output / "Command-Reference.md").exists())
+        self.assertTrue((output / "Architecture.md").exists())
+        self.assertTrue((output / "Roadmap.md").exists())
+        self.assertTrue((output / "Release-Flow.md").exists())
+        self.assertTrue((output / "Skills.md").exists())
+        self.assertTrue((output / "Troubleshooting.md").exists())
+        self.assertIn("repo-signal wiki plan .", (output / "Command-Reference.md").read_text(encoding="utf-8"))
+
+    def test_wiki_export_command_requires_output_value(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(["wiki", "export", str(root), "--output"], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("Missing value for --output", result.stdout)
+
     def test_roadmap_command_generates_roadmap(self):
         temp, root = make_sample_repo()
         self.addCleanup(temp.cleanup)

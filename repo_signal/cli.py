@@ -15,6 +15,7 @@ from repo_signal.readme_score import format_readme_score, score_readme
 from repo_signal.semantic import main as semantic_main
 from repo_signal.semantic_upload import main as semantic_upload_main
 from repo_signal.skill import main as skill_main
+from repo_signal.wiki_export import export_wiki_pages
 
 
 HELP_TEXT = """repo-signal
@@ -37,6 +38,7 @@ Usage:
   repo-signal hygiene
   repo-signal wiki [path]
   repo-signal wiki plan [path]
+  repo-signal wiki export [path] [--output path]
   repo-signal roadmap
   repo-signal --help
   repo-signal --version
@@ -79,6 +81,7 @@ Examples:
   repo-signal hygiene
   repo-signal wiki
   repo-signal wiki plan .
+  repo-signal wiki export . --output docs/wiki-export
   repo-signal roadmap
 
 Run from any repository root.
@@ -311,20 +314,47 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str]:
     return repo, output_format
 
 
-def parse_wiki_args(args: list[str]) -> tuple[str, Path]:
+def parse_wiki_args(args: list[str]) -> tuple[str, Path, str]:
     if not args:
-        return "draft", Path.cwd()
+        return "draft", Path.cwd(), ""
 
     if args[0] == "plan":
         repo = Path(args[1]).resolve() if len(args) > 1 else Path.cwd()
-        return "plan", repo
+        return "plan", repo, ""
 
     if args[0] == "export":
-        print("wiki export is not implemented yet")
-        raise SystemExit(2)
+        repo = Path.cwd()
+        output = "docs/wiki-export"
+        rest = args[1:]
+
+        if rest and not rest[0].startswith("-"):
+            repo = Path(rest[0]).resolve()
+            rest = rest[1:]
+
+        index = 0
+        while index < len(rest):
+            arg = rest[index]
+
+            if arg == "--output":
+                if index + 1 >= len(rest):
+                    print("Missing value for --output")
+                    raise SystemExit(2)
+                output = rest[index + 1]
+                index += 2
+                continue
+
+            if arg.startswith("--output="):
+                output = arg.split("=", 1)[1]
+                index += 1
+                continue
+
+            print(f"Unknown wiki export option: {arg}")
+            raise SystemExit(2)
+
+        return "export", repo, output
 
     repo = Path(args[0]).resolve()
-    return "draft", repo
+    return "draft", repo, ""
 
 
 def scan_repo(repo: Path) -> str:
@@ -1191,9 +1221,11 @@ def main() -> None:
         return
 
     if command == "wiki":
-        wiki_command, repo = parse_wiki_args(sys.argv[2:])
+        wiki_command, repo, output = parse_wiki_args(sys.argv[2:])
         if wiki_command == "plan":
             print(generate_wiki_plan_report(repo))
+        elif wiki_command == "export":
+            print(export_wiki_pages(str(repo), output))
         else:
             print(generate_wiki_plan(repo))
         return

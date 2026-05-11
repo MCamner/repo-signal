@@ -5,7 +5,17 @@ prototypes into clear, documented, publishable GitHub projects.
 
 ## Current focus
 
-Make repo-signal useful as a practical portfolio quality tool.
+Close Phase 3 by making the wiki generator repeatable and reviewable.
+
+## v0.1.6 - Wiki Generator
+
+### Phase 3 - Wiki Generator (mostly done)
+
+- [x] Add `repo-signal wiki plan .`.
+- [x] Add `repo-signal wiki export . --output docs/wiki-export`.
+- [x] Generate reviewable wiki Markdown files.
+- [ ] Add safer refresh/diff behavior for existing wiki pages.
+- [ ] Document manual publish flow for copying exports into GitHub Wiki.
 
 ## v0.1.4 - Publish Readiness Hardening
 

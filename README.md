@@ -178,6 +178,7 @@ repo-signal readme
 repo-signal readme-score .
 repo-signal wiki
 repo-signal wiki plan .
+repo-signal wiki export . --output docs/wiki-export
 repo-signal roadmap
 repo-signal hygiene
 repo-signal repoaware --mode debug "how does routing work"

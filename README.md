@@ -208,7 +208,7 @@ needed to look understandable and publishable:
 
 ```bash
 repo-signal publish-checklist .
-repo-signal publish-checklist ~/Design-Prototype
+repo-signal publish-checklist ~/design-prototyp
 ```
 
 `publish-checklist` is the public readiness check before polishing or
@@ -481,7 +481,7 @@ This project fits into the broader `MCamner` system:
 | Project | Relationship |
 | --- | --- |
 | `macos-scripts` | Command surfaces and repeatable local workflows |
-| `Design-Prototype` | Dashboards, helper agents, endpoint readiness |
+| `design-prototyp` | Dashboards, helper agents, endpoint readiness |
 | `atlas-one` | Prompt routing and structured reasoning |
 | `mcamner-journal` | Command surface for thinking |
 | `coolThing` | Retro web experiments and local tool prototypes |

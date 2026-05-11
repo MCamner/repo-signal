@@ -18,19 +18,15 @@ The goal is to make repository quality visible:
 | Repo | Output |
 | --- | --- |
 | repo-signal | [repo-signal.txt](repo-signal.txt) |
-| Design-Prototype | [Design-Prototype.txt](Design-Prototype.txt) |
+| design-prototyp | [design-prototyp.txt](design-prototyp.txt) |
 | macos-scripts | [macos-scripts.txt](macos-scripts.txt) |
 | mcamner-journal | [mcamner-journal.txt](mcamner-journal.txt) |
-
-Note: `Design-Prototype.txt` shows the missing-path behavior because that
-repository was not available in the local workspace when these examples were
-generated.
 
 ## Usage
 
 ```bash
 repo-signal publish-checklist .
-repo-signal publish-checklist ~/Design-Prototype
+repo-signal publish-checklist ~/design-prototyp
 repo-signal publish-checklist ~/macos-scripts
 ```
 

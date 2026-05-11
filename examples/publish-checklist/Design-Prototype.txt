@@ -1,0 +1,12 @@
+PUBLISH CHECKLIST
+=================
+Repo: Design-Prototype
+Score: 0/0
+
+Status
+------
+- [WARN] Path does not exist: ~/Design-Prototype
+
+Recommended next action
+-----------------------
+Fix: choose an existing repository path

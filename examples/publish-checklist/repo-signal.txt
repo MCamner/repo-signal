@@ -1,0 +1,33 @@
+PUBLISH CHECKLIST
+=================
+Repo: repo-signal
+Score: 16/16
+
+Front door
+----------
+- [OK] README exists
+- [OK] README has quick start
+- [OK] README links to GitHub Pages
+- [OK] README mentions demo
+- [OK] README mentions screenshots or gallery
+
+Public quality
+--------------
+- [OK] LICENSE exists
+- [OK] CHANGELOG exists
+- [OK] VERSION exists
+- [OK] .gitignore exists
+- [OK] README mentions roadmap
+- [OK] README mentions safe sharing/security
+- [OK] issue templates exist
+- [OK] roadmap file exists
+
+GitHub Pages
+------------
+- [OK] docs folder exists
+- [OK] GitHub Pages landing exists
+- [OK] docs screenshots folder exists
+
+Recommended next action
+-----------------------
+Repo looks publish-ready from the static checklist.

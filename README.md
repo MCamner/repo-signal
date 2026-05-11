@@ -189,6 +189,9 @@ repo-signal positioning
 
 ## Publish Checklist
 
+See real outputs:
+[Publish checklist examples](examples/publish-checklist/README.md)
+
 `publish-checklist` checks whether a repository has the public-facing basics
 needed to look understandable and publishable:
 

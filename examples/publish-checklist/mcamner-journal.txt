@@ -1,0 +1,33 @@
+PUBLISH CHECKLIST
+=================
+Repo: mcamner-journal
+Score: 9/16
+
+Front door
+----------
+- [OK] README exists
+- [OK] README has quick start
+- [OK] README links to GitHub Pages
+- [WARN] README mentions demo: add demo or example output
+- [WARN] README mentions screenshots or gallery: add screenshots or a gallery
+
+Public quality
+--------------
+- [OK] LICENSE exists
+- [OK] CHANGELOG exists
+- [OK] VERSION exists
+- [OK] .gitignore exists
+- [WARN] README mentions roadmap: link or add a roadmap
+- [WARN] README mentions safe sharing/security: add a safe sharing or security note
+- [WARN] issue templates exist: add .github/ISSUE_TEMPLATE/
+- [WARN] roadmap file exists: add ROADMAP.md or docs/ROADMAP.md
+
+GitHub Pages
+------------
+- [OK] docs folder exists
+- [OK] GitHub Pages landing exists
+- [WARN] docs screenshots folder exists: add docs/screenshots/
+
+Recommended next action
+-----------------------
+Fix: README mentions demo (add demo or example output)

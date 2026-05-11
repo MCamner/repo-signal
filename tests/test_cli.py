@@ -319,6 +319,47 @@ Issues and patches are welcome.
         self.assertIn("- [x] README exists", result.stdout)
         self.assertIn("- [ ] CHANGELOG exists - add CHANGELOG.md", result.stdout)
 
+    def test_publish_checklist_command_passes_fail_under_when_score_meets_threshold(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+        (root / "VERSION").write_text("0.1.0\n", encoding="utf-8")
+        (root / "docs" / "screenshots").mkdir()
+
+        result = run_repo_signal(
+            ["publish-checklist", str(root), "--fail-under", "10"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("Score: 10/16", result.stdout)
+
+    def test_publish_checklist_command_fails_under_threshold(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["publish-checklist", str(root), "--fail-under=14"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("PUBLISH CHECKLIST", result.stdout)
+        self.assertIn("Score:", result.stdout)
+
+    def test_publish_checklist_command_rejects_invalid_fail_under(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["publish-checklist", str(root), "--fail-under", "high"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("Invalid publish-checklist --fail-under value: high", result.stdout)
+
     def test_publish_checklist_command_rejects_unknown_format(self):
         temp, root = make_sample_repo()
         self.addCleanup(temp.cleanup)

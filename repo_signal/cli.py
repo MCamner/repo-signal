@@ -9,7 +9,11 @@ from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
 from repo_signal.export_codex import main as export_codex_main
-from repo_signal.publish_checklist import VALID_FORMATS, check_publish_readiness
+from repo_signal.publish_checklist import (
+    VALID_FORMATS,
+    build_publish_checklist,
+    format_publish_checklist,
+)
 from repo_signal.repoaware.__main__ import main as repoaware_main
 from repo_signal.readme_score import format_readme_score, score_readme
 from repo_signal.semantic import main as semantic_main
@@ -30,7 +34,7 @@ Usage:
   repo-signal skill new <name> [--description text]
   repo-signal readme
   repo-signal readme-score [path]
-  repo-signal publish-checklist [path] [--format text|markdown|json]
+  repo-signal publish-checklist [path] [--format text|markdown|json] [--fail-under score]
   repo-signal repoaware [--mode mode] [--format format] "question"
   repo-signal semantic [--limit n] [--use-chroma] "query"
   repo-signal semantic-upload [--dry-run] [--vector-store-id id]
@@ -74,6 +78,7 @@ Examples:
   repo-signal readme-score .
   repo-signal publish-checklist .
   repo-signal publish-checklist . --format json
+  repo-signal publish-checklist . --fail-under 14
   repo-signal repoaware --mode debug "how does routing work"
   repo-signal semantic "routing system"
   repo-signal semantic-upload --dry-run
@@ -277,9 +282,10 @@ def find_large_files(repo: Path, limit_mb: int = LARGE_FILE_LIMIT_MB) -> list[tu
     return sorted(found, key=lambda item: item[1], reverse=True)
 
 
-def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str]:
+def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str, int | None]:
     repo = Path.cwd()
     output_format = "text"
+    fail_under = None
     index = 0
 
     while index < len(args):
@@ -298,6 +304,28 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str]:
             index += 1
             continue
 
+        if arg == "--fail-under":
+            if index + 1 >= len(args):
+                print("Missing value for --fail-under")
+                raise SystemExit(2)
+            try:
+                fail_under = int(args[index + 1])
+            except ValueError:
+                print(f"Invalid publish-checklist --fail-under value: {args[index + 1]}")
+                raise SystemExit(2)
+            index += 2
+            continue
+
+        if arg.startswith("--fail-under="):
+            raw_value = arg.split("=", 1)[1]
+            try:
+                fail_under = int(raw_value)
+            except ValueError:
+                print(f"Invalid publish-checklist --fail-under value: {raw_value}")
+                raise SystemExit(2)
+            index += 1
+            continue
+
         if arg.startswith("-"):
             print(f"Unknown publish-checklist option: {arg}")
             raise SystemExit(2)
@@ -311,7 +339,7 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str]:
         print(f"Available formats: {formats}")
         raise SystemExit(2)
 
-    return repo, output_format
+    return repo, output_format, fail_under
 
 
 def parse_wiki_args(args: list[str]) -> tuple[str, Path, str]:
@@ -1216,8 +1244,11 @@ def main() -> None:
         return
 
     if command == "publish-checklist":
-        repo, output_format = parse_publish_checklist_args(sys.argv[2:])
-        print(check_publish_readiness(str(repo), output_format=output_format))
+        repo, output_format, fail_under = parse_publish_checklist_args(sys.argv[2:])
+        result = build_publish_checklist(str(repo))
+        print(format_publish_checklist(result, output_format=output_format))
+        if fail_under is not None and result["score"] < fail_under:
+            raise SystemExit(1)
         return
 
     if command == "wiki":

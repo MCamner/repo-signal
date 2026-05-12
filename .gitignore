@@ -8,3 +8,6 @@ build/
 dist/
 .repo-signal/
 .codex/
+
+# Claude local settings
+.claude/settings.local.json

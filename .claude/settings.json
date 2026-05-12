@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C * log *)",
+      "Bash(git -C * diff *)",
+      "Bash(git -C * status)",
+      "Bash(git -C * describe *)",
+      "Bash(git -C * tag *)",
+      "Bash(repo-signal publish-checklist *)",
+      "Bash(repo-signal analyze *)",
+      "Bash(repo-signal doctor *)",
+      "Bash(repo-signal readme-score *)"
+    ]
+  }
+}

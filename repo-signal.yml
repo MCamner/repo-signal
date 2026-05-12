@@ -6,9 +6,9 @@ portfolio:
     - name: macos-scripts
       path: ~/macos-scripts
       fail_under: 14
-    - name: Design-Prototype
-      path: ~/Design-Prototype
-      fail_under: 14
+    - name: design-prototyp
+      path: ~/design-prototyp
+      fail_under: 12
     - name: mcamner-journal
       path: ~/mcamner-journal
       fail_under: 12

@@ -1,0 +1,63 @@
+{
+  "object": "portfolio_check",
+  "repos": [
+    {
+      "name": "repo-signal",
+      "path": "/Users/mansys/repo-signal",
+      "score": 16,
+      "total": 16,
+      "fail_under": 16,
+      "status": "OK",
+      "next_action": "Repo looks publish-ready from the static checklist."
+    },
+    {
+      "name": "macos-scripts",
+      "path": "/Users/mansys/macos-scripts",
+      "score": 16,
+      "total": 16,
+      "fail_under": 14,
+      "status": "OK",
+      "next_action": "Repo looks publish-ready from the static checklist."
+    },
+    {
+      "name": "design-prototyp",
+      "path": "/Users/mansys/design-prototyp",
+      "score": 16,
+      "total": 16,
+      "fail_under": 12,
+      "status": "OK",
+      "next_action": "Repo looks publish-ready from the static checklist."
+    },
+    {
+      "name": "mcamner-journal",
+      "path": "/Users/mansys/mcamner-journal",
+      "score": 14,
+      "total": 16,
+      "fail_under": 12,
+      "status": "OK",
+      "next_action": "Fix: README mentions demo (add demo or example output)"
+    },
+    {
+      "name": "atlas-one",
+      "path": "/Users/mansys/atlas-one",
+      "score": 16,
+      "total": 16,
+      "fail_under": 10,
+      "status": "OK",
+      "next_action": "Repo looks publish-ready from the static checklist."
+    },
+    {
+      "name": "zephyr-workbench",
+      "path": "/Users/mansys/zephyr-workbench",
+      "score": 15,
+      "total": 16,
+      "fail_under": 10,
+      "status": "OK",
+      "next_action": "Fix: README mentions screenshots or gallery (add screenshots or a gallery)"
+    }
+  ],
+  "next_action": {
+    "repo": "mcamner-journal",
+    "action": "Fix: README mentions demo (add demo or example output)"
+  }
+}

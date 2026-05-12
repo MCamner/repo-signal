@@ -1,0 +1,13 @@
+PORTFOLIO CHECK
+===============
+
+repo-signal       16/16  OK       fail-under=16
+macos-scripts     16/16  OK       fail-under=14
+design-prototyp   16/16  OK       fail-under=12
+mcamner-journal   14/16  OK       fail-under=12
+atlas-one         16/16  OK       fail-under=10
+zephyr-workbench  15/16  OK       fail-under=10
+
+Next action
+-----------
+mcamner-journal: Fix: README mentions demo (add demo or example output)

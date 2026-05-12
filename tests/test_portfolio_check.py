@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-import pytest
 
 from repo_signal.portfolio_check import check_portfolio, load_portfolio_config
 

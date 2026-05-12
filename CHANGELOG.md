@@ -4,6 +4,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.8] - 2026-05-12
+
+### Added
+
+* Added `repo-signal actions init`.
+* Added GitHub Actions workflow generation for publish-checklist quality gates.
+* Added `--fail-under` configuration for generated workflows.
+* Added overwrite protection with `--force`.
+* Added tests for workflow creation, overwrite protection, and forced overwrite behavior.
+
+### Changed
+
+* Documented GitHub Actions quality gate usage in README.
+* Highlighted the CI quality gate workflow on GitHub Pages.
+
+### Verified
+
+* `repo-signal actions init . --fail-under 14` creates `.github/workflows/publish-checklist.yml`.
+* Generated workflow runs `repo-signal publish-checklist . --fail-under 14`.
+* Test suite passes.
+* Publish checklist passes.
+
+### Scope
+
+This release makes repo-signal usable as a reusable GitHub Actions quality gate
+initializer for other repositories.
+
+---
+
 ## [0.1.7] - 2026-05-12
 
 ### Added

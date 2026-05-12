@@ -191,6 +191,46 @@ repo-signal positioning
 
 ---
 
+## Portfolio check
+
+Run publish-readiness checks across multiple local repositories from `repo-signal.yml`.
+
+```bash
+repo-signal portfolio check
+repo-signal portfolio check --format markdown
+repo-signal portfolio check --format json
+```
+
+Example output:
+
+```text
+PORTFOLIO CHECK
+===============
+
+repo-signal       16/16  OK       fail-under=16
+macos-scripts     16/16  OK       fail-under=14
+mcamner-journal    9/16  WARN     fail-under=12
+
+Next action
+-----------
+mcamner-journal: Fix: README mentions demo
+```
+
+Configure repos in `repo-signal.yml`:
+
+```yaml
+portfolio:
+  repos:
+    - name: repo-signal
+      path: ~/repo-signal
+      fail_under: 16
+    - name: macos-scripts
+      path: ~/macos-scripts
+      fail_under: 14
+```
+
+---
+
 ## GitHub Actions quality gate
 
 Create a workflow that runs the publish checklist in CI:

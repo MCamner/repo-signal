@@ -6,6 +6,7 @@ import sys
 
 from repo_signal import __version__
 from repo_signal.actions_init import init_actions_workflow
+from repo_signal.portfolio_check import check_portfolio
 from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
@@ -1302,6 +1303,37 @@ def main() -> None:
     if command == "actions":
         repo, fail_under, force = parse_actions_init_args(sys.argv[2:])
         print(init_actions_workflow(str(repo), fail_under=fail_under, force=force))
+        return
+
+    if command == "portfolio":
+        args = sys.argv[2:]
+        if not args or args[0] != "check":
+            print("Usage: repo-signal portfolio check [--config path] [--format text|markdown|json]")
+            raise SystemExit(2)
+        config = "repo-signal.yml"
+        output_format = "text"
+        i = 1
+        while i < len(args):
+            if args[i] == "--config" and i + 1 < len(args):
+                config = args[i + 1]
+                i += 2
+            elif args[i].startswith("--config="):
+                config = args[i].split("=", 1)[1]
+                i += 1
+            elif args[i] == "--format" and i + 1 < len(args):
+                output_format = args[i + 1]
+                i += 2
+            elif args[i].startswith("--format="):
+                output_format = args[i].split("=", 1)[1]
+                i += 1
+            else:
+                print(f"Unknown portfolio option: {args[i]}")
+                raise SystemExit(2)
+        try:
+            print(check_portfolio(config, output_format=output_format))
+        except ValueError as e:
+            print(e)
+            raise SystemExit(2)
         return
 
     if command == "publish-checklist":

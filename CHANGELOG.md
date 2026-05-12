@@ -1,5 +1,32 @@
 # Changelog
 
+
+## [0.1.9] - 2026-05-12
+
+### Added
+
+- Added `repo-signal portfolio check`.
+- Added portfolio-level publish-readiness checks across multiple local repositories.
+- Added support for text, Markdown, and JSON portfolio reports.
+- Added `repo-signal.yml` portfolio configuration.
+- Added portfolio check tests and example reports.
+
+### Changed
+
+- Documented portfolio quality workflow in README.
+
+### Verified
+
+- `repo-signal portfolio check` works.
+- `repo-signal portfolio check --format markdown` works.
+- `repo-signal portfolio check --format json` works.
+- Test suite passes.
+- Publish checklist passes.
+
+### Scope
+
+This release turns repo-signal from a single-repo checker into a local portfolio quality tool.
+
 <!-- markdownlint-disable MD024 -->
 
 All notable changes to this project will be documented in this file.

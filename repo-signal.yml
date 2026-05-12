@@ -1,0 +1,20 @@
+portfolio:
+  repos:
+    - name: repo-signal
+      path: ~/repo-signal
+      fail_under: 16
+    - name: macos-scripts
+      path: ~/macos-scripts
+      fail_under: 14
+    - name: Design-Prototype
+      path: ~/Design-Prototype
+      fail_under: 14
+    - name: mcamner-journal
+      path: ~/mcamner-journal
+      fail_under: 12
+    - name: atlas-one
+      path: ~/atlas-one
+      fail_under: 10
+    - name: zephyr-workbench
+      path: ~/zephyr-workbench
+      fail_under: 10

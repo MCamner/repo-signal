@@ -75,11 +75,23 @@ Early MVP.
 
 The first version can run a local scan and print a Markdown report.
 
+Front-door analysis:
+
 ```bash
 repo-signal analyze
 repo-signal doctor
+```
+
+Public readiness and quality:
+
+```bash
 repo-signal publish-checklist .
 repo-signal readme-score .
+```
+
+AI-assisted context export:
+
+```bash
 repo-signal repoaware --mode debug "how does routing work"
 ```
 
@@ -171,20 +183,33 @@ Repo: `coolThing`
 ## Planned commands
 
 ```bash
+# scanning and analysis
 repo-signal scan
-repo-signal actions init
 repo-signal analyze
 repo-signal doctor
-repo-signal skill new repo-aware
+
+# readme and docs
 repo-signal readme
 repo-signal readme-score .
+
+# wiki
 repo-signal wiki
 repo-signal wiki plan .
 repo-signal wiki export . --output docs/wiki-export
+
+# roadmap and hygiene
 repo-signal roadmap
 repo-signal hygiene
+
+# ai-assisted context
 repo-signal repoaware --mode debug "how does routing work"
 repo-signal repoaware --mode review --format markdown "what should I inspect first"
+
+# skills and ci
+repo-signal skill new repo-aware
+repo-signal actions init
+
+# patch and positioning
 repo-signal patch
 repo-signal positioning
 ```
@@ -277,10 +302,15 @@ needed to look understandable and publishable:
 - safe sharing/security notes
 
 ```bash
+# basic usage
 repo-signal publish-checklist .
 repo-signal publish-checklist ~/Design-Prototype
+
+# output formats
 repo-signal publish-checklist . --format markdown
 repo-signal publish-checklist . --format json
+
+# ci enforcement
 repo-signal publish-checklist . --fail-under 14
 repo-signal publish-checklist . --format json --fail-under 14
 ```

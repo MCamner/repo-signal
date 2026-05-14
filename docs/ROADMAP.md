@@ -23,8 +23,8 @@ Prepare v0.1.7 as a publish checklist CI threshold release.
 - [x] Add `repo-signal wiki plan .`.
 - [x] Add `repo-signal wiki export . --output docs/wiki-export`.
 - [x] Generate reviewable wiki Markdown files.
-- [ ] Add safer refresh/diff behavior for existing wiki pages.
-- [ ] Document manual publish flow for copying exports into GitHub Wiki.
+- [x] Add safer refresh/diff behavior for existing wiki pages.
+- [x] Document manual publish flow for copying exports into GitHub Wiki.
 
 ## v0.1.4 - Publish Readiness Hardening
 
@@ -42,8 +42,8 @@ Prepare v0.1.7 as a publish checklist CI threshold release.
 - [ ] Document `publish-checklist` in README.
 - [x] Add example output for `design-prototyp`.
 - [x] Add example output for `macos-scripts`.
-- [ ] Add command reference page.
-- [ ] Add screenshots or terminal output captures.
+- [x] Add command reference page.
+- [x] Add screenshots or terminal output captures.
 
 ### Repo Quality
 

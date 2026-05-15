@@ -980,7 +980,7 @@ class SemanticMemoryTests(unittest.TestCase):
         self.assertIn("summary:", document)
         self.assertNotIn("return 'route'", document)
 
-    def test_openai_upload_dry_run_requires_explicit_store_and_does_not_call_api(self):
+    def test_openai_upload_dry_run_does_not_call_api(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "router.py").write_text(
@@ -999,6 +999,28 @@ class SemanticMemoryTests(unittest.TestCase):
         self.assertEqual(result.status, "dry_run")
         self.assertEqual(result.symbols, 1)
         self.assertGreater(result.bytes_written, 0)
+
+    def test_openai_upload_dry_run_works_without_vector_store_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "router.py").write_text(
+                "def dispatch_cli_command(command):\n"
+                "    return command\n",
+                encoding="utf-8",
+            )
+
+            prev = os.environ.pop("OPENAI_VECTOR_STORE_ID", None)
+            try:
+                result = upload_repository_memory(
+                    repo_path=root,
+                    dry_run=True,
+                )
+            finally:
+                if prev is not None:
+                    os.environ["OPENAI_VECTOR_STORE_ID"] = prev
+
+        self.assertEqual(result.vector_store_id, "(not set)")
+        self.assertEqual(result.status, "dry_run")
 
     def test_semantic_upload_command_dry_run(self):
         with tempfile.TemporaryDirectory() as tmp:

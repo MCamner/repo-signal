@@ -126,20 +126,24 @@ def upload_repository_memory(
     dry_run: bool = False,
 ) -> OpenAIUploadResult:
     repo = Repository.load(repo_path)
-    resolved_store_id = resolve_vector_store_id(vector_store_id)
     document = build_openai_memory_document(repo, include_tests=include_tests)
     encoded = document.encode("utf-8")
     filename = f"{repo.name}-symbol-memory.md"
 
     if dry_run:
+        load_dotenv_if_available()
+        load_shell_env_if_available(VECTOR_STORE_ENV)
+        display_store_id = vector_store_id or os.getenv(VECTOR_STORE_ENV, "(not set)")
         return OpenAIUploadResult(
             repo_name=repo.name,
-            vector_store_id=resolved_store_id,
+            vector_store_id=display_store_id,
             filename=filename,
             symbols=len(build_symbol_chunks(repo, include_tests=include_tests)),
             bytes_written=len(encoded),
             status="dry_run",
         )
+
+    resolved_store_id = resolve_vector_store_id(vector_store_id)
 
     client = openai_client()
 

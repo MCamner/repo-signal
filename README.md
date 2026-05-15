@@ -97,6 +97,24 @@ repo-signal repoaware --mode debug "how does routing work"
 
 ---
 
+## Install
+
+```bash
+git clone https://github.com/MCamner/repo-signal.git
+cd repo-signal
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[ai]"
+```
+
+Verify:
+
+```bash
+repo-signal doctor
+```
+
+---
+
 ## Quick start
 
 Analyze this repo:
@@ -331,6 +349,7 @@ repo-signal
 ├── repoaware
 ├── readme
 ├── publish-checklist
+├── semantic-upload
 ├── roadmap
 ├── wiki
 └── hygiene

@@ -1,5 +1,32 @@
 # Changelog
 
+<!-- markdownlint-disable MD024 -->
+
+## [0.1.10] - 2026-05-15
+
+### Fixed
+
+- `repo-signal semantic-upload --dry-run` now works fully offline without `OPENAI_VECTOR_STORE_ID`.
+- Dry-run output shows `(not set)` for vector store when no target is configured.
+- Real upload still requires `OPENAI_VECTOR_STORE_ID` or `--vector-store-id`.
+
+### Added
+
+- `semantic-upload` documented in README with full generation flow and command variants.
+- `semantic-upload` added to the command surface tree.
+- Install section added to README with copy-paste clone and setup instructions.
+- Regression test: `test_openai_upload_dry_run_works_without_vector_store_id`.
+
+### Changed
+
+- CI switched from `python -m unittest discover` to `pytest` to support both unittest and pytest-style tests.
+
+### Verified
+
+- `repo-signal semantic-upload --dry-run` works without any env vars set.
+- `repo-signal semantic-upload` fails clearly when `OPENAI_VECTOR_STORE_ID` is missing.
+- 68 tests pass on Python 3.11 and 3.12.
+- Publish checklist scores 16/16.
 
 ## [0.1.9] - 2026-05-12
 
@@ -26,8 +53,6 @@
 ### Scope
 
 This release turns repo-signal from a single-repo checker into a local portfolio quality tool.
-
-<!-- markdownlint-disable MD024 -->
 
 All notable changes to this project will be documented in this file.
 

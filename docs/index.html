@@ -156,6 +156,12 @@
       margin-top: 22px;
     }
 
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
     .card {
       border: 1px solid var(--line);
       background: rgba(255,255,255,.04);
@@ -227,7 +233,7 @@
           reports and high-signal context exports.
         </p>
 
-        <div class="prompt">repo-signal publish-checklist . --fail-under 14</div>
+        <div class="prompt">repo-signal doctor</div>
 
         <div class="grid">
           <div class="card">
@@ -236,21 +242,35 @@
           </div>
 
           <div class="card">
-            <h2>Analyze</h2>
-            <p>Summarize project type, stack, entrypoints, Git health, tooling, and focus areas.</p>
+            <h2>Publish Checklist</h2>
+            <p>Check README, LICENSE, CHANGELOG, docs, screenshots, roadmap, and GitHub Pages readiness. Scores 0–16.</p>
           </div>
 
           <div class="card">
             <h2>RepoAware</h2>
-            <p>Generate ranked, high-signal context for AI-assisted code questions.</p>
+            <p>Export ranked, high-signal repo context for AI-assisted code questions. Modes: debug, explain, architect, review.</p>
+          </div>
+
+          <div class="card">
+            <h2>Ask</h2>
+            <p>Answer questions about the repo using ranked file context and an AI provider. Works with <code>--dry-run</code> offline.</p>
+          </div>
+
+          <div class="card">
+            <h2>Semantic Upload</h2>
+            <p>Build a compact symbol map of the repository and upload it to an OpenAI vector store for higher-quality AI answers.</p>
+          </div>
+
+          <div class="card">
+            <h2>Portfolio Check</h2>
+            <p>Run publish-readiness checks across multiple repos from a <code>repo-signal.yml</code> config.</p>
           </div>
         </div>
 
         <section class="section">
           <h2>Publish Checklist CI Gate</h2>
           <p>
-            repo-signal turns local repository state into clear release-readiness signals.
-            Use <code>--fail-under</code> to fail a workflow when a repository drops below
+            Use <code>--fail-under</code> to fail a CI workflow when a repository drops below
             the required public quality score.
           </p>
 
@@ -258,22 +278,27 @@
 repo-signal publish-checklist . --format json --fail-under 14</code></pre>
 
           <p>
-            This makes repo quality measurable before release: README, docs, roadmap,
-            screenshots, GitHub Pages readiness, issue templates, and safe-sharing signals.
+            Checks README, docs, roadmap, screenshots, GitHub Pages readiness,
+            issue templates, and safe-sharing signals.
+          </p>
+        </section>
+
+        <section class="section">
+          <h2>Semantic Memory Upload</h2>
+          <p>
+            Build and upload a compact symbol map of the repository to an OpenAI vector store.
+            Dry-run works fully offline — no API key needed to inspect what would be uploaded.
           </p>
 
-          <ul class="gate-list">
-            <li>Latest release: <strong>0.1.7 - Publish checklist CI threshold</strong></li>
-            <li>Use it locally before release</li>
-            <li>Use JSON output for GitHub Actions and automated audits</li>
-          </ul>
+          <pre class="code-block"><code>repo-signal semantic-upload --dry-run
+repo-signal semantic-upload</code></pre>
         </section>
 
         <div class="links">
           <a href="https://github.com/MCamner/repo-signal">GitHub repo</a>
           <a href="https://github.com/MCamner/repo-signal#readme">README</a>
+          <a href="https://github.com/MCamner/repo-signal/releases/tag/0.1.10">Release 0.1.10</a>
           <a href="https://github.com/MCamner/repo-signal/tree/main/examples/publish-checklist">Examples</a>
-          <a href="https://github.com/MCamner/repo-signal/releases/tag/0.1.7">Release 0.1.7</a>
           <a href="https://github.com/MCamner">MCamner</a>
         </div>
       </div>

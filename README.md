@@ -25,6 +25,67 @@ turn messy repos into clear public systems
 
 ---
 
+## Try this in 60 seconds
+
+```bash
+git clone https://github.com/MCamner/repo-signal.git
+cd repo-signal
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[ai]"
+
+repo-signal doctor
+repo-signal analyze
+repo-signal publish-checklist .
+repo-signal demo
+```
+
+See the [command reference](docs/COMMANDS.md), [doctor JSON schema](docs/DOCTOR_SCHEMA.md), and [golden examples](examples/doctor/doctor.v1.json) for deeper usage.
+
+---
+
+## Who this is for
+
+`repo-signal` is useful for:
+
+- developers cleaning up old prototypes
+- builders preparing repos for GitHub
+- portfolio projects that need better presentation
+- AI-assisted workflows that need compact repo context
+- teams that want lightweight public-readiness checks before release
+
+---
+
+## How this differs from a linter
+
+Linters check code style.
+
+`repo-signal` checks whether a repository is understandable, explainable, and publishable.
+
+It looks at README quality, docs, structure, release maturity, public readiness, and AI context usefulness.
+
+---
+
+## Stability
+
+Stable enough to use:
+
+- `repo-signal analyze`
+- `repo-signal doctor`
+- `repo-signal publish-checklist`
+- `repo-signal readme-score`
+- `repo-signal demo`
+
+Experimental:
+
+- `repo-signal ask`
+- `repo-signal semantic-upload`
+- `repo-signal repoaware`
+
+The CLI is still early, but `doctor --json` now has a documented `doctor.v1` schema for scripts and CI helpers.
+
+---
+
 ## Why this exists
 
 Most repositories do not fail because the code is useless.
@@ -136,6 +197,13 @@ repo-signal analyze
 
 ## Example output
 
+See also:
+
+- [Doctor JSON schema](docs/DOCTOR_SCHEMA.md)
+- [Command reference](docs/COMMANDS.md)
+- [Output gallery](docs/screenshots/README.md)
+- [Golden doctor JSON](examples/doctor/doctor.v1.json)
+
 ```text
 # Repo Signal Report
 
@@ -160,6 +228,19 @@ Repo: `coolThing`
 4. Add project screenshots
 5. Create or update Wiki pages
 ```
+
+---
+
+## Screenshots
+
+Terminal captures and public-safe examples live in [docs/screenshots](docs/screenshots/README.md).
+
+Golden outputs live under [examples](examples/):
+
+- [doctor Markdown](examples/doctor/doctor.txt)
+- [doctor JSON](examples/doctor/doctor.v1.json)
+- [analyze output](examples/analyze/analyze.txt)
+- [repoaware review output](examples/repoaware/review.md)
 
 ---
 
@@ -638,6 +719,28 @@ repo-signal/
 It is a repo intelligence assistant.
 
 It helps improve the public shape of a project.
+
+---
+
+## Contributing
+
+Good contributions are small, concrete, and easy to verify.
+
+Useful contribution types:
+
+- improve command output clarity
+- add public-safe example reports
+- tighten README, docs, or schema descriptions
+- add checks that catch real repo-readiness problems
+- file repo audit cases with the issue template
+
+Before opening a PR, run:
+
+```bash
+python3 -m pytest -q
+repo-signal doctor
+repo-signal publish-checklist .
+```
 
 ---
 

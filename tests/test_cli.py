@@ -122,6 +122,16 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertIn("repo-signal", result.stdout)
 
+    def test_demo_command_prints_onboarding_flow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = run_repo_signal(["demo"], tmp)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# repo-signal demo", result.stdout)
+        self.assertIn("repo-signal analyze", result.stdout)
+        self.assertIn("repo-signal doctor --json", result.stdout)
+        self.assertIn("repo-signal publish-checklist .", result.stdout)
+
     def test_scan_command_detects_core_files(self):
         temp, root = make_sample_repo()
         self.addCleanup(temp.cleanup)

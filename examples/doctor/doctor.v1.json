@@ -1,0 +1,124 @@
+{
+  "key_signals": {
+    "entrypoints": [
+      "bin/repo-signal",
+      "release.sh",
+      "repo_signal/cli.py",
+      "repo_signal/repoaware/__main__.py",
+      "tools/build_prompt.py"
+    ],
+    "repo_graph_edges": 78,
+    "symbols": 338,
+    "tooling": [
+      "Python packaging",
+      "GitHub Actions",
+      "GitHub Pages docs",
+      "README",
+      "License"
+    ]
+  },
+  "readme": {
+    "exists": true,
+    "missing_checks": [],
+    "path": "/Users/mansys/repo-signal/README.md",
+    "present_checks": [
+      "title",
+      "short_pitch",
+      "install",
+      "usage",
+      "examples",
+      "screenshots_demo",
+      "badges",
+      "license",
+      "roadmap",
+      "contributing"
+    ]
+  },
+  "repo": {
+    "name": "repo-signal",
+    "path": "/Users/mansys/repo-signal",
+    "project_type": "Python CLI / repo intelligence toolkit"
+  },
+  "repoaware_context": {
+    "prioritize": [
+      "Review current working tree changes before using the report as a baseline"
+    ],
+    "summary": "This repo is a Python CLI / repo intelligence toolkit. Repo health is strong (90/100). Release maturity is strong (95/100). Docs quality is strong (100/100). AI readiness is strong (100/100)."
+  },
+  "schema_version": "doctor.v1",
+  "scores": {
+    "ai_readiness": {
+      "evidence": [
+        "README has strong AI-readable structure",
+        "entrypoints can anchor AI context",
+        "symbols extracted",
+        "repo graph available",
+        "docs/examples available",
+        "repo-local skills available",
+        "tooling helps classify workflow"
+      ],
+      "max_score": 100,
+      "score": 100,
+      "status": "strong"
+    },
+    "docs_quality": {
+      "evidence": [
+        "README score checklist"
+      ],
+      "max_score": 100,
+      "score": 100,
+      "status": "strong"
+    },
+    "release_maturity": {
+      "evidence": [
+        "Git repository detected",
+        "tests/ exists",
+        "GitHub Actions workflows detected",
+        "installable project metadata detected",
+        "LICENSE exists",
+        "release/docs support detected"
+      ],
+      "max_score": 100,
+      "score": 95,
+      "status": "strong"
+    },
+    "repo_health": {
+      "evidence": [
+        "README exists",
+        "LICENSE exists",
+        ".gitignore exists",
+        "clear entrypoints detected",
+        "tooling detected",
+        "Git repository detected",
+        "files scanned successfully",
+        "repository graph edges detected"
+      ],
+      "max_score": 100,
+      "score": 90,
+      "status": "strong"
+    }
+  },
+  "suggested_priorities": [
+    "Review current working tree changes before using the report as a baseline"
+  ],
+  "suggested_skills": [
+    "repo-aware",
+    "terminal-ui-polisher",
+    "architecture-map"
+  ],
+  "summary": {
+    "files_scanned": 131,
+    "git_branch": "main",
+    "git_repo": true,
+    "languages": {
+      "HTML": 1,
+      "JSON": 4,
+      "Markdown": 47,
+      "Python": 52,
+      "Shell": 1,
+      "TOML": 1,
+      "YAML": 3
+    },
+    "working_tree_changes": 11
+  }
+}

@@ -1,0 +1,47 @@
+# Repo Signal Doctor Report
+
+Repo: `repo-signal`
+Path: `/Users/mansys/repo-signal`
+
+## Summary
+
+- Project type: `Python CLI / repo intelligence toolkit`
+- Files scanned: `131`
+- Languages: `Python, Markdown, JSON, YAML, TOML, Shell, HTML`
+- Git repo: `yes`
+- Working tree changes: `11`
+
+## Scores
+
+| Area | Score | Status | Evidence |
+|---|---:|---|---|
+| Repo health | 90/100 | strong | README exists; LICENSE exists; .gitignore exists; clear entrypoints detected |
+| Release maturity | 95/100 | strong | Git repository detected; tests/ exists; GitHub Actions workflows detected; installable project metadata detected |
+| Docs quality | 100/100 | strong | README score checklist |
+| AI readiness | 100/100 | strong | README has strong AI-readable structure; entrypoints can anchor AI context; symbols extracted; repo graph available |
+
+## Key Signals
+
+- Entry points: `bin/repo-signal, release.sh, repo_signal/cli.py, repo_signal/repoaware/__main__.py, tools/build_prompt.py`
+- Tooling: `Python packaging, GitHub Actions, GitHub Pages docs, README, License`
+- Symbols: `338`
+- Repo graph edges: `78`
+- README missing checks: `none`
+
+## Suggested Skills
+
+- `repo-aware`
+- `terminal-ui-polisher`
+- `architecture-map`
+
+## Suggested Priorities
+
+1. Review current working tree changes before using the report as a baseline
+
+## RepoAware Context
+
+```text
+This repo is a Python CLI / repo intelligence toolkit. Repo health is strong (90/100). Release maturity is strong (95/100). Docs quality is strong (100/100). AI readiness is strong (100/100).
+Prioritize:
+1. Review current working tree changes before using the report as a baseline
+```

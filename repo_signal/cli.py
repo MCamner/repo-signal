@@ -32,6 +32,7 @@ Usage:
   repo-signal actions init [path] [--fail-under score] [--force]
   repo-signal analyze [path]
   repo-signal ask [--mode mode] "question"
+  repo-signal demo
   repo-signal doctor [path] [--format markdown|json] [--json]
   repo-signal scan
   repo-signal skill new <name> [--description text]
@@ -55,6 +56,7 @@ Commands:
              Create a GitHub Actions publish-checklist workflow
   analyze   Summarize repo type, stack, health, structure, tooling, and focus areas
   ask       Ask an AI provider using ranked RepoAware context
+  demo      Print a short copy-paste demo flow for trying repo-signal
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
   scan       Scan repo structure and basic project signals
   skill      Create repo-local Codex skills
@@ -77,6 +79,7 @@ Examples:
   repo-signal actions init
   repo-signal analyze
   repo-signal doctor
+  repo-signal demo
   repo-signal ask --dry-run "how does routing work"
   repo-signal scan
   repo-signal skill new repo-aware
@@ -1309,6 +1312,28 @@ def parse_doctor_args(args: list[str]) -> tuple[Path, str]:
     return repo, output_format
 
 
+def demo_text() -> str:
+    return """# repo-signal demo
+
+Run these commands from a repository root:
+
+```bash
+repo-signal analyze
+repo-signal doctor
+repo-signal doctor --json
+repo-signal publish-checklist .
+repo-signal repoaware --mode review --format markdown "what should I inspect first"
+```
+
+Useful follow-up docs:
+
+- docs/COMMANDS.md
+- docs/DOCTOR_SCHEMA.md
+- docs/screenshots/README.md
+- examples/doctor/doctor.v1.json
+"""
+
+
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
 
@@ -1318,6 +1343,10 @@ def main() -> None:
 
     if command in {"--version", "-v", "version"}:
         print(f"repo-signal {__version__}")
+        return
+
+    if command == "demo":
+        print(demo_text())
         return
 
     if command == "repoaware":
@@ -1430,7 +1459,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, doctor, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, demo, doctor, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

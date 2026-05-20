@@ -1,0 +1,73 @@
+# Repo Signal Analyze Report
+
+Repo: `repo-signal`
+Path: `/Users/mansys/repo-signal`
+
+## Summary
+
+- Project type: `Python CLI / repo intelligence toolkit`
+- Files scanned: `131`
+- Approx size: `3.72 MB`
+- Git repo: `yes`
+- Git branch: `main`
+- Working tree changes: `11`
+
+## Languages
+
+- Python: `52` files
+- Markdown: `47` files
+- JSON: `4` files
+- YAML: `3` files
+- TOML: `1` files
+- Shell: `1` files
+- HTML: `1` files
+
+## Key Entry Points
+
+- bin/repo-signal
+- release.sh
+- repo_signal/cli.py
+- repo_signal/repoaware/__main__.py
+- tools/build_prompt.py
+- tools/generate_wiki_command_ref.py
+- tools/skill_router.py
+
+## Top Directories
+
+- `repo_signal`: `46` files
+- `docs`: `19` files
+- `examples`: `18` files
+- `skills`: `14` files
+- `.`: `10` files
+- `.repo-signal`: `9` files
+- `.github`: `6` files
+- `tools`: `3` files
+- `tests`: `3` files
+- `.claude`: `2` files
+- `bin`: `1` files
+
+## Detected Tooling
+
+- Python packaging
+- GitHub Actions
+- GitHub Pages docs
+- README
+- License
+
+## Git Health
+
+- [MED] Working tree has changes: `11`
+  - `M README.md`
+  - ` M docs/screenshots/README.md`
+  - ` M repo_signal/cli.py`
+  - ` M tests/test_cli.py`
+  - `?? .github/ISSUE_TEMPLATE/repo_audit_case.md`
+  - `?? docs/COMMANDS.md`
+  - `?? docs/DOCTOR_SCHEMA.md`
+  - `?? examples/analyze/`
+  - `?? examples/doctor/`
+  - `?? examples/repoaware/`
+
+## Suggested Focus Areas
+
+1. Review current working tree changes before release or demo

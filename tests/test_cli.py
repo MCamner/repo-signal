@@ -186,6 +186,52 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("Improve README structure", result)
         self.assertIn("terminal-ui-polisher", result)
 
+    def test_doctor_command_supports_json_format(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
+        (root / "tests").mkdir()
+        (root / "tests" / "test_sample.py").write_text("def test_sample():\n    assert True\n", encoding="utf-8")
+        (root / "repo_signal").mkdir()
+        (root / "repo_signal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
+
+        result = run_repo_signal(["doctor", str(root), "--format", "json"], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        data = json.loads(result.stdout)
+
+        self.assertEqual(data["schema_version"], "doctor.v1")
+        self.assertEqual(data["repo"]["name"], root.name)
+        self.assertEqual(data["scores"]["repo_health"]["max_score"], 100)
+        self.assertIn("release_maturity", data["scores"])
+        self.assertIn("docs_quality", data["scores"])
+        self.assertIn("ai_readiness", data["scores"])
+        self.assertIn("suggested_skills", data)
+        self.assertIn("suggested_priorities", data)
+        self.assertIn("repoaware_context", data)
+
+    def test_doctor_command_supports_json_short_flag(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(["doctor", "--json"], root)
+
+        self.assertEqual(result.returncode, 0)
+        data = json.loads(result.stdout)
+
+        self.assertEqual(data["schema_version"], "doctor.v1")
+        self.assertEqual(data["repo"]["name"], root.name)
+
+    def test_doctor_command_rejects_unknown_format(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(["doctor", "--format", "xml"], root)
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("Unknown doctor format: xml", result.stdout)
+
     def test_readme_command_scores_readme(self):
         temp, root = make_sample_repo()
         self.addCleanup(temp.cleanup)

@@ -2,6 +2,14 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [Unreleased]
+
+### Added
+
+- `doctor --json` / `--format json` — machine-readable doctor output (schema version `doctor.v1`).
+- `doctor --json` short flag as alias for `--format json`.
+- `docs/DOCTOR_JSON.md` — JSON output documentation and schema reference.
+
 ## [0.1.10] - 2026-05-15
 
 ### Fixed

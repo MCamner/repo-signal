@@ -1,4 +1,6 @@
+import json
 from pathlib import Path
+from typing import Any
 
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
@@ -171,7 +173,7 @@ def format_evidence(items: list[str]) -> str:
     return "; ".join(items[:4])
 
 
-def format_doctor_report(repo: Repository, readme_result: dict) -> str:
+def build_doctor_result_from_repo(repo: Repository, readme_result: dict[str, Any]) -> dict[str, Any]:
     docs_score = int(readme_result["score"])
     health_score, health_evidence = score_repo_health(repo)
     release_score, release_evidence = score_release_maturity(repo)
@@ -179,70 +181,175 @@ def format_doctor_report(repo: Repository, readme_result: dict) -> str:
     skills = suggested_skills(repo, docs_score, release_score)
     priorities = suggested_priorities(repo, docs_score, health_score, release_score, ai_score)
 
-    lines = []
+    return {
+        "schema_version": "doctor.v1",
+        "repo": {
+            "name": repo.name,
+            "path": str(repo.path),
+            "project_type": repo.project_type,
+        },
+        "summary": {
+            "files_scanned": repo.repo_size_files,
+            "languages": repo.languages,
+            "git_repo": repo.git.is_repo,
+            "git_branch": repo.git.branch,
+            "working_tree_changes": repo.git.changed_files,
+        },
+        "scores": {
+            "repo_health": {
+                "score": health_score,
+                "max_score": 100,
+                "status": status_label(health_score),
+                "evidence": health_evidence,
+            },
+            "release_maturity": {
+                "score": release_score,
+                "max_score": 100,
+                "status": status_label(release_score),
+                "evidence": release_evidence,
+            },
+            "docs_quality": {
+                "score": docs_score,
+                "max_score": int(readme_result.get("max_score", 100)),
+                "status": status_label(docs_score),
+                "evidence": ["README score checklist"],
+            },
+            "ai_readiness": {
+                "score": ai_score,
+                "max_score": 100,
+                "status": status_label(ai_score),
+                "evidence": ai_evidence,
+            },
+        },
+        "key_signals": {
+            "entrypoints": repo.entrypoints[:5],
+            "tooling": repo.detected_tooling,
+            "symbols": len(repo.symbols),
+            "repo_graph_edges": len(repo.graph.edges),
+        },
+        "readme": {
+            "path": str(readme_result.get("path", "")),
+            "exists": bool(readme_result.get("exists", False)),
+            "missing_checks": readme_result.get("missing", []),
+            "present_checks": readme_result.get("present", []),
+        },
+        "suggested_skills": skills,
+        "suggested_priorities": priorities,
+        "repoaware_context": {
+            "summary": (
+                f"This repo is a {repo.project_type}. "
+                f"Repo health is {status_label(health_score)} ({health_score}/100). "
+                f"Release maturity is {status_label(release_score)} ({release_score}/100). "
+                f"Docs quality is {status_label(docs_score)} ({docs_score}/100). "
+                f"AI readiness is {status_label(ai_score)} ({ai_score}/100)."
+            ),
+            "prioritize": priorities[:3],
+        },
+    }
+
+
+def build_doctor_result(repo_path: str | Path = ".") -> dict[str, Any]:
+    repo = scan_repository(repo_path)
+    readme_result = score_readme(str(repo.path))
+    return build_doctor_result_from_repo(repo, readme_result)
+
+
+def format_doctor_report_from_result(result: dict[str, Any]) -> str:
+    scores = result["scores"]
+    summary = result["summary"]
+    key_signals = result["key_signals"]
+    readme = result["readme"]
+
+    health = scores["repo_health"]
+    release = scores["release_maturity"]
+    docs = scores["docs_quality"]
+    ai = scores["ai_readiness"]
+
+    lines: list[str] = []
     lines.append("# Repo Signal Doctor Report")
     lines.append("")
-    lines.append(f"Repo: `{repo.name}`")
-    lines.append(f"Path: `{repo.path}`")
+    lines.append(f"Repo: `{result['repo']['name']}`")
+    lines.append(f"Path: `{result['repo']['path']}`")
     lines.append("")
 
     lines.append("## Summary")
     lines.append("")
-    lines.append(f"- Project type: `{repo.project_type}`")
-    lines.append(f"- Files scanned: `{repo.repo_size_files}`")
-    lines.append(f"- Languages: `{', '.join(repo.languages.keys()) if repo.languages else 'none detected'}`")
-    lines.append(f"- Git repo: `{yes_no(repo.git.is_repo)}`")
-    lines.append(f"- Working tree changes: `{repo.git.changed_files}`")
+    lines.append(f"- Project type: `{result['repo']['project_type']}`")
+    lines.append(f"- Files scanned: `{summary['files_scanned']}`")
+    lines.append(
+        f"- Languages: `{', '.join(summary['languages'].keys()) if summary['languages'] else 'none detected'}`"
+    )
+    lines.append(f"- Git repo: `{yes_no(summary['git_repo'])}`")
+    lines.append(f"- Working tree changes: `{summary['working_tree_changes']}`")
     lines.append("")
 
     lines.append("## Scores")
     lines.append("")
     lines.append("| Area | Score | Status | Evidence |")
     lines.append("|---|---:|---|---|")
-    lines.append(f"| Repo health | {health_score}/100 | {status_label(health_score)} | {format_evidence(health_evidence)} |")
-    lines.append(f"| Release maturity | {release_score}/100 | {status_label(release_score)} | {format_evidence(release_evidence)} |")
-    lines.append(f"| Docs quality | {docs_score}/100 | {status_label(docs_score)} | README score checklist |")
-    lines.append(f"| AI readiness | {ai_score}/100 | {status_label(ai_score)} | {format_evidence(ai_evidence)} |")
+    lines.append(f"| Repo health | {health['score']}/100 | {health['status']} | {format_evidence(health['evidence'])} |")
+    lines.append(f"| Release maturity | {release['score']}/100 | {release['status']} | {format_evidence(release['evidence'])} |")
+    lines.append(f"| Docs quality | {docs['score']}/100 | {docs['status']} | README score checklist |")
+    lines.append(f"| AI readiness | {ai['score']}/100 | {ai['status']} | {format_evidence(ai['evidence'])} |")
     lines.append("")
 
     lines.append("## Key Signals")
     lines.append("")
-    lines.append(f"- Entry points: `{', '.join(repo.entrypoints[:5]) if repo.entrypoints else 'none detected'}`")
-    lines.append(f"- Tooling: `{', '.join(repo.detected_tooling) if repo.detected_tooling else 'none detected'}`")
-    lines.append(f"- Symbols: `{len(repo.symbols)}`")
-    lines.append(f"- Repo graph edges: `{len(repo.graph.edges)}`")
-    lines.append(f"- README missing checks: `{', '.join(readme_result['missing']) if readme_result['missing'] else 'none'}`")
+    lines.append(
+        f"- Entry points: `{', '.join(key_signals['entrypoints']) if key_signals['entrypoints'] else 'none detected'}`"
+    )
+    lines.append(
+        f"- Tooling: `{', '.join(key_signals['tooling']) if key_signals['tooling'] else 'none detected'}`"
+    )
+    lines.append(f"- Symbols: `{key_signals['symbols']}`")
+    lines.append(f"- Repo graph edges: `{key_signals['repo_graph_edges']}`")
+    lines.append(
+        f"- README missing checks: `{', '.join(readme['missing_checks']) if readme['missing_checks'] else 'none'}`"
+    )
     lines.append("")
 
     lines.append("## Suggested Skills")
     lines.append("")
-    for skill in skills:
+    for skill in result["suggested_skills"]:
         lines.append(f"- `{skill}`")
     lines.append("")
 
     lines.append("## Suggested Priorities")
     lines.append("")
-    for index, priority in enumerate(priorities, start=1):
+    for index, priority in enumerate(result["suggested_priorities"], start=1):
         lines.append(f"{index}. {priority}")
     lines.append("")
 
     lines.append("## RepoAware Context")
     lines.append("")
     lines.append("```text")
-    lines.append(f"This repo is a {repo.project_type}.")
-    lines.append(f"Repo health is {status_label(health_score)} ({health_score}/100).")
-    lines.append(f"Release maturity is {status_label(release_score)} ({release_score}/100).")
-    lines.append(f"Docs quality is {status_label(docs_score)} ({docs_score}/100).")
-    lines.append(f"AI readiness is {status_label(ai_score)} ({ai_score}/100).")
+    lines.append(result["repoaware_context"]["summary"])
     lines.append("Prioritize:")
-    for index, priority in enumerate(priorities[:3], start=1):
+    for index, priority in enumerate(result["repoaware_context"]["prioritize"], start=1):
         lines.append(f"{index}. {priority}")
     lines.append("```")
 
     return "\n".join(lines)
 
 
-def doctor_repo(repo_path: str | Path = ".") -> str:
-    repo = scan_repository(repo_path)
-    readme_result = score_readme(str(repo.path))
-    return format_doctor_report(repo, readme_result)
+def format_doctor_report(repo: Repository, readme_result: dict[str, Any]) -> str:
+    return format_doctor_report_from_result(build_doctor_result_from_repo(repo, readme_result))
+
+
+def format_doctor_json(result: dict[str, Any]) -> str:
+    return json.dumps(result, indent=2, sort_keys=True)
+
+
+def doctor_repo(repo_path: str | Path = ".", output_format: str = "markdown") -> str:
+    normalized = output_format.lower()
+    if normalized == "text":
+        normalized = "markdown"
+    if normalized not in {"markdown", "json"}:
+        raise ValueError(f"Unknown doctor format: {output_format}")
+
+    result = build_doctor_result(repo_path)
+
+    if normalized == "json":
+        return format_doctor_json(result)
+
+    return format_doctor_report_from_result(result)

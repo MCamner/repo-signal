@@ -32,7 +32,7 @@ Usage:
   repo-signal actions init [path] [--fail-under score] [--force]
   repo-signal analyze [path]
   repo-signal ask [--mode mode] "question"
-  repo-signal doctor [path]
+  repo-signal doctor [path] [--format markdown|json] [--json]
   repo-signal scan
   repo-signal skill new <name> [--description text]
   repo-signal readme
@@ -1265,6 +1265,50 @@ def generate_roadmap_plan(repo: Path) -> str:
 
     return "\n".join(lines)
 
+def parse_doctor_args(args: list[str]) -> tuple[Path, str]:
+    repo = Path.cwd()
+    output_format = "markdown"
+    index = 0
+
+    while index < len(args):
+        arg = args[index]
+
+        if arg == "--json":
+            output_format = "json"
+            index += 1
+            continue
+
+        if arg == "--format":
+            if index + 1 >= len(args):
+                print("Missing value for --format")
+                raise SystemExit(2)
+            output_format = args[index + 1]
+            index += 2
+            continue
+
+        if arg.startswith("--format="):
+            output_format = arg.split("=", 1)[1]
+            index += 1
+            continue
+
+        if arg.startswith("-"):
+            print(f"Unknown doctor option: {arg}")
+            raise SystemExit(2)
+
+        repo = Path(arg).resolve()
+        index += 1
+
+    if output_format == "text":
+        output_format = "markdown"
+
+    if output_format not in {"markdown", "json"}:
+        print(f"Unknown doctor format: {output_format}")
+        print("Available formats: markdown, json")
+        raise SystemExit(2)
+
+    return repo, output_format
+
+
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
 
@@ -1365,7 +1409,8 @@ def main() -> None:
         return
 
     if command == "doctor":
-        print(doctor_repo(repo))
+        doctor_path, doctor_format = parse_doctor_args(sys.argv[2:])
+        print(doctor_repo(doctor_path, output_format=doctor_format))
         return
 
     if command == "readme":

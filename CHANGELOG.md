@@ -4,11 +4,26 @@
 
 ## [Unreleased]
 
+## [0.1.11] - 2026-05-20
+
 ### Added
 
 - `doctor --json` / `--format json` — machine-readable doctor output (schema version `doctor.v1`).
 - `doctor --json` short flag as alias for `--format json`.
 - `docs/DOCTOR_JSON.md` — JSON output documentation and schema reference.
+
+### Changed
+
+- `doctor_repo()` refactored into `build_doctor_result()` + `format_doctor_report_from_result()` for clean JSON/markdown separation.
+- All previous callers of `format_doctor_report()` remain compatible via thin wrapper.
+
+### Verified
+
+- 71 tests pass on Python 3.11 and 3.12.
+- `repo-signal doctor --json` produces valid `doctor.v1` JSON.
+- `repo-signal doctor --format json` and `--json` short flag both work.
+- `repo-signal doctor --format xml` exits with code 2.
+- mq-hal `doctor_commands()` falls back to `repo-signal doctor --json` automatically.
 
 ## [0.1.10] - 2026-05-15
 

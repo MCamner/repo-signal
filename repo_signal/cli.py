@@ -32,7 +32,7 @@ Usage:
   repo-signal actions init [path] [--fail-under score] [--force]
   repo-signal analyze [path]
   repo-signal ask [--mode mode] "question"
-  repo-signal demo
+  repo-signal demo [--generate] [path] [--output path] [--force]
   repo-signal doctor [path] [--format markdown|json] [--json]
   repo-signal scan
   repo-signal skill new <name> [--description text]
@@ -56,7 +56,7 @@ Commands:
              Create a GitHub Actions publish-checklist workflow
   analyze   Summarize repo type, stack, health, structure, tooling, and focus areas
   ask       Ask an AI provider using ranked RepoAware context
-  demo      Print a short copy-paste demo flow for trying repo-signal
+  demo      Print or generate a short repo-signal demo flow
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
   scan       Scan repo structure and basic project signals
   skill      Create repo-local Codex skills
@@ -80,6 +80,7 @@ Examples:
   repo-signal analyze
   repo-signal doctor
   repo-signal demo
+  repo-signal demo --generate
   repo-signal ask --dry-run "how does routing work"
   repo-signal scan
   repo-signal skill new repo-aware
@@ -1331,7 +1332,123 @@ Useful follow-up docs:
 - docs/DOCTOR_SCHEMA.md
 - docs/screenshots/README.md
 - examples/doctor/doctor.v1.json
+
+Generate local demo reports:
+
+```bash
+repo-signal demo --generate
+repo-signal demo --generate . --output examples/demo --force
+```
 """
+
+
+def parse_demo_args(args: list[str]) -> tuple[bool, Path, Path, bool]:
+    generate = False
+    repo = Path.cwd()
+    output = Path("examples/demo")
+    force = False
+    index = 0
+
+    while index < len(args):
+        arg = args[index]
+
+        if arg == "--generate":
+            generate = True
+            index += 1
+            continue
+
+        if arg == "--force":
+            force = True
+            index += 1
+            continue
+
+        if arg == "--output":
+            if index + 1 >= len(args):
+                print("Missing value for --output")
+                raise SystemExit(2)
+            output = Path(args[index + 1])
+            index += 2
+            continue
+
+        if arg.startswith("--output="):
+            output = Path(arg.split("=", 1)[1])
+            index += 1
+            continue
+
+        if arg.startswith("-"):
+            print(f"Unknown demo option: {arg}")
+            raise SystemExit(2)
+
+        repo = Path(arg).resolve()
+        index += 1
+
+    return generate, repo, output, force
+
+
+def write_demo_file(path: Path, content: str, force: bool) -> bool:
+    if path.exists() and not force:
+        return False
+
+    path.write_text(content.rstrip() + "\n", encoding="utf-8")
+    return True
+
+
+def generate_demo_reports(repo: Path, output: Path, force: bool = False) -> str:
+    output.mkdir(parents=True, exist_ok=True)
+
+    publish_result = build_publish_checklist(str(repo))
+    files = {
+        "analyze.txt": analyze_repo(str(repo)),
+        "doctor.txt": doctor_repo(repo),
+        "doctor.v1.json": doctor_repo(repo, output_format="json"),
+        "publish-checklist.txt": format_publish_checklist(publish_result),
+        "README.md": f"""# repo-signal Demo Reports
+
+Generated from `{repo}`.
+
+Files:
+
+- `analyze.txt`
+- `doctor.txt`
+- `doctor.v1.json`
+- `publish-checklist.txt`
+
+Regenerate:
+
+```bash
+repo-signal demo --generate {repo} --output {output} --force
+```
+""",
+    }
+
+    written = []
+    skipped = []
+    for name, content in files.items():
+        path = output / name
+        if write_demo_file(path, content, force):
+            written.append(name)
+        else:
+            skipped.append(name)
+
+    lines = []
+    lines.append("# repo-signal demo generated")
+    lines.append("")
+    lines.append(f"Repo: `{repo}`")
+    lines.append(f"Output: `{output.resolve()}`")
+    lines.append("")
+    if written:
+        lines.append("Written:")
+        for name in written:
+            lines.append(f"- `{output / name}`")
+    if skipped:
+        lines.append("")
+        lines.append("Skipped existing files:")
+        for name in skipped:
+            lines.append(f"- `{output / name}`")
+        lines.append("")
+        lines.append("Run with `--force` to overwrite existing demo reports.")
+
+    return "\n".join(lines)
 
 
 def main() -> None:
@@ -1346,7 +1463,11 @@ def main() -> None:
         return
 
     if command == "demo":
-        print(demo_text())
+        generate, demo_repo, output, force = parse_demo_args(sys.argv[2:])
+        if generate:
+            print(generate_demo_reports(demo_repo, output, force=force))
+        else:
+            print(demo_text())
         return
 
     if command == "repoaware":

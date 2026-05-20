@@ -14,6 +14,12 @@ Golden output examples:
 - [analyze output](../../examples/analyze/analyze.txt)
 - [repoaware review output](../../examples/repoaware/review.md)
 
+Generate a fresh local gallery with:
+
+```bash
+repo-signal demo --generate
+```
+
 Recommended future image assets:
 
 - `publish-checklist.png`

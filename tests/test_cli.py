@@ -132,6 +132,38 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("repo-signal doctor --json", result.stdout)
         self.assertIn("repo-signal publish-checklist .", result.stdout)
 
+    def test_demo_generate_writes_demo_reports(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+        output = root / "examples" / "demo"
+
+        result = run_repo_signal(["demo", "--generate", str(root), "--output", str(output)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("# repo-signal demo generated", result.stdout)
+        self.assertTrue((output / "README.md").exists())
+        self.assertTrue((output / "analyze.txt").exists())
+        self.assertTrue((output / "doctor.txt").exists())
+        self.assertTrue((output / "doctor.v1.json").exists())
+        self.assertTrue((output / "publish-checklist.txt").exists())
+
+        data = json.loads((output / "doctor.v1.json").read_text(encoding="utf-8"))
+        self.assertEqual(data["schema_version"], "doctor.v1")
+        self.assertEqual(data["repo"]["name"], root.name)
+
+    def test_demo_generate_skips_existing_files_without_force(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+        output = root / "examples" / "demo"
+        output.mkdir(parents=True)
+        (output / "analyze.txt").write_text("keep me\n", encoding="utf-8")
+
+        result = run_repo_signal(["demo", "--generate", str(root), "--output", str(output)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("Skipped existing files", result.stdout)
+        self.assertEqual((output / "analyze.txt").read_text(encoding="utf-8"), "keep me\n")
+
     def test_scan_command_detects_core_files(self):
         temp, root = make_sample_repo()
         self.addCleanup(temp.cleanup)

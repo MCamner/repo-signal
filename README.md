@@ -242,6 +242,13 @@ Golden outputs live under [examples](examples/):
 - [analyze output](examples/analyze/analyze.txt)
 - [repoaware review output](examples/repoaware/review.md)
 
+Generate fresh local demo reports with:
+
+```bash
+repo-signal demo --generate
+repo-signal demo --generate . --output examples/demo --force
+```
+
 ---
 
 ## Current features

@@ -25,12 +25,15 @@ Good for:
 ## repo-signal demo
 
 Purpose:
-Prints a short copy-paste flow for trying the main commands.
+Prints a short copy-paste flow for trying the main commands, or generates local demo reports.
 
 Usage:
 
 ```bash
 repo-signal demo
+repo-signal demo --generate
+repo-signal demo --generate . --output examples/demo
+repo-signal demo --generate . --output examples/demo --force
 ```
 
 Output includes:
@@ -40,6 +43,14 @@ Output includes:
 - `repo-signal doctor --json`
 - `repo-signal publish-checklist .`
 - `repo-signal repoaware --mode review --format markdown "what should I inspect first"`
+
+Generated files:
+
+- `README.md`
+- `analyze.txt`
+- `doctor.txt`
+- `doctor.v1.json`
+- `publish-checklist.txt`
 
 ## repo-signal doctor
 

@@ -63,6 +63,7 @@ See the [Command Surface](docs/COMMAND_SURFACE.md) and [Command Reference](docs/
 - [Doctor Report (JSON)](examples/doctor/doctor.v1.json)
 - [Analyze Report](examples/analyze/analyze.txt)
 - [Inspect Report](examples/inspect/inspect.txt)
+- [Inspect JSON (inspect.v1)](examples/inspect/inspect.v1.json)
 - [RepoAware Review](examples/repoaware/review.md)
 
 Generate your own local demo reports:
@@ -79,6 +80,7 @@ repo-signal demo --generate
 - [**Semantic Memory**](docs/SEMANTIC_MEMORY.md) — Uploading symbol maps to vector stores
 - [**Publish Checklist**](docs/PUBLISH_CHECKLIST.md) — CI quality gates and portfolio checks
 - [**Command Reference**](docs/COMMANDS.md) — Detailed CLI usage and flags
+- [**Inspect Schema**](docs/INSPECT_SCHEMA.md) — Machine-readable contract for `inspect --json`
 - [**Doctor Schema**](docs/DOCTOR_SCHEMA.md) — Machine-readable contract for `doctor --json`
 - [**Repo Structure**](docs/README_STRUCTURE.md) — Best practices for project layout
 

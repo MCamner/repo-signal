@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.1.16] - 2026-05-21
+
 ### Added
 
 - Added root-level `ROADMAP.md` for clearer project direction and release readiness.
@@ -15,6 +17,14 @@
 
 - Clarified release checklist, version milestones, and integration contract expectations in roadmap.
 - Documented `inspect --json` and `inspect.v1` integration contract more prominently in `docs/COMMAND_SURFACE.md` and `docs/index.html`.
+
+### Verified
+
+- 78 tests pass.
+- `repo-signal inspect --json` returns `schema: inspect.v1`.
+- `repo-signal publish-checklist . --fail-under 16` passes with 16/16.
+- `repo-signal doctor` reports 100/100 across all categories.
+- GitHub Actions green after push.
 
 ## [0.1.15] - 2026-05-21
 

@@ -132,15 +132,24 @@ How do I make it easier for others to understand?
 
 ## Current status
 
-Early MVP.
+Early but usable CLI tool.
 
-The first version can run a local scan and print a Markdown report.
+The core workflows are available:
+
+- repository analysis
+- doctor readiness reports
+- README scoring
+- publish checklist
+- RepoAware context export
+- doctor JSON output
+- demo report generation
 
 Front-door analysis:
 
 ```bash
 repo-signal analyze
 repo-signal doctor
+repo-signal demo
 ```
 
 Public readiness and quality:
@@ -261,6 +270,8 @@ repo-signal demo --generate . --output examples/demo --force
 - README quality scoring
 - publish checklist command for checking README, docs, screenshots, roadmap,
   GitHub Pages, and release readiness
+- doctor JSON output with `doctor.v1` schema
+- generated demo reports
 - GitHub Actions workflow initializer for publish checklist quality gates
 - RepoAware context export for AI-assisted code questions
 - RepoAware modes for debug, explain, architect, and review workflows
@@ -286,34 +297,51 @@ repo-signal demo --generate . --output examples/demo --force
 
 ---
 
-## Planned commands
+## Available commands
 
 ```bash
 # scanning and analysis
 repo-signal scan
 repo-signal analyze
 repo-signal doctor
+repo-signal demo
+repo-signal demo --generate
 
 # readme and docs
 repo-signal readme
 repo-signal readme-score .
+repo-signal publish-checklist .
 
 # wiki
 repo-signal wiki
 repo-signal wiki plan .
 repo-signal wiki export . --output docs/wiki-export
 
-# roadmap and hygiene
+# roadmap, hygiene, and portfolio
 repo-signal roadmap
 repo-signal hygiene
+repo-signal portfolio check
 
 # ai-assisted context
+repo-signal ask --dry-run "how does routing work"
 repo-signal repoaware --mode debug "how does routing work"
 repo-signal repoaware --mode review --format markdown "what should I inspect first"
+repo-signal semantic "routing system"
+repo-signal semantic-upload --dry-run
 
 # skills and ci
 repo-signal skill new repo-aware
 repo-signal actions init
+repo-signal export-codex repo-product-auditor
+```
+
+---
+
+## Future command ideas
+
+```bash
+# deeper inspection
+repo-signal inspect
 
 # patch and positioning
 repo-signal patch

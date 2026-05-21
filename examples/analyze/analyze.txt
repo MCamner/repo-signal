@@ -10,7 +10,7 @@ Path: `/Users/mansys/repo-signal`
 - Approx size: `3.73 MB`
 - Git repo: `yes`
 - Git branch: `main`
-- Working tree changes: `6`
+- Working tree changes: `1`
 
 ## Languages
 
@@ -56,13 +56,8 @@ Path: `/Users/mansys/repo-signal`
 
 ## Git Health
 
-- [MED] Working tree has changes: `6`
+- [MED] Working tree has changes: `1`
   - `M README.md`
-  - ` M docs/COMMANDS.md`
-  - ` M docs/screenshots/README.md`
-  - ` M repo_signal/cli.py`
-  - ` M tests/test_cli.py`
-  - `?? examples/demo/`
 
 ## Suggested Focus Areas
 

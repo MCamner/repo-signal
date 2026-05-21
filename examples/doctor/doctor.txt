@@ -9,7 +9,7 @@ Path: `/Users/mansys/repo-signal`
 - Files scanned: `136`
 - Languages: `Python, Markdown, JSON, YAML, TOML, Shell, HTML`
 - Git repo: `yes`
-- Working tree changes: `6`
+- Working tree changes: `1`
 
 ## Scores
 

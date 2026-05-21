@@ -1,7 +1,7 @@
 PUBLISH CHECKLIST
 =================
 Repo: repo-signal
-Score: 16/16
+Score: 15/16
 
 Front door
 ----------
@@ -9,7 +9,7 @@ Front door
 - [OK] README has quick start
 - [OK] README links to GitHub Pages
 - [OK] README mentions demo
-- [OK] README mentions screenshots or gallery
+- [WARN] README mentions screenshots or gallery: add screenshots or a gallery
 
 Public quality
 --------------
@@ -30,4 +30,4 @@ GitHub Pages
 
 Recommended next action
 -----------------------
-Repo looks publish-ready from the static checklist.
+Fix: README mentions screenshots or gallery (add screenshots or a gallery)

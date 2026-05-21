@@ -6,17 +6,17 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `139`
-- Approx size: `3.74 MB`
+- Files scanned: `146`
+- Approx size: `3.75 MB`
 - Git repo: `yes`
 - Git branch: `main`
-- Working tree changes: `17`
+- Working tree changes: `8`
 
 ## Languages
 
+- Markdown: `54` files
 - Python: `53` files
-- Markdown: `48` files
-- JSON: `5` files
+- JSON: `6` files
 - YAML: `3` files
 - TOML: `1` files
 - Shell: `1` files
@@ -35,8 +35,8 @@ Path: `/Users/mansys/repo-signal`
 ## Top Directories
 
 - `repo_signal`: `47` files
-- `examples`: `25` files
-- `docs`: `19` files
+- `examples`: `26` files
+- `docs`: `25` files
 - `skills`: `14` files
 - `.`: `10` files
 - `.repo-signal`: `9` files
@@ -56,17 +56,15 @@ Path: `/Users/mansys/repo-signal`
 
 ## Git Health
 
-- [MED] Working tree has changes: `17`
+- [MED] Working tree has changes: `8`
   - `M CHANGELOG.md`
-  - ` M README.md`
   - ` M docs/COMMANDS.md`
-  - ` M docs/ROADMAP.md`
-  - ` M docs/screenshots/README.md`
-  - ` M examples/analyze/analyze.txt`
-  - ` M examples/demo/README.md`
-  - ` M examples/demo/analyze.txt`
-  - ` M examples/demo/doctor.txt`
-  - ` M examples/demo/doctor.v1.json`
+  - ` M examples/inspect/inspect.txt`
+  - ` M repo_signal/cli.py`
+  - ` M repo_signal/inspect.py`
+  - ` M tests/test_cli.py`
+  - `?? docs/INSPECT_SCHEMA.md`
+  - `?? examples/inspect/inspect.v1.json`
 
 ## Suggested Focus Areas
 

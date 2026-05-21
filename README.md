@@ -13,6 +13,8 @@ prototypes into clear, publishable GitHub projects.
 
 ## Install
 
+Current local development install:
+
 ```bash
 git clone https://github.com/MCamner/repo-signal.git
 cd repo-signal
@@ -20,6 +22,15 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[ai]"
 ```
+
+Future target:
+
+```bash
+pipx install repo-signal
+```
+
+`pipx` support is a packaging goal, not a published install path yet.
+See [Packaging](docs/PACKAGING.md).
 
 ---
 
@@ -97,6 +108,7 @@ repo-signal demo --generate
 - [**Command Reference**](docs/COMMANDS.md) — Detailed CLI usage and flags
 - [**Roadmap**](ROADMAP.md) — Release direction, integration plan, and readiness checklist
 - [**Generated Examples**](docs/GENERATED_EXAMPLES.md) — How examples are generated and verified before release
+- [**Packaging**](docs/PACKAGING.md) — PyPI / pipx readiness plan and packaging smoke tests
 - [**Inspect Schema**](docs/INSPECT_SCHEMA.md) — Machine-readable contract for `inspect --json`
 - [**Doctor Schema**](docs/DOCTOR_SCHEMA.md) — Machine-readable contract for `doctor --json`
 - [**Repo Structure**](docs/README_STRUCTURE.md) — Best practices for project layout

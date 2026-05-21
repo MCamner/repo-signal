@@ -104,6 +104,17 @@ else
   cat /tmp/repo-signal-release-pytest.txt
 fi
 
+# ── Packaging readiness ──────────────────────────────────────────────────────
+
+section "Packaging readiness"
+
+if scripts/check-packaging.sh > /tmp/repo-signal-release-packaging.txt 2>&1; then
+  ok "Packaging check passed"
+else
+  fail "Packaging check failed"
+  cat /tmp/repo-signal-release-packaging.txt
+fi
+
 # ── Generated examples ───────────────────────────────────────────────────────
 
 section "Generated examples"

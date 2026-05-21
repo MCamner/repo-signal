@@ -53,10 +53,16 @@ repo-signal
 
 ## Now
 
-Focus: `v0.1.17 — generated example verification`
+Focus: `v0.1.19 — PyPI / pipx readiness plan`
 
 Planned work:
 
+- [ ] Add `docs/PACKAGING.md`
+- [ ] Add `scripts/check-packaging.sh`
+- [ ] Add packaging CI workflow
+- [ ] Validate wheel build and clean virtual environment install
+- [ ] Verify console script from installed wheel
+- [ ] Document future pipx install path without claiming publication
 - [ ] Add `scripts/check-generated-examples.sh`
 - [ ] Add `scripts/generate-examples.sh`
 - [ ] Add CI workflow for generated examples
@@ -103,6 +109,7 @@ repo-signal doctor
 repo-signal publish-checklist . --fail-under 16
 repo-signal demo --generate . --output examples/demo --force
 scripts/check-generated-examples.sh
+scripts/check-packaging.sh
 ```
 
 A release should only be created when:
@@ -128,6 +135,7 @@ Examples:
 v0.1.15 — inspect JSON integration contract
 v0.1.16 — integration docs and release polish
 v0.1.17 — generated examples verification
+v0.1.19 — PyPI / pipx readiness plan
 v0.2.0  — stable local repo intelligence CLI
 ```
 

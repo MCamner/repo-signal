@@ -1,0 +1,22 @@
+name: Packaging
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  packaging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run packaging readiness check
+        run: |
+          scripts/check-packaging.sh

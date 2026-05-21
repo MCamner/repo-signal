@@ -4,204 +4,215 @@
 
 ## [Unreleased]
 
+### Added
+
+* Added `docs/PACKAGING.md` with PyPI / pipx readiness guidance.
+* Added `scripts/check-packaging.sh` for local wheel-build and clean install smoke tests.
+* Added packaging CI workflow.
+
+### Changed
+
+* Updated README install section to separate local development install from future pipx target.
+* Updated roadmap release readiness checklist with packaging checks.
+
 ## [0.1.18] - 2026-05-21
 
 ### Changed
 
-- Rewrote `release.sh` as a full release workflow tool with structured checks and `--publish` flag.
-- `release.sh` now verifies: version sync, CHANGELOG entry, clean git tree, tests, generated examples, `inspect --json` schema, publish-checklist score, README score, and wiki state.
-- `release.sh --publish` tags, pushes, and creates a GitHub release with notes pulled from CHANGELOG.
-- Dry run (`./release.sh`) blocks on failures and shows a summary table.
+* Rewrote `release.sh` as a full release workflow tool with structured checks and `--publish` flag.
+* `release.sh` now verifies: version sync, CHANGELOG entry, clean git tree, tests, generated examples, `inspect --json` schema, publish-checklist score, README score, and wiki state.
+* `release.sh --publish` tags, pushes, and creates a GitHub release with notes pulled from CHANGELOG.
+* Dry run (`./release.sh`) blocks on failures and shows a summary table.
 
 ### Verified
 
-- 78 tests pass.
-- `scripts/check-generated-examples.sh` passes.
-- `repo-signal publish-checklist . --fail-under 16` passes 16/16.
-- `./release.sh` runs clean and shows all checks.
+* 78 tests pass.
+* `scripts/check-generated-examples.sh` passes.
+* `repo-signal publish-checklist . --fail-under 16` passes 16/16.
+* `./release.sh` runs clean and shows all checks.
 
 ## [0.1.17] - 2026-05-21
 
 ### Added
 
-- Added `scripts/check-generated-examples.sh` for generated example verification.
-- Added `scripts/generate-examples.sh` for refreshing canonical examples.
-- Added generated examples CI workflow (`.github/workflows/examples.yml`).
-- Added `docs/GENERATED_EXAMPLES.md`.
+* Added `scripts/check-generated-examples.sh` for generated example verification.
+* Added `scripts/generate-examples.sh` for refreshing canonical examples.
+* Added generated examples CI workflow (`.github/workflows/examples.yml`).
+* Added `docs/GENERATED_EXAMPLES.md`.
 
 ### Changed
 
-- Updated README and roadmap with generated example verification guidance.
-- Strengthened release readiness workflow with example check step.
+* Updated README and roadmap with generated example verification guidance.
+* Strengthened release readiness workflow with example check step.
 
 ### Verified
 
-- 78 tests pass.
-- `scripts/check-generated-examples.sh` passes.
-- `repo-signal publish-checklist . --fail-under 16` passes 16/16.
-- Generated examples CI workflow is green.
+* 78 tests pass.
+* `scripts/check-generated-examples.sh` passes.
+* `repo-signal publish-checklist . --fail-under 16` passes 16/16.
+* Generated examples CI workflow is green.
 
 ## [0.1.16] - 2026-05-21
 
 ### Added
 
-- Added root-level `ROADMAP.md` for clearer project direction and release readiness.
-- Added roadmap links from README and GitHub Pages docs.
-- Added `docs/INTEGRATIONS.md` — integration guide for mqlaunch, mq-mcp, mq-hal, and Bridget consuming `inspect.v1`.
-- Added `inspect --json` to README quick-start and command surface.
+* Added root-level `ROADMAP.md` for clearer project direction and release readiness.
+* Added roadmap links from README and GitHub Pages docs.
+* Added `docs/INTEGRATIONS.md` — integration guide for mqlaunch, mq-mcp, mq-hal, and Bridget consuming `inspect.v1`.
+* Added `inspect --json` to README quick-start and command surface.
 
 ### Changed
 
-- Clarified release checklist, version milestones, and integration contract expectations in roadmap.
-- Documented `inspect --json` and `inspect.v1` integration contract more prominently in `docs/COMMAND_SURFACE.md` and `docs/index.html`.
+* Clarified release checklist, version milestones, and integration contract expectations in roadmap.
+* Documented `inspect --json` and `inspect.v1` integration contract more prominently in `docs/COMMAND_SURFACE.md` and `docs/index.html`.
 
 ### Verified
 
-- 78 tests pass.
-- `repo-signal inspect --json` returns `schema: inspect.v1`.
-- `repo-signal publish-checklist . --fail-under 16` passes with 16/16.
-- `repo-signal doctor` reports 100/100 across all categories.
-- GitHub Actions green after push.
+* 78 tests pass.
+* `repo-signal inspect --json` returns `schema: inspect.v1`.
+* `repo-signal publish-checklist . --fail-under 16` passes with 16/16.
+* `repo-signal doctor` reports 100/100 across all categories.
+* GitHub Actions green after push.
 
 ## [0.1.15] - 2026-05-21
 
 ### Added
 
-- `repo-signal inspect --json` and `repo-signal inspect --format json`.
-- `inspect.v1` JSON integration contract for mqlaunch, mq-hal, mq-mcp, Bridget, CI helpers, and dashboards.
-- `docs/INSPECT_SCHEMA.md`.
-- `inspect.v1.json` generated as part of `repo-signal demo --generate`.
+* `repo-signal inspect --json` and `repo-signal inspect --format json`.
+* `inspect.v1` JSON integration contract for mqlaunch, mq-hal, mq-mcp, Bridget, CI helpers, and dashboards.
+* `docs/INSPECT_SCHEMA.md`.
+* `inspect.v1.json` generated as part of `repo-signal demo --generate`.
 
 ### Changed
 
-- Updated command reference (`docs/COMMANDS.md`) to document the inspect JSON contract.
+* Updated command reference (`docs/COMMANDS.md`) to document the inspect JSON contract.
 
 ## [0.1.14] - 2026-05-21
 
 ### Changed
 
-- Massive README split and documentation refactor for better discoverability.
-- Modularized documentation moved to `docs/`: `REPOAWARE.md`, `SEMANTIC_MEMORY.md`, `PUBLISH_CHECKLIST.md`, `README_STRUCTURE.md`, and `COMMAND_SURFACE.md`.
-- Streamlined `README.md` to focus on pitch, installation, and quick-start, linking to deeper docs.
-- Updated "Planned features" in README with clear "Not started" vs "Partially implemented" status.
+* Massive README split and documentation refactor for better discoverability.
+* Modularized documentation moved to `docs/`: `REPOAWARE.md`, `SEMANTIC_MEMORY.md`, `PUBLISH_CHECKLIST.md`, `README_STRUCTURE.md`, and `COMMAND_SURFACE.md`.
+* Streamlined `README.md` to focus on pitch, installation, and quick-start, linking to deeper docs.
+* Updated "Planned features" in README with clear "Not started" vs "Partially implemented" status.
 
 ### Verified
 
-- 75 tests pass.
-- All new documentation links are verified.
-- README score remains high with clearer structure.
+* 75 tests pass.
+* All new documentation links are verified.
+* README score remains high with clearer structure.
 
 ## [0.1.13] - 2026-05-21
 
 ### Added
 
-- `repo-signal inspect [path]` for fast repository status, detected signals, likely issues, and recommended next commit.
-- Inspect output examples under `examples/inspect/` and `examples/demo/`.
+* `repo-signal inspect [path]` for fast repository status, detected signals, likely issues, and recommended next commit.
+* Inspect output examples under `examples/inspect/` and `examples/demo/`.
 
 ### Changed
 
-- Added `inspect` to CLI help, command reference, README command surface, roadmap, and tests.
-- `repo-signal demo --generate` now includes `inspect.txt`.
+* Added `inspect` to CLI help, command reference, README command surface, roadmap, and tests.
+* `repo-signal demo --generate` now includes `inspect.txt`.
 
 ### Verified
 
-- 75 tests pass locally.
-- `repo-signal inspect .` reports public readiness, detected signals, core files, possible issues, and recommended next commit.
-- Smoke-tested `inspect` against `repo-signal`, `macos-scripts`, `mq-mcp`, and `coolThing`.
-- GitHub Actions Tests, Publish Checklist, and Pages deployment are green for the inspect commit.
+* 75 tests pass locally.
+* `repo-signal inspect .` reports public readiness, detected signals, core files, possible issues, and recommended next commit.
+* Smoke-tested `inspect` against `repo-signal`, `macos-scripts`, `mq-mcp`, and `coolThing`.
+* GitHub Actions Tests, Publish Checklist, and Pages deployment are green for the inspect commit.
 
 ## [0.1.12] - 2026-05-21
 
 ### Added
 
-- `repo-signal demo --generate` for creating local demo reports.
-- Generated demo reports under `examples/demo/`.
-- Golden output examples for doctor, analyze, and RepoAware workflows.
-- Screenshot/output gallery documentation.
-- Command reference and doctor schema links from README.
+* `repo-signal demo --generate` for creating local demo reports.
+* Generated demo reports under `examples/demo/`.
+* Golden output examples for doctor, analyze, and RepoAware workflows.
+* Screenshot/output gallery documentation.
+* Command reference and doctor schema links from README.
 
 ### Changed
 
-- Improved README onboarding and public-facing positioning.
-- Replaced "Early MVP" status with "Early but usable CLI tool".
-- Split available commands from future command ideas.
-- Refreshed doctor and analyze examples after demo generation.
+* Improved README onboarding and public-facing positioning.
+* Replaced "Early MVP" status with "Early but usable CLI tool".
+* Split available commands from future command ideas.
+* Refreshed doctor and analyze examples after demo generation.
 
 ### Verified
 
-- 74 tests pass.
-- `repo-signal doctor` reports 100/100 across repo health, release maturity, docs quality, and AI readiness.
-- `repo-signal publish-checklist . --fail-under 16` passes with 16/16.
-- GitHub Actions Tests, Publish Checklist, and Pages deployment are green.
+* 74 tests pass.
+* `repo-signal doctor` reports 100/100 across repo health, release maturity, docs quality, and AI readiness.
+* `repo-signal publish-checklist . --fail-under 16` passes with 16/16.
+* GitHub Actions Tests, Publish Checklist, and Pages deployment are green.
 
 ## [0.1.11] - 2026-05-20
 
 ### Added
 
-- `doctor --json` / `--format json` — machine-readable doctor output (schema version `doctor.v1`).
-- `doctor --json` short flag as alias for `--format json`.
-- `docs/DOCTOR_JSON.md` — JSON output documentation and schema reference.
+* `doctor --json` / `--format json` — machine-readable doctor output (schema version `doctor.v1`).
+* `doctor --json` short flag as alias for `--format json`.
+* `docs/DOCTOR_JSON.md` — JSON output documentation and schema reference.
 
 ### Changed
 
-- `doctor_repo()` refactored into `build_doctor_result()` + `format_doctor_report_from_result()` for clean JSON/markdown separation.
-- All previous callers of `format_doctor_report()` remain compatible via thin wrapper.
+* `doctor_repo()` refactored into `build_doctor_result()` + `format_doctor_report_from_result()` for clean JSON/markdown separation.
+* All previous callers of `format_doctor_report()` remain compatible via thin wrapper.
 
 ### Verified
 
-- 71 tests pass on Python 3.11 and 3.12.
-- `repo-signal doctor --json` produces valid `doctor.v1` JSON.
-- `repo-signal doctor --format json` and `--json` short flag both work.
-- `repo-signal doctor --format xml` exits with code 2.
-- mq-hal `doctor_commands()` falls back to `repo-signal doctor --json` automatically.
+* 71 tests pass on Python 3.11 and 3.12.
+* `repo-signal doctor --json` produces valid `doctor.v1` JSON.
+* `repo-signal doctor --format json` and `--json` short flag both work.
+* `repo-signal doctor --format xml` exits with code 2.
+* mq-hal `doctor_commands()` falls back to `repo-signal doctor --json` automatically.
 
 ## [0.1.10] - 2026-05-15
 
 ### Fixed
 
-- `repo-signal semantic-upload --dry-run` now works fully offline without `OPENAI_VECTOR_STORE_ID`.
-- Dry-run output shows `(not set)` for vector store when no target is configured.
-- Real upload still requires `OPENAI_VECTOR_STORE_ID` or `--vector-store-id`.
+* `repo-signal semantic-upload --dry-run` now works fully offline without `OPENAI_VECTOR_STORE_ID`.
+* Dry-run output shows `(not set)` for vector store when no target is configured.
+* Real upload still requires `OPENAI_VECTOR_STORE_ID` or `--vector-store-id`.
 
 ### Added
 
-- `semantic-upload` documented in README with full generation flow and command variants.
-- `semantic-upload` added to the command surface tree.
-- Install section added to README with copy-paste clone and setup instructions.
-- Regression test: `test_openai_upload_dry_run_works_without_vector_store_id`.
+* `semantic-upload` documented in README with full generation flow and command variants.
+* `semantic-upload` added to the command surface tree.
+* Install section added to README with copy-paste clone and setup instructions.
+* Regression test: `test_openai_upload_dry_run_works_without_vector_store_id`.
 
 ### Changed
 
-- CI switched from `python -m unittest discover` to `pytest` to support both unittest and pytest-style tests.
+* CI switched from `python -m unittest discover` to `pytest` to support both unittest and pytest-style tests.
 
 ### Verified
 
-- `repo-signal semantic-upload --dry-run` works without any env vars set.
-- `repo-signal semantic-upload` fails clearly when `OPENAI_VECTOR_STORE_ID` is missing.
-- 68 tests pass on Python 3.11 and 3.12.
-- Publish checklist scores 16/16.
+* `repo-signal semantic-upload --dry-run` works without any env vars set.
+* `repo-signal semantic-upload` fails clearly when `OPENAI_VECTOR_STORE_ID` is missing.
+* 68 tests pass on Python 3.11 and 3.12.
+* Publish checklist scores 16/16.
 
 ## [0.1.9] - 2026-05-12
 
 ### Added
 
-- Added `repo-signal portfolio check`.
-- Added portfolio-level publish-readiness checks across multiple local repositories.
-- Added support for text, Markdown, and JSON portfolio reports.
-- Added `repo-signal.yml` portfolio configuration.
-- Added portfolio check tests and example reports.
+* Added `repo-signal portfolio check`.
+* Added portfolio-level publish-readiness checks across multiple local repositories.
+* Added support for text, Markdown, and JSON portfolio reports.
+* Added `repo-signal.yml` portfolio configuration.
+* Added portfolio check tests and example reports.
 
 ### Changed
 
-- Documented portfolio quality workflow in README.
+* Documented portfolio quality workflow in README.
 
 ### Verified
 
-- `repo-signal portfolio check` works.
-- `repo-signal portfolio check --format markdown` works.
-- `repo-signal portfolio check --format json` works.
-- Test suite passes.
-- Publish checklist passes.
+* `repo-signal portfolio check` works.
+* `repo-signal portfolio check --format markdown` works.
+* `repo-signal portfolio check --format json` works.
+* Test suite passes.
+* Publish checklist passes.
 
 ### Scope
 

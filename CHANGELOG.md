@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.1.19] - 2026-05-22
+
 ### Added
 
 * Added `docs/PACKAGING.md` with PyPI / pipx readiness guidance.
@@ -14,6 +16,14 @@
 
 * Updated README install section to separate local development install from future pipx target.
 * Updated roadmap release readiness checklist with packaging checks.
+
+### Verified
+
+* `scripts/check-packaging.sh` passes.
+* `scripts/check-generated-examples.sh` passes.
+* 78 tests pass.
+* `repo-signal publish-checklist . --fail-under 16` passes 16/16.
+* Packaging CI, Tests, Publish Checklist, Generated examples — all green.
 
 ## [0.1.18] - 2026-05-21
 

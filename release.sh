@@ -1,105 +1,239 @@
 #!/usr/bin/env bash
+#
+# release.sh — repo-signal release workflow
+#
+# Usage:
+#   ./release.sh             # run all checks, no publish
+#   ./release.sh --publish   # run checks, tag, push, create GitHub release
+#
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT_DIR"
 
-echo "RELEASE CHECK"
-echo "============="
-echo
-echo "Repo: $ROOT_DIR"
-echo
+PUBLISH=0
+for arg in "$@"; do
+  [[ "$arg" == "--publish" || "$arg" == "--github-release" ]] && PUBLISH=1
+done
 
-echo "Git status"
-echo "----------"
-if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  git status --short
+PASS=0
+FAIL=0
+
+ok()   { echo "  [OK]   $*"; (( PASS++ )) || true; }
+warn() { echo "  [WARN] $*"; }
+fail() { echo "  [FAIL] $*" >&2; (( FAIL++ )) || true; }
+
+section() {
+  echo
+  echo "$*"
+  printf '%0.s-' $(seq 1 ${#1})
+  echo
+}
+
+# ── Version sync ─────────────────────────────────────────────────────────────
+
+section "Version"
+
+VERSION_FILE="$(cat VERSION 2>/dev/null | tr -d '[:space:]')"
+PYPROJECT_VERSION="$(python3 -c "
+import re, sys
+t = open('pyproject.toml').read()
+m = re.search(r'^version\s*=\s*\"([^\"]+)\"', t, re.MULTILINE)
+print(m.group(1) if m else '')
+")"
+INIT_VERSION="$(python3 -c "from repo_signal import __version__; print(__version__)")"
+
+echo "  VERSION:              $VERSION_FILE"
+echo "  pyproject.toml:       $PYPROJECT_VERSION"
+echo "  repo_signal.__version__: $INIT_VERSION"
+
+if [[ "$VERSION_FILE" == "$PYPROJECT_VERSION" && "$VERSION_FILE" == "$INIT_VERSION" ]]; then
+  ok "All three version sources agree: $VERSION_FILE"
 else
-  echo "Not a Git repository"
+  fail "Version mismatch — update VERSION, pyproject.toml, and repo_signal/__init__.py"
 fi
-echo
 
-echo "Version"
-echo "-------"
-python3 - <<'PY'
-from pathlib import Path
-import re
-import sys
+# ── CHANGELOG ────────────────────────────────────────────────────────────────
 
-from repo_signal import __version__
+section "CHANGELOG"
 
-version_file = Path("VERSION").read_text(encoding="utf-8").strip()
+if grep -qF "## [$VERSION_FILE]" CHANGELOG.md; then
+  ok "CHANGELOG.md has entry for $VERSION_FILE"
+else
+  fail "CHANGELOG.md is missing section for $VERSION_FILE"
+fi
 
-text = Path("pyproject.toml").read_text(encoding="utf-8")
-match = re.search(r'^version\s*=\s*"([^"]+)"', text, flags=re.MULTILINE)
-pyproject_version = match.group(1) if match else ""
+# ── Git state ─────────────────────────────────────────────────────────────────
 
-print(f"VERSION: {version_file}")
-print(f"pyproject.toml: {pyproject_version or 'missing'}")
-print(f"repo_signal.__version__: {__version__}")
+section "Git state"
 
-if not pyproject_version:
-    print("ERROR: missing pyproject.toml version", file=sys.stderr)
-    sys.exit(1)
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  DIRTY="$(git status --short)"
+  if [[ -z "$DIRTY" ]]; then
+    ok "Working tree is clean"
+  else
+    fail "Working tree has uncommitted changes — commit or stash before release"
+    git status --short | sed 's/^/    /'
+  fi
 
-if len({version_file, pyproject_version, __version__}) != 1:
-    print("ERROR: version mismatch", file=sys.stderr)
-    sys.exit(1)
+  BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+  if [[ "$BRANCH" == "main" ]]; then
+    ok "On branch main"
+  else
+    warn "On branch $BRANCH (expected main)"
+  fi
 
-changelog = Path("CHANGELOG.md")
-if not changelog.exists():
-    print("ERROR: CHANGELOG.md is missing", file=sys.stderr)
-    sys.exit(1)
+  if git tag | grep -qF "v$VERSION_FILE"; then
+    fail "Tag v$VERSION_FILE already exists"
+  else
+    ok "Tag v$VERSION_FILE does not yet exist"
+  fi
+else
+  fail "Not a Git repository"
+fi
 
-changelog_text = changelog.read_text(encoding="utf-8")
-if f"## [{version_file}]" not in changelog_text:
-    print(f"ERROR: CHANGELOG.md is missing section for {version_file}", file=sys.stderr)
-    sys.exit(1)
-PY
-echo
+# ── Tests ────────────────────────────────────────────────────────────────────
 
-echo "Tests"
-echo "-----"
-python3 -m unittest tests.test_cli
-echo
+section "Tests"
 
-echo "Doctor"
-echo "------"
-python3 -m repo_signal.cli doctor
-echo
+if python3 -m pytest -q 2>&1 | tee /tmp/repo-signal-release-pytest.txt | tail -1 | grep -qE "passed"; then
+  PASSED="$(grep -E "passed" /tmp/repo-signal-release-pytest.txt | tail -1)"
+  ok "Tests: $PASSED"
+else
+  fail "Tests failed"
+  cat /tmp/repo-signal-release-pytest.txt
+fi
 
-echo "README score"
-echo "------------"
-python3 -m repo_signal.cli readme-score .
-echo
+# ── Generated examples ───────────────────────────────────────────────────────
 
-echo "Wiki Command-Reference"
-echo "----------------------"
-if python3 tools/generate_wiki_command_ref.py; then
+section "Generated examples"
+
+if scripts/check-generated-examples.sh > /tmp/repo-signal-release-examples.txt 2>&1; then
+  ok "Generated examples check passed"
+else
+  fail "Generated examples check failed"
+  cat /tmp/repo-signal-release-examples.txt
+fi
+
+# ── inspect --json schema ────────────────────────────────────────────────────
+
+section "inspect --json schema"
+
+SCHEMA="$(python3 -m repo_signal.cli inspect --json . | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+print(d.get('schema', ''))
+")"
+
+if [[ "$SCHEMA" == "inspect.v1" ]]; then
+  ok "inspect --json returns schema: inspect.v1"
+else
+  fail "inspect --json returned unexpected schema: '$SCHEMA'"
+fi
+
+# ── Publish checklist ────────────────────────────────────────────────────────
+
+section "Publish checklist"
+
+SCORE="$(python3 -m repo_signal.cli publish-checklist . 2>&1 | grep -E "Score:" | head -1 | grep -oE "[0-9]+/[0-9]+")"
+if python3 -m repo_signal.cli publish-checklist . --fail-under 16 > /tmp/repo-signal-release-checklist.txt 2>&1; then
+  ok "Publish checklist: ${SCORE:-passed}"
+else
+  fail "Publish checklist below threshold"
+  tail -5 /tmp/repo-signal-release-checklist.txt
+fi
+
+# ── README score ─────────────────────────────────────────────────────────────
+
+section "README score"
+
+python3 -m repo_signal.cli readme-score . 2>&1 | tail -3
+
+# ── Wiki Command-Reference ───────────────────────────────────────────────────
+
+section "Wiki Command-Reference"
+
+if python3 tools/generate_wiki_command_ref.py > /tmp/repo-signal-wiki.txt 2>&1; then
   WIKI_TMP="$(mktemp -d)"
-  GENERATED="$HOME/repo-signal.wiki/Command-Reference.md"
   if git clone --quiet git@github.com:MCamner/repo-signal.wiki.git "$WIKI_TMP" 2>/dev/null; then
-    cp "$GENERATED" "$WIKI_TMP/Command-Reference.md"
+    GENERATED="$HOME/repo-signal.wiki/Command-Reference.md"
+    [[ -f "$GENERATED" ]] || GENERATED="$WIKI_TMP/Command-Reference.md"
+    cp "$GENERATED" "$WIKI_TMP/Command-Reference.md" 2>/dev/null || true
     cd "$WIKI_TMP"
     git add Command-Reference.md
     if git diff --cached --quiet; then
-      echo "[wiki] Command-Reference unchanged"
-    else
-      VERSION_VAL="$(cat "$ROOT_DIR/VERSION" 2>/dev/null || echo unknown)"
-      git commit -m "Update Command-Reference for v${VERSION_VAL}"
+      ok "Wiki Command-Reference unchanged"
+    elif [[ "$PUBLISH" == "1" ]]; then
+      git commit -m "Update Command-Reference for v${VERSION_FILE}"
       git push --quiet
-      echo "[wiki] Command-Reference pushed"
+      ok "Wiki Command-Reference pushed"
+    else
+      warn "Wiki Command-Reference has changes — will be pushed on --publish"
     fi
     cd "$ROOT_DIR"
     rm -rf "$WIKI_TMP"
   else
-    echo "[wiki] could not clone wiki repo, skipping push"
+    warn "Could not clone wiki repo — skipping"
     rm -rf "$WIKI_TMP"
   fi
 else
-  echo "[wiki] generator failed, skipping wiki push"
+  warn "Wiki generator failed — skipping"
 fi
-echo
 
-echo "Release check complete."
-echo "This script does not publish, tag, or push."
+# ── Summary ───────────────────────────────────────────────────────────────────
+
+echo
+echo "================================================"
+echo "RELEASE CHECK SUMMARY"
+echo "================================================"
+echo "  Version:  $VERSION_FILE"
+echo "  Passed:   $PASS"
+echo "  Failed:   $FAIL"
+echo "================================================"
+
+if [[ "$FAIL" -gt 0 ]]; then
+  echo
+  echo "Release blocked — fix the failures above before publishing."
+  exit 1
+fi
+
+echo
+echo "All checks passed."
+
+# ── Publish ───────────────────────────────────────────────────────────────────
+
+if [[ "$PUBLISH" == "0" ]]; then
+  echo
+  echo "Dry run complete. To tag and publish:"
+  echo "  ./release.sh --publish"
+  exit 0
+fi
+
+echo
+echo "Publishing v${VERSION_FILE}..."
+
+git tag "v${VERSION_FILE}"
+git push
+git push origin "v${VERSION_FILE}"
+
+NOTES="$(python3 - "$VERSION_FILE" <<'PY'
+import re, sys
+from pathlib import Path
+
+version = sys.argv[1]
+text = Path("CHANGELOG.md").read_text(encoding="utf-8")
+pattern = rf"## \[{re.escape(version)}\][^\n]*\n(.*?)(?=\n## \[|\Z)"
+m = re.search(pattern, text, re.DOTALL)
+if m:
+    print(m.group(1).strip())
+else:
+    print(f"Release {version}")
+PY
+)"
+
+gh release create "v${VERSION_FILE}" \
+  --title "v${VERSION_FILE}" \
+  --notes "$NOTES"
+
+echo
+echo "Released: https://github.com/MCamner/repo-signal/releases/tag/v${VERSION_FILE}"

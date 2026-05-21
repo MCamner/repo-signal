@@ -4,6 +4,22 @@
 
 ## [Unreleased]
 
+## [0.1.18] - 2026-05-21
+
+### Changed
+
+- Rewrote `release.sh` as a full release workflow tool with structured checks and `--publish` flag.
+- `release.sh` now verifies: version sync, CHANGELOG entry, clean git tree, tests, generated examples, `inspect --json` schema, publish-checklist score, README score, and wiki state.
+- `release.sh --publish` tags, pushes, and creates a GitHub release with notes pulled from CHANGELOG.
+- Dry run (`./release.sh`) blocks on failures and shows a summary table.
+
+### Verified
+
+- 78 tests pass.
+- `scripts/check-generated-examples.sh` passes.
+- `repo-signal publish-checklist . --fail-under 16` passes 16/16.
+- `./release.sh` runs clean and shows all checks.
+
 ## [0.1.17] - 2026-05-21
 
 ### Added

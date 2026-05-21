@@ -57,6 +57,16 @@ See the [Command Surface](docs/COMMAND_SURFACE.md) and [Command Reference](docs/
 
 ---
 
+## Screenshots
+
+![inspect](docs/screenshots/inspect.png)
+
+![publish-checklist](docs/screenshots/publish-checklist.png)
+
+![inspect --json](docs/screenshots/inspect-json.png)
+
+---
+
 ## Examples
 
 - [Doctor Report (Markdown)](examples/doctor/doctor.txt)

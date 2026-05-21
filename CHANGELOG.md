@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Documented `inspect --json` and `inspect.v1` integration contract more prominently in `docs/COMMAND_SURFACE.md` and `docs/index.html`.
+
 ## [0.1.15] - 2026-05-21
 
 ### Added

@@ -26,7 +26,13 @@ commit.
 ```bash
 repo-signal inspect
 repo-signal inspect ~/some-repo
+repo-signal inspect --json
+repo-signal inspect --format json
 ```
+
+`inspect --json` emits the stable `inspect.v1` JSON contract consumed by
+mqlaunch, mq-mcp, Bridget, mq-hal, and CI helpers. See
+[Inspect Schema](INSPECT_SCHEMA.md) for the full field reference.
 
 `analyze` is the front door. It summarizes project type, languages, key
 entrypoints, Git health, repo size, top directories, detected tooling, and

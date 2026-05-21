@@ -8,6 +8,8 @@
 
 - Added root-level `ROADMAP.md` for clearer project direction and release readiness.
 - Added roadmap links from README and GitHub Pages docs.
+- Added `docs/INTEGRATIONS.md` — integration guide for mqlaunch, mq-mcp, mq-hal, and Bridget consuming `inspect.v1`.
+- Added `inspect --json` to README quick-start and command surface.
 
 ### Changed
 

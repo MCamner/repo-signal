@@ -32,6 +32,9 @@ repo-signal analyze
 # Fast status report and next commit suggestion
 repo-signal inspect
 
+# Machine-readable status for integrations
+repo-signal inspect --json
+
 # Full readiness diagnosis
 repo-signal doctor
 
@@ -47,6 +50,7 @@ repo-signal publish-checklist .
 repo-signal
 ├── analyze            # Front-door orientation
 ├── inspect            # Fast status and next commit
+├── inspect --json     # Machine-readable inspect.v1 contract
 ├── doctor             # Full readiness diagnosis
 ├── publish-checklist  # Public signal quality gate
 ├── repoaware          # AI context export
@@ -86,6 +90,7 @@ repo-signal demo --generate
 
 ## Deep Documentation
 
+- [**Integrations**](docs/INTEGRATIONS.md) — How mqlaunch, mq-mcp, mq-hal, and Bridget consume `inspect.v1`
 - [**RepoAware**](docs/REPOAWARE.md) — High-signal AI context ranking and export
 - [**Semantic Memory**](docs/SEMANTIC_MEMORY.md) — Uploading symbol maps to vector stores
 - [**Publish Checklist**](docs/PUBLISH_CHECKLIST.md) — CI quality gates and portfolio checks

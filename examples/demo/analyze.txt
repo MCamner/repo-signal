@@ -6,20 +6,20 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `146`
-- Approx size: `3.75 MB`
+- Files scanned: `157`
+- Approx size: `4.06 MB`
 - Git repo: `yes`
 - Git branch: `main`
-- Working tree changes: `8`
+- Working tree changes: `13`
 
 ## Languages
 
-- Markdown: `54` files
-- Python: `53` files
-- JSON: `6` files
-- YAML: `3` files
+- Markdown: `57` files
+- Python: `54` files
+- JSON: `7` files
+- YAML: `4` files
+- Shell: `3` files
 - TOML: `1` files
-- Shell: `1` files
 - HTML: `1` files
 
 ## Key Entry Points
@@ -28,6 +28,9 @@ Path: `/Users/mansys/repo-signal`
 - release.sh
 - repo_signal/cli.py
 - repo_signal/repoaware/__main__.py
+- scripts/check-generated-examples.sh
+- scripts/generate-examples.sh
+- scripts/generate_screenshots.py
 - tools/build_prompt.py
 - tools/generate_wiki_command_ref.py
 - tools/skill_router.py
@@ -35,14 +38,15 @@ Path: `/Users/mansys/repo-signal`
 ## Top Directories
 
 - `repo_signal`: `47` files
-- `examples`: `26` files
-- `docs`: `25` files
+- `docs`: `30` files
+- `examples`: `27` files
 - `skills`: `14` files
-- `.`: `10` files
+- `.`: `11` files
 - `.repo-signal`: `9` files
-- `.github`: `6` files
+- `.github`: `7` files
 - `tools`: `3` files
 - `tests`: `3` files
+- `scripts`: `3` files
 - `.claude`: `2` files
 - `bin`: `1` files
 
@@ -56,15 +60,17 @@ Path: `/Users/mansys/repo-signal`
 
 ## Git Health
 
-- [MED] Working tree has changes: `8`
+- [MED] Working tree has changes: `13`
   - `M CHANGELOG.md`
-  - ` M docs/COMMANDS.md`
+  - ` M README.md`
+  - ` M ROADMAP.md`
+  - ` M examples/analyze/analyze.txt`
+  - ` M examples/doctor/doctor.txt`
+  - ` M examples/doctor/doctor.v1.json`
   - ` M examples/inspect/inspect.txt`
-  - ` M repo_signal/cli.py`
-  - ` M repo_signal/inspect.py`
-  - ` M tests/test_cli.py`
-  - `?? docs/INSPECT_SCHEMA.md`
-  - `?? examples/inspect/inspect.v1.json`
+  - ` M examples/inspect/inspect.v1.json`
+  - ` M examples/repoaware/review.md`
+  - `?? .github/workflows/examples.yml`
 
 ## Suggested Focus Areas
 

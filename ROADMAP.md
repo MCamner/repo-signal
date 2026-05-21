@@ -53,17 +53,15 @@ repo-signal
 
 ## Now
 
-Focus: `v0.1.16 — integration docs and release polish`
+Focus: `v0.1.17 — generated example verification`
 
 Planned work:
 
-- [ ] Add integration guide for `mqlaunch`
-- [ ] Add integration guide for `mq-mcp`
-- [ ] Add integration guide for `mq-hal`
-- [ ] Add Bridget workflow example
-- [ ] Document how consumers should validate `inspect.v1`
-- [ ] Keep README short and point deeper details to docs
-- [ ] Keep examples generated and current
+- [ ] Add `scripts/check-generated-examples.sh`
+- [ ] Add `scripts/generate-examples.sh`
+- [ ] Add CI workflow for generated examples
+- [ ] Add generated examples documentation
+- [ ] Verify `inspect.v1` and `doctor.v1` examples before release
 
 ## Next
 
@@ -104,6 +102,7 @@ repo-signal inspect --json . | python3 -m json.tool
 repo-signal doctor
 repo-signal publish-checklist . --fail-under 16
 repo-signal demo --generate . --output examples/demo --force
+scripts/check-generated-examples.sh
 ```
 
 A release should only be created when:

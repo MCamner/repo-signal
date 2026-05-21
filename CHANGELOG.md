@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added `scripts/check-generated-examples.sh` for generated example verification.
+- Added `scripts/generate-examples.sh` for refreshing canonical examples.
+- Added generated examples CI workflow (`.github/workflows/examples.yml`).
+- Added `docs/GENERATED_EXAMPLES.md`.
+
+### Changed
+
+- Updated README and roadmap with generated example verification guidance.
+- Strengthened release readiness workflow with example check step.
+
 ## [0.1.16] - 2026-05-21
 
 ### Added

@@ -6,20 +6,20 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `139`
-- Approx size: `3.74 MB`
+- Files scanned: `157`
+- Approx size: `4.04 MB`
 - Git repo: `yes`
 - Git branch: `main`
-- Working tree changes: `17`
+- Working tree changes: `8`
 
 ## Languages
 
-- Python: `53` files
-- Markdown: `48` files
-- JSON: `5` files
-- YAML: `3` files
+- Markdown: `57` files
+- Python: `54` files
+- JSON: `7` files
+- YAML: `4` files
+- Shell: `3` files
 - TOML: `1` files
-- Shell: `1` files
 - HTML: `1` files
 
 ## Key Entry Points
@@ -28,6 +28,9 @@ Path: `/Users/mansys/repo-signal`
 - release.sh
 - repo_signal/cli.py
 - repo_signal/repoaware/__main__.py
+- scripts/check-generated-examples.sh
+- scripts/generate-examples.sh
+- scripts/generate_screenshots.py
 - tools/build_prompt.py
 - tools/generate_wiki_command_ref.py
 - tools/skill_router.py
@@ -35,14 +38,15 @@ Path: `/Users/mansys/repo-signal`
 ## Top Directories
 
 - `repo_signal`: `47` files
-- `examples`: `25` files
-- `docs`: `19` files
+- `docs`: `30` files
+- `examples`: `27` files
 - `skills`: `14` files
-- `.`: `10` files
+- `.`: `11` files
 - `.repo-signal`: `9` files
-- `.github`: `6` files
+- `.github`: `7` files
 - `tools`: `3` files
 - `tests`: `3` files
+- `scripts`: `3` files
 - `.claude`: `2` files
 - `bin`: `1` files
 
@@ -56,17 +60,15 @@ Path: `/Users/mansys/repo-signal`
 
 ## Git Health
 
-- [MED] Working tree has changes: `17`
+- [MED] Working tree has changes: `8`
   - `M CHANGELOG.md`
   - ` M README.md`
-  - ` M docs/COMMANDS.md`
-  - ` M docs/ROADMAP.md`
-  - ` M docs/screenshots/README.md`
+  - ` M ROADMAP.md`
   - ` M examples/analyze/analyze.txt`
-  - ` M examples/demo/README.md`
-  - ` M examples/demo/analyze.txt`
-  - ` M examples/demo/doctor.txt`
-  - ` M examples/demo/doctor.v1.json`
+  - `?? .github/workflows/examples.yml`
+  - `?? docs/GENERATED_EXAMPLES.md`
+  - `?? scripts/check-generated-examples.sh`
+  - `?? scripts/generate-examples.sh`
 
 ## Suggested Focus Areas
 

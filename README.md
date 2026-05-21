@@ -96,6 +96,7 @@ repo-signal demo --generate
 - [**Publish Checklist**](docs/PUBLISH_CHECKLIST.md) — CI quality gates and portfolio checks
 - [**Command Reference**](docs/COMMANDS.md) — Detailed CLI usage and flags
 - [**Roadmap**](ROADMAP.md) — Release direction, integration plan, and readiness checklist
+- [**Generated Examples**](docs/GENERATED_EXAMPLES.md) — How examples are generated and verified before release
 - [**Inspect Schema**](docs/INSPECT_SCHEMA.md) — Machine-readable contract for `inspect --json`
 - [**Doctor Schema**](docs/DOCTOR_SCHEMA.md) — Machine-readable contract for `doctor --json`
 - [**Repo Structure**](docs/README_STRUCTURE.md) — Best practices for project layout

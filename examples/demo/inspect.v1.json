@@ -67,18 +67,21 @@
       "release.sh",
       "repo_signal/cli.py",
       "repo_signal/repoaware/__main__.py",
+      "scripts/check-generated-examples.sh",
+      "scripts/generate-examples.sh",
+      "scripts/generate_screenshots.py",
       "tools/build_prompt.py",
       "tools/generate_wiki_command_ref.py",
       "tools/skill_router.py"
     ],
     "languages": {
       "HTML": 1,
-      "JSON": 6,
-      "Markdown": 54,
-      "Python": 53,
-      "Shell": 1,
+      "JSON": 7,
+      "Markdown": 57,
+      "Python": 54,
+      "Shell": 3,
       "TOML": 1,
-      "YAML": 3
+      "YAML": 4
     },
     "tooling": [
       "Python packaging",
@@ -88,14 +91,15 @@
       "License"
     ],
     "top_directories": {
-      ".": 10,
+      ".": 11,
       ".claude": 2,
-      ".github": 6,
+      ".github": 7,
       ".repo-signal": 9,
       "bin": 1,
-      "docs": 25,
-      "examples": 26,
+      "docs": 30,
+      "examples": 27,
       "repo_signal": 47,
+      "scripts": 3,
       "skills": 14,
       "tests": 3,
       "tools": 3
@@ -103,31 +107,25 @@
   },
   "git": {
     "branch": "main",
-    "change_count": 8,
+    "change_count": 13,
     "clean": false,
     "is_repo": true,
-    "summary": "git repo, branch main, 8 working tree change(s)"
+    "summary": "git repo, branch main, 13 working tree change(s)"
   },
-  "issues": [
-    {
-      "level": "warn",
-      "message": "Publish checklist is not perfect (15/16): Fix: README mentions screenshots or gallery (add screenshots or a gallery)",
-      "raw": "[WARN] Publish checklist is not perfect (15/16): Fix: README mentions screenshots or gallery (add screenshots or a gallery)"
-    }
-  ],
+  "issues": [],
   "public_readiness": {
     "available": true,
     "error": null,
-    "recommended_next_action": "Fix: README mentions screenshots or gallery (add screenshots or a gallery)",
-    "score": 15,
-    "status": "warn",
-    "summary": "15/16 WARN",
+    "recommended_next_action": "Repo looks publish-ready from the static checklist.",
+    "score": 16,
+    "status": "ok",
+    "summary": "16/16 OK",
     "total": 16
   },
-  "recommended_next_commit": "Add screenshots or a gallery",
+  "recommended_next_commit": "Keep docs, examples, and command reference synced with the CLI",
   "repo": {
     "exists": true,
-    "files": 146,
+    "files": 157,
     "name": "repo-signal",
     "path": "/Users/mansys/repo-signal",
     "type": "Python CLI / repo intelligence toolkit"

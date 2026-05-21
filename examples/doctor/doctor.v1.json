@@ -5,10 +5,10 @@
       "release.sh",
       "repo_signal/cli.py",
       "repo_signal/repoaware/__main__.py",
-      "tools/build_prompt.py"
+      "scripts/check-generated-examples.sh"
     ],
     "repo_graph_edges": 81,
-    "symbols": 355,
+    "symbols": 377,
     "tooling": [
       "Python packaging",
       "GitHub Actions",
@@ -19,19 +19,20 @@
   },
   "readme": {
     "exists": true,
-    "missing_checks": [],
+    "missing_checks": [
+      "usage",
+      "contributing"
+    ],
     "path": "/Users/mansys/repo-signal/README.md",
     "present_checks": [
       "title",
       "short_pitch",
       "install",
-      "usage",
       "examples",
       "screenshots_demo",
       "badges",
       "license",
-      "roadmap",
-      "contributing"
+      "roadmap"
     ]
   },
   "repo": {
@@ -43,7 +44,7 @@
     "prioritize": [
       "Review current working tree changes before using the report as a baseline"
     ],
-    "summary": "This repo is a Python CLI / repo intelligence toolkit. Repo health is strong (90/100). Release maturity is strong (95/100). Docs quality is strong (100/100). AI readiness is strong (100/100)."
+    "summary": "This repo is a Python CLI / repo intelligence toolkit. Repo health is strong (90/100). Release maturity is strong (95/100). Docs quality is strong (80/100). AI readiness is strong (100/100)."
   },
   "schema_version": "doctor.v1",
   "scores": {
@@ -66,7 +67,7 @@
         "README score checklist"
       ],
       "max_score": 100,
-      "score": 100,
+      "score": 80,
       "status": "strong"
     },
     "release_maturity": {
@@ -107,18 +108,18 @@
     "architecture-map"
   ],
   "summary": {
-    "files_scanned": 139,
+    "files_scanned": 158,
     "git_branch": "main",
     "git_repo": true,
     "languages": {
       "HTML": 1,
-      "JSON": 5,
-      "Markdown": 48,
-      "Python": 53,
-      "Shell": 1,
+      "JSON": 7,
+      "Markdown": 57,
+      "Python": 54,
+      "Shell": 3,
       "TOML": 1,
-      "YAML": 3
+      "YAML": 4
     },
-    "working_tree_changes": 17
+    "working_tree_changes": 12
   }
 }

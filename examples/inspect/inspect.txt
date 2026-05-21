@@ -4,16 +4,16 @@ REPO INSPECTION
 Repo: repo-signal
 Path: /Users/mansys/repo-signal
 Type: Python CLI / repo intelligence toolkit
-Files: 145
-Git: git repo, branch main, 7 working tree change(s)
-Public readiness: 15/16 WARN
+Files: 157
+Git: git repo, branch main, 9 working tree change(s)
+Public readiness: 16/16 OK
 
 Detected
 --------
-Languages: HTML (1), JSON (5), Markdown (54), Python (53), Shell (1), TOML (1), +1 more
-Entry points: bin/repo-signal, release.sh, repo_signal/cli.py, repo_signal/repoaware/__main__.py, tools/build_prompt.py, tools/generate_wiki_command_ref.py, tools/skill_router.py
+Languages: HTML (1), JSON (7), Markdown (57), Python (54), Shell (3), TOML (1), +1 more
+Entry points: bin/repo-signal, release.sh, repo_signal/cli.py, repo_signal/repoaware/__main__.py, scripts/check-generated-examples.sh, scripts/generate-examples.sh, scripts/generate_screenshots.py, +3 more
 Tooling: Python packaging, GitHub Actions, GitHub Pages docs, README, License
-Top directories: . (10), .claude (2), .github (6), .repo-signal (9), bin (1), docs (25), +5 more
+Top directories: . (11), .claude (2), .github (7), .repo-signal (9), bin (1), docs (30), +6 more
 
 Core files
 ----------
@@ -30,11 +30,11 @@ Core files
 
 Possible issues
 ---------------
-- [WARN] Publish checklist is not perfect (15/16): Fix: README mentions screenshots or gallery (add screenshots or a gallery)
+- [OK] No obvious front-door issue detected
 
 Recommended next commit
 -----------------------
-Add screenshots or a gallery
+Keep docs, examples, and command reference synced with the CLI
 
 Useful next commands
 --------------------

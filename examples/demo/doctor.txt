@@ -6,10 +6,10 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `146`
-- Languages: `Markdown, Python, JSON, YAML, TOML, Shell, HTML`
+- Files scanned: `157`
+- Languages: `Markdown, Python, JSON, YAML, Shell, TOML, HTML`
 - Git repo: `yes`
-- Working tree changes: `8`
+- Working tree changes: `13`
 
 ## Scores
 
@@ -17,21 +17,20 @@ Path: `/Users/mansys/repo-signal`
 |---|---:|---|---|
 | Repo health | 90/100 | strong | README exists; LICENSE exists; .gitignore exists; clear entrypoints detected |
 | Release maturity | 95/100 | strong | Git repository detected; tests/ exists; GitHub Actions workflows detected; installable project metadata detected |
-| Docs quality | 70/100 | usable | README score checklist |
+| Docs quality | 80/100 | strong | README score checklist |
 | AI readiness | 100/100 | strong | README has strong AI-readable structure; entrypoints can anchor AI context; symbols extracted; repo graph available |
 
 ## Key Signals
 
-- Entry points: `bin/repo-signal, release.sh, repo_signal/cli.py, repo_signal/repoaware/__main__.py, tools/build_prompt.py`
+- Entry points: `bin/repo-signal, release.sh, repo_signal/cli.py, repo_signal/repoaware/__main__.py, scripts/check-generated-examples.sh`
 - Tooling: `Python packaging, GitHub Actions, GitHub Pages docs, README, License`
-- Symbols: `366`
+- Symbols: `377`
 - Repo graph edges: `81`
-- README missing checks: `usage, screenshots_demo, contributing`
+- README missing checks: `usage, contributing`
 
 ## Suggested Skills
 
 - `repo-aware`
-- `repo-product-auditor`
 - `terminal-ui-polisher`
 - `architecture-map`
 
@@ -42,7 +41,7 @@ Path: `/Users/mansys/repo-signal`
 ## RepoAware Context
 
 ```text
-This repo is a Python CLI / repo intelligence toolkit. Repo health is strong (90/100). Release maturity is strong (95/100). Docs quality is usable (70/100). AI readiness is strong (100/100).
+This repo is a Python CLI / repo intelligence toolkit. Repo health is strong (90/100). Release maturity is strong (95/100). Docs quality is strong (80/100). AI readiness is strong (100/100).
 Prioritize:
 1. Review current working tree changes before using the report as a baseline
 ```

@@ -4,6 +4,21 @@
 
 ## [Unreleased]
 
+## [0.1.14] - 2026-05-21
+
+### Changed
+
+- Massive README split and documentation refactor for better discoverability.
+- Modularized documentation moved to `docs/`: `REPOAWARE.md`, `SEMANTIC_MEMORY.md`, `PUBLISH_CHECKLIST.md`, `README_STRUCTURE.md`, and `COMMAND_SURFACE.md`.
+- Streamlined `README.md` to focus on pitch, installation, and quick-start, linking to deeper docs.
+- Updated "Planned features" in README with clear "Not started" vs "Partially implemented" status.
+
+### Verified
+
+- 75 tests pass.
+- All new documentation links are verified.
+- README score remains high with clearer structure.
+
 ## [0.1.13] - 2026-05-21
 
 ### Added

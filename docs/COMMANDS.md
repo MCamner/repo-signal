@@ -32,13 +32,18 @@ Usage:
 ```bash
 repo-signal inspect
 repo-signal inspect ~/some-repo
+repo-signal inspect --json
+repo-signal inspect --format json
 ```
 
 Good for:
 
+- integration with mqlaunch, mq-hal, mq-mcp, and Bridget via `inspect.v1` JSON
 - quick orientation before running the deeper doctor report
 - checking what looks missing at the front door
 - deciding the next useful commit
+
+See also: [Inspect JSON schema](INSPECT_SCHEMA.md).
 
 ## repo-signal demo
 

@@ -35,7 +35,7 @@ Usage:
   repo-signal ask [--mode mode] "question"
   repo-signal demo [--generate] [path] [--output path] [--force]
   repo-signal doctor [path] [--format markdown|json] [--json]
-  repo-signal inspect [path]
+  repo-signal inspect [path] [--json|--format text|json]
   repo-signal scan
   repo-signal skill new <name> [--description text]
   repo-signal readme
@@ -60,7 +60,7 @@ Commands:
   ask       Ask an AI provider using ranked RepoAware context
   demo      Print or generate a short repo-signal demo flow
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
-  inspect   Show fast repo status, detected signals, issues, and next commit
+  inspect   Show fast repo status, detected signals, issues, next commit, or inspect.v1 JSON
   scan       Scan repo structure and basic project signals
   skill      Create repo-local Codex skills
   readme     Analyze README clarity and missing sections
@@ -1347,6 +1347,47 @@ repo-signal demo --generate . --output examples/demo --force
 """
 
 
+def parse_inspect_args(args: list[str]) -> tuple[Path, str]:
+    repo = Path.cwd()
+    output_format = "text"
+    index = 0
+
+    while index < len(args):
+        arg = args[index]
+
+        if arg == "--json":
+            output_format = "json"
+            index += 1
+            continue
+
+        if arg == "--format":
+            if index + 1 >= len(args):
+                print("Missing value for --format")
+                raise SystemExit(2)
+            output_format = args[index + 1]
+            index += 2
+            continue
+
+        if arg.startswith("--format="):
+            output_format = arg.split("=", 1)[1]
+            index += 1
+            continue
+
+        if arg.startswith("-"):
+            print(f"Unknown inspect option: {arg}")
+            raise SystemExit(2)
+
+        repo = Path(arg).resolve()
+        index += 1
+
+    if output_format not in {"text", "json"}:
+        print(f"Unknown inspect format: {output_format}")
+        print("Available formats: text, json")
+        raise SystemExit(2)
+
+    return repo, output_format
+
+
 def parse_demo_args(args: list[str]) -> tuple[bool, Path, Path, bool]:
     generate = False
     repo = Path.cwd()
@@ -1405,6 +1446,7 @@ def generate_demo_reports(repo: Path, output: Path, force: bool = False) -> str:
     files = {
         "analyze.txt": analyze_repo(str(repo)),
         "inspect.txt": inspect_repo(repo),
+        "inspect.v1.json": inspect_repo(repo, output_format="json"),
         "doctor.txt": doctor_repo(repo),
         "doctor.v1.json": doctor_repo(repo, output_format="json"),
         "publish-checklist.txt": format_publish_checklist(publish_result),
@@ -1416,6 +1458,7 @@ Files:
 
 - `analyze.txt`
 - `inspect.txt`
+- `inspect.v1.json`
 - `doctor.txt`
 - `doctor.v1.json`
 - `publish-checklist.txt`
@@ -1555,11 +1598,12 @@ def main() -> None:
             print(generate_wiki_plan(repo))
         return
 
-    repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
-
     if command == "inspect":
-        print(inspect_repo(repo))
+        inspect_path, inspect_format = parse_inspect_args(sys.argv[2:])
+        print(inspect_repo(inspect_path, output_format=inspect_format))
         return
+
+    repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command == "scan":
         print(scan_repo(repo))

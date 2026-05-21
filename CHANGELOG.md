@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+### Added
+
+- `repo-signal inspect --json` and `repo-signal inspect --format json`.
+- `inspect.v1` JSON integration contract for mqlaunch, mq-hal, mq-mcp, Bridget, CI helpers, and dashboards.
+- `docs/INSPECT_SCHEMA.md`.
+- `inspect.v1.json` generated as part of `repo-signal demo --generate`.
+
+### Changed
+
+- Updated command reference (`docs/COMMANDS.md`) to document the inspect JSON contract.
+
 ## [0.1.14] - 2026-05-21
 
 ### Changed

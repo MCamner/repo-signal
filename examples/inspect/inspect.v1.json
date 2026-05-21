@@ -1,0 +1,141 @@
+{
+  "core_files": [
+    {
+      "exists": true,
+      "label": "README",
+      "path": "README.md",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "License",
+      "path": "LICENSE",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "Git ignore rules",
+      "path": ".gitignore",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "Changelog",
+      "path": "CHANGELOG.md",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "Version file",
+      "path": "VERSION",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "Docs folder",
+      "path": "docs",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "GitHub Pages landing",
+      "path": "docs/index.html",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "Screenshots/output gallery",
+      "path": "docs/screenshots",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "Examples folder",
+      "path": "examples",
+      "status": "ok"
+    },
+    {
+      "exists": true,
+      "label": "Tests folder",
+      "path": "tests",
+      "status": "ok"
+    }
+  ],
+  "detected": {
+    "entrypoints": [
+      "bin/repo-signal",
+      "release.sh",
+      "repo_signal/cli.py",
+      "repo_signal/repoaware/__main__.py",
+      "tools/build_prompt.py",
+      "tools/generate_wiki_command_ref.py",
+      "tools/skill_router.py"
+    ],
+    "languages": {
+      "HTML": 1,
+      "JSON": 6,
+      "Markdown": 54,
+      "Python": 53,
+      "Shell": 1,
+      "TOML": 1,
+      "YAML": 3
+    },
+    "tooling": [
+      "Python packaging",
+      "GitHub Actions",
+      "GitHub Pages docs",
+      "README",
+      "License"
+    ],
+    "top_directories": {
+      ".": 10,
+      ".claude": 2,
+      ".github": 6,
+      ".repo-signal": 9,
+      "bin": 1,
+      "docs": 25,
+      "examples": 26,
+      "repo_signal": 47,
+      "skills": 14,
+      "tests": 3,
+      "tools": 3
+    }
+  },
+  "git": {
+    "branch": "main",
+    "change_count": 8,
+    "clean": false,
+    "is_repo": true,
+    "summary": "git repo, branch main, 8 working tree change(s)"
+  },
+  "issues": [
+    {
+      "level": "warn",
+      "message": "Publish checklist is not perfect (15/16): Fix: README mentions screenshots or gallery (add screenshots or a gallery)",
+      "raw": "[WARN] Publish checklist is not perfect (15/16): Fix: README mentions screenshots or gallery (add screenshots or a gallery)"
+    }
+  ],
+  "public_readiness": {
+    "available": true,
+    "error": null,
+    "recommended_next_action": "Fix: README mentions screenshots or gallery (add screenshots or a gallery)",
+    "score": 15,
+    "status": "warn",
+    "summary": "15/16 WARN",
+    "total": 16
+  },
+  "recommended_next_commit": "Add screenshots or a gallery",
+  "repo": {
+    "exists": true,
+    "files": 146,
+    "name": "repo-signal",
+    "path": "/Users/mansys/repo-signal",
+    "type": "Python CLI / repo intelligence toolkit"
+  },
+  "schema": "inspect.v1",
+  "useful_next_commands": [
+    "repo-signal doctor",
+    "repo-signal publish-checklist . --fail-under 16",
+    "repo-signal repoaware --mode review --format markdown \"what should I inspect first\""
+  ]
+}

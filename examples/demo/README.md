@@ -6,6 +6,7 @@ Files:
 
 - `analyze.txt`
 - `inspect.txt`
+- `inspect.v1.json`
 - `doctor.txt`
 - `doctor.v1.json`
 - `publish-checklist.txt`

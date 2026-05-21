@@ -1249,5 +1249,54 @@ class AskCommandTests(unittest.TestCase):
         self.assertIn("The dispatch route function", result.answer)
 
 
+class InspectJsonContractTests(unittest.TestCase):
+    def test_inspect_json_contract_reports_stable_fields(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
+        (root / "repo_signal").mkdir()
+        (root / "repo_signal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
+
+        result = run_repo_signal(["inspect", "--json", str(root)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        payload = json.loads(result.stdout)
+
+        self.assertEqual(payload["schema"], "inspect.v1")
+        self.assertEqual(payload["repo"]["name"], root.name)
+        self.assertTrue(payload["repo"]["exists"])
+        self.assertIn("git", payload)
+        self.assertIn("public_readiness", payload)
+        self.assertIn("detected", payload)
+        self.assertIn("core_files", payload)
+        self.assertIn("issues", payload)
+        self.assertIn("recommended_next_commit", payload)
+        self.assertIn("useful_next_commands", payload)
+
+    def test_inspect_format_json_alias_works(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(["inspect", "--format", "json", str(root)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["schema"], "inspect.v1")
+
+    def test_inspect_json_missing_path_returns_contract(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        missing = root / "missing-repo"
+        result = run_repo_signal(["inspect", "--json", str(missing)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["schema"], "inspect.v1")
+        self.assertFalse(payload["repo"]["exists"])
+        self.assertEqual(payload["recommended_next_commit"], "Choose an existing repository path")
+
+
 if __name__ == "__main__":
     unittest.main()

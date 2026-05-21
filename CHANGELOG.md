@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.1.15] - 2026-05-21
+
 ### Added
 
 - `repo-signal inspect --json` and `repo-signal inspect --format json`.

@@ -4,6 +4,30 @@
 
 ## [Unreleased]
 
+## [0.1.12] - 2026-05-21
+
+### Added
+
+- `repo-signal demo --generate` for creating local demo reports.
+- Generated demo reports under `examples/demo/`.
+- Golden output examples for doctor, analyze, and RepoAware workflows.
+- Screenshot/output gallery documentation.
+- Command reference and doctor schema links from README.
+
+### Changed
+
+- Improved README onboarding and public-facing positioning.
+- Replaced "Early MVP" status with "Early but usable CLI tool".
+- Split available commands from future command ideas.
+- Refreshed doctor and analyze examples after demo generation.
+
+### Verified
+
+- 74 tests pass.
+- `repo-signal doctor` reports 100/100 across repo health, release maturity, docs quality, and AI readiness.
+- `repo-signal publish-checklist . --fail-under 16` passes with 16/16.
+- GitHub Actions Tests, Publish Checklist, and Pages deployment are green.
+
 ## [0.1.11] - 2026-05-20
 
 ### Added

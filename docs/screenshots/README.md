@@ -12,6 +12,7 @@ Golden output examples:
 - [doctor Markdown output](../../examples/doctor/doctor.txt)
 - [doctor JSON output](../../examples/doctor/doctor.v1.json)
 - [analyze output](../../examples/analyze/analyze.txt)
+- [inspect output](../../examples/inspect/inspect.txt)
 - [repoaware review output](../../examples/repoaware/review.md)
 
 Generate a fresh local gallery with:

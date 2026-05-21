@@ -6,15 +6,15 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `136`
-- Approx size: `3.73 MB`
+- Files scanned: `139`
+- Approx size: `3.74 MB`
 - Git repo: `yes`
 - Git branch: `main`
-- Working tree changes: `1`
+- Working tree changes: `17`
 
 ## Languages
 
-- Python: `52` files
+- Python: `53` files
 - Markdown: `48` files
 - JSON: `5` files
 - YAML: `3` files
@@ -34,8 +34,8 @@ Path: `/Users/mansys/repo-signal`
 
 ## Top Directories
 
-- `repo_signal`: `46` files
-- `examples`: `23` files
+- `repo_signal`: `47` files
+- `examples`: `25` files
 - `docs`: `19` files
 - `skills`: `14` files
 - `.`: `10` files
@@ -56,8 +56,17 @@ Path: `/Users/mansys/repo-signal`
 
 ## Git Health
 
-- [MED] Working tree has changes: `1`
-  - `M README.md`
+- [MED] Working tree has changes: `17`
+  - `M CHANGELOG.md`
+  - ` M README.md`
+  - ` M docs/COMMANDS.md`
+  - ` M docs/ROADMAP.md`
+  - ` M docs/screenshots/README.md`
+  - ` M examples/analyze/analyze.txt`
+  - ` M examples/demo/README.md`
+  - ` M examples/demo/analyze.txt`
+  - ` M examples/demo/doctor.txt`
+  - ` M examples/demo/doctor.v1.json`
 
 ## Suggested Focus Areas
 

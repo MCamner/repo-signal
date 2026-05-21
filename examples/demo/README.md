@@ -5,6 +5,7 @@ Generated from `/Users/mansys/repo-signal`.
 Files:
 
 - `analyze.txt`
+- `inspect.txt`
 - `doctor.txt`
 - `doctor.v1.json`
 - `publish-checklist.txt`

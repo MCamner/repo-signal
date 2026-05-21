@@ -5,6 +5,19 @@ prototypes into clear, documented, publishable GitHub projects.
 
 ## Current focus
 
+Prepare v0.1.13 as an inspect-command release.
+
+## v0.1.13 - Inspect Command
+
+### Fast Repo Status
+
+- [x] Add `repo-signal inspect [path]`.
+- [x] Reuse `Repository.load()` and publish checklist signals.
+- [x] Report detected languages, entrypoints, tooling, core files, likely issues, and recommended next commit.
+- [x] Add CLI help, command reference, README command surface, changelog, roadmap, and tests.
+
+## Previous focus
+
 Prepare v0.1.7 as a publish checklist CI threshold release.
 
 ## v0.1.7 - Publish Checklist CI Threshold

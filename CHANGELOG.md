@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- `repo-signal inspect [path]` for fast repository status, detected signals, likely issues, and recommended next commit.
+
+### Changed
+
+- Added `inspect` to CLI help, command reference, README command surface, roadmap, and tests.
+
 ## [0.1.12] - 2026-05-21
 
 ### Added

@@ -7,8 +7,8 @@
       "repo_signal/repoaware/__main__.py",
       "tools/build_prompt.py"
     ],
-    "repo_graph_edges": 78,
-    "symbols": 343,
+    "repo_graph_edges": 81,
+    "symbols": 355,
     "tooling": [
       "Python packaging",
       "GitHub Actions",
@@ -107,18 +107,18 @@
     "architecture-map"
   ],
   "summary": {
-    "files_scanned": 136,
+    "files_scanned": 139,
     "git_branch": "main",
     "git_repo": true,
     "languages": {
       "HTML": 1,
       "JSON": 5,
       "Markdown": 48,
-      "Python": 52,
+      "Python": 53,
       "Shell": 1,
       "TOML": 1,
       "YAML": 3
     },
-    "working_tree_changes": 1
+    "working_tree_changes": 17
   }
 }

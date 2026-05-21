@@ -110,6 +110,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("actions init", result.stdout)
         self.assertIn("scan", result.stdout)
         self.assertIn("doctor", result.stdout)
+        self.assertIn("inspect", result.stdout)
         self.assertIn("skill", result.stdout)
         self.assertIn("readme", result.stdout)
         self.assertIn("semantic", result.stdout)
@@ -129,6 +130,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertIn("# repo-signal demo", result.stdout)
         self.assertIn("repo-signal analyze", result.stdout)
+        self.assertIn("repo-signal inspect", result.stdout)
         self.assertIn("repo-signal doctor --json", result.stdout)
         self.assertIn("repo-signal publish-checklist .", result.stdout)
 
@@ -143,6 +145,7 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("# repo-signal demo generated", result.stdout)
         self.assertTrue((output / "README.md").exists())
         self.assertTrue((output / "analyze.txt").exists())
+        self.assertTrue((output / "inspect.txt").exists())
         self.assertTrue((output / "doctor.txt").exists())
         self.assertTrue((output / "doctor.v1.json").exists())
         self.assertTrue((output / "publish-checklist.txt").exists())
@@ -176,6 +179,26 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("[OK] License exists", result.stdout)
         self.assertIn("[OK] .gitignore exists", result.stdout)
         self.assertIn("[OK] docs folder exists", result.stdout)
+
+    def test_inspect_command_reports_quick_repo_status(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
+        (root / "repo_signal").mkdir()
+        (root / "repo_signal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
+
+        result = run_repo_signal(["inspect", str(root)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("REPO INSPECTION", result.stdout)
+        self.assertIn(f"Repo: {root.name}", result.stdout)
+        self.assertIn("Public readiness", result.stdout)
+        self.assertIn("Detected", result.stdout)
+        self.assertIn("Core files", result.stdout)
+        self.assertIn("Possible issues", result.stdout)
+        self.assertIn("Recommended next commit", result.stdout)
+        self.assertIn("Useful next commands", result.stdout)
 
     def test_analyze_command_reports_front_door_summary(self):
         temp, root = make_sample_repo()

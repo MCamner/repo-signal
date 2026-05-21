@@ -22,6 +22,24 @@ Good for:
 - deciding what to inspect next
 - checking whether the repo has obvious entrypoints and tooling
 
+## repo-signal inspect
+
+Purpose:
+Shows a fast repository status report: repo type, Git state, public readiness, detected entrypoints/tooling, core files, likely issues, and recommended next commit.
+
+Usage:
+
+```bash
+repo-signal inspect
+repo-signal inspect ~/some-repo
+```
+
+Good for:
+
+- quick orientation before running the deeper doctor report
+- checking what looks missing at the front door
+- deciding the next useful commit
+
 ## repo-signal demo
 
 Purpose:
@@ -48,6 +66,7 @@ Generated files:
 
 - `README.md`
 - `analyze.txt`
+- `inspect.txt`
 - `doctor.txt`
 - `doctor.v1.json`
 - `publish-checklist.txt`

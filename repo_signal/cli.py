@@ -11,6 +11,7 @@ from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
 from repo_signal.export_codex import main as export_codex_main
+from repo_signal.inspect import inspect_repo
 from repo_signal.publish_checklist import (
     VALID_FORMATS,
     build_publish_checklist,
@@ -34,6 +35,7 @@ Usage:
   repo-signal ask [--mode mode] "question"
   repo-signal demo [--generate] [path] [--output path] [--force]
   repo-signal doctor [path] [--format markdown|json] [--json]
+  repo-signal inspect [path]
   repo-signal scan
   repo-signal skill new <name> [--description text]
   repo-signal readme
@@ -58,6 +60,7 @@ Commands:
   ask       Ask an AI provider using ranked RepoAware context
   demo      Print or generate a short repo-signal demo flow
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
+  inspect   Show fast repo status, detected signals, issues, and next commit
   scan       Scan repo structure and basic project signals
   skill      Create repo-local Codex skills
   readme     Analyze README clarity and missing sections
@@ -78,6 +81,7 @@ Commands:
 Examples:
   repo-signal actions init
   repo-signal analyze
+  repo-signal inspect
   repo-signal doctor
   repo-signal demo
   repo-signal demo --generate
@@ -1320,6 +1324,7 @@ Run these commands from a repository root:
 
 ```bash
 repo-signal analyze
+repo-signal inspect
 repo-signal doctor
 repo-signal doctor --json
 repo-signal publish-checklist .
@@ -1399,6 +1404,7 @@ def generate_demo_reports(repo: Path, output: Path, force: bool = False) -> str:
     publish_result = build_publish_checklist(str(repo))
     files = {
         "analyze.txt": analyze_repo(str(repo)),
+        "inspect.txt": inspect_repo(repo),
         "doctor.txt": doctor_repo(repo),
         "doctor.v1.json": doctor_repo(repo, output_format="json"),
         "publish-checklist.txt": format_publish_checklist(publish_result),
@@ -1409,6 +1415,7 @@ Generated from `{repo}`.
 Files:
 
 - `analyze.txt`
+- `inspect.txt`
 - `doctor.txt`
 - `doctor.v1.json`
 - `publish-checklist.txt`
@@ -1550,6 +1557,10 @@ def main() -> None:
 
     repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
+    if command == "inspect":
+        print(inspect_repo(repo))
+        return
+
     if command == "scan":
         print(scan_repo(repo))
         return
@@ -1580,7 +1591,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, demo, doctor, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, demo, doctor, inspect, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

@@ -36,6 +36,7 @@ pip install -e ".[ai]"
 
 repo-signal doctor
 repo-signal analyze
+repo-signal inspect
 repo-signal publish-checklist .
 repo-signal demo
 ```
@@ -71,6 +72,7 @@ It looks at README quality, docs, structure, release maturity, public readiness,
 Stable enough to use:
 
 - `repo-signal analyze`
+- `repo-signal inspect`
 - `repo-signal doctor`
 - `repo-signal publish-checklist`
 - `repo-signal readme-score`
@@ -137,6 +139,7 @@ Early but usable CLI tool.
 The core workflows are available:
 
 - repository analysis
+- quick repo inspection
 - doctor readiness reports
 - README scoring
 - publish checklist
@@ -148,6 +151,7 @@ Front-door analysis:
 
 ```bash
 repo-signal analyze
+repo-signal inspect
 repo-signal doctor
 repo-signal demo
 ```
@@ -192,6 +196,7 @@ Analyze this repo:
 ```bash
 cd ~/repo-signal
 repo-signal analyze
+repo-signal inspect
 repo-signal doctor
 ```
 
@@ -249,6 +254,7 @@ Golden outputs live under [examples](examples/):
 - [doctor Markdown](examples/doctor/doctor.txt)
 - [doctor JSON](examples/doctor/doctor.v1.json)
 - [analyze output](examples/analyze/analyze.txt)
+- [inspect output](examples/inspect/inspect.txt)
 - [repoaware review output](examples/repoaware/review.md)
 
 Generate fresh local demo reports with:
@@ -264,6 +270,8 @@ repo-signal demo --generate . --output examples/demo --force
 
 - local repo scan
 - front door analyze report
+- fast inspect report for repo status, detected signals, likely issues,
+  and recommended next commit
 - doctor report for repo health, release maturity, docs quality,
   AI readiness, and suggested skills
 - README detection
@@ -303,6 +311,7 @@ repo-signal demo --generate . --output examples/demo --force
 # scanning and analysis
 repo-signal scan
 repo-signal analyze
+repo-signal inspect
 repo-signal doctor
 repo-signal demo
 repo-signal demo --generate
@@ -340,9 +349,6 @@ repo-signal export-codex repo-product-auditor
 ## Future command ideas
 
 ```bash
-# deeper inspection
-repo-signal inspect
-
 # patch and positioning
 repo-signal patch
 repo-signal positioning
@@ -459,6 +465,7 @@ are available for reports, CI checks, GitHub Actions, and automated audits.
 repo-signal
 ├── actions init
 ├── analyze
+├── inspect
 ├── ask
 ├── doctor
 ├── skill new
@@ -469,6 +476,15 @@ repo-signal
 ├── roadmap
 ├── wiki
 └── hygiene
+```
+
+`inspect` is the fast status command. It summarizes repo type, Git state,
+public readiness, detected signals, possible issues, and the next useful
+commit.
+
+```bash
+repo-signal inspect
+repo-signal inspect ~/some-repo
 ```
 
 `analyze` is the front door. It summarizes project type, languages, key

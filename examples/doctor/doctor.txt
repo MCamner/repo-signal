@@ -6,10 +6,10 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `136`
+- Files scanned: `139`
 - Languages: `Python, Markdown, JSON, YAML, TOML, Shell, HTML`
 - Git repo: `yes`
-- Working tree changes: `1`
+- Working tree changes: `17`
 
 ## Scores
 
@@ -24,8 +24,8 @@ Path: `/Users/mansys/repo-signal`
 
 - Entry points: `bin/repo-signal, release.sh, repo_signal/cli.py, repo_signal/repoaware/__main__.py, tools/build_prompt.py`
 - Tooling: `Python packaging, GitHub Actions, GitHub Pages docs, README, License`
-- Symbols: `343`
-- Repo graph edges: `78`
+- Symbols: `355`
+- Repo graph edges: `81`
 - README missing checks: `none`
 
 ## Suggested Skills

@@ -4,8 +4,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added root-level `ROADMAP.md` for clearer project direction and release readiness.
+- Added roadmap links from README and GitHub Pages docs.
+
 ### Changed
 
+- Clarified release checklist, version milestones, and integration contract expectations in roadmap.
 - Documented `inspect --json` and `inspect.v1` integration contract more prominently in `docs/COMMAND_SURFACE.md` and `docs/index.html`.
 
 ## [0.1.15] - 2026-05-21

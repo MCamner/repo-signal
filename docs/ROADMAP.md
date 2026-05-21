@@ -1,4 +1,13 @@
-# Roadmap
+# Docs Roadmap
+
+Canonical roadmap: [../ROADMAP.md](../ROADMAP.md)
+
+This file may contain historical planning notes, but the root-level
+`ROADMAP.md` is the public roadmap used for release visibility.
+
+---
+
+## Historical planning notes
 
 repo-signal is a local-first repository intelligence tool for turning rough
 prototypes into clear, documented, publishable GitHub projects.

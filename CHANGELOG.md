@@ -4,13 +4,24 @@
 
 ## [Unreleased]
 
+## [0.1.13] - 2026-05-21
+
 ### Added
 
 - `repo-signal inspect [path]` for fast repository status, detected signals, likely issues, and recommended next commit.
+- Inspect output examples under `examples/inspect/` and `examples/demo/`.
 
 ### Changed
 
 - Added `inspect` to CLI help, command reference, README command surface, roadmap, and tests.
+- `repo-signal demo --generate` now includes `inspect.txt`.
+
+### Verified
+
+- 75 tests pass locally.
+- `repo-signal inspect .` reports public readiness, detected signals, core files, possible issues, and recommended next commit.
+- Smoke-tested `inspect` against `repo-signal`, `macos-scripts`, `mq-mcp`, and `coolThing`.
+- GitHub Actions Tests, Publish Checklist, and Pages deployment are green for the inspect commit.
 
 ## [0.1.12] - 2026-05-21
 

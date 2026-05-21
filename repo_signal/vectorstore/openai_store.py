@@ -131,8 +131,10 @@ def upload_repository_memory(
     filename = f"{repo.name}-symbol-memory.md"
 
     if dry_run:
+        # Keep dry-runs deterministic for tests and CI.
+        # Do not query an interactive shell here; on macOS, zsh login shells may
+        # print restored-session text that can be mistaken for an env value.
         load_dotenv_if_available()
-        load_shell_env_if_available(VECTOR_STORE_ENV)
         display_store_id = vector_store_id or os.getenv(VECTOR_STORE_ENV, "(not set)")
         return OpenAIUploadResult(
             repo_name=repo.name,

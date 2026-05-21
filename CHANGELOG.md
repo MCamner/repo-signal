@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.1.17] - 2026-05-21
+
 ### Added
 
 - Added `scripts/check-generated-examples.sh` for generated example verification.
@@ -15,6 +17,13 @@
 
 - Updated README and roadmap with generated example verification guidance.
 - Strengthened release readiness workflow with example check step.
+
+### Verified
+
+- 78 tests pass.
+- `scripts/check-generated-examples.sh` passes.
+- `repo-signal publish-checklist . --fail-under 16` passes 16/16.
+- Generated examples CI workflow is green.
 
 ## [0.1.16] - 2026-05-21
 

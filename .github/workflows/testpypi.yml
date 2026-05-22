@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       publish_to_testpypi:
-        description: "Upload to TestPyPI? Type true to publish."
+        description: "Upload to TestPyPI?"
+        type: boolean
         required: true
-        default: "false"
+        default: false
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   testpypi-readiness:
@@ -31,10 +31,16 @@ jobs:
           scripts/check-trusted-publishing-setup.sh
 
   publish-testpypi:
-    if: ${{ github.event.inputs.publish_to_testpypi == 'true' }}
+    if: inputs.publish_to_testpypi
     needs: testpypi-readiness
     runs-on: ubuntu-latest
     environment: testpypi
+
+    permissions:
+      id-token: write
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Check out repository

@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.1.21] - 2026-05-22
+
 ### Added
 
 * Added `docs/TRUSTED_PUBLISHING.md` with TestPyPI Trusted Publisher setup values.
@@ -17,6 +19,16 @@
 
 * Updated TestPyPI workflow to run Trusted Publishing setup check in readiness job.
 * Updated roadmap and release checklist with Trusted Publishing verification steps.
+
+### Verified
+
+* `scripts/check-trusted-publishing-setup.sh` passes.
+* `scripts/check-testpypi-readiness.sh` passes — twine check PASSED for wheel and sdist.
+* `scripts/check-packaging.sh` passes.
+* `scripts/check-generated-examples.sh` passes.
+* 78 tests pass.
+* `repo-signal publish-checklist . --fail-under 16` passes 16/16.
+* Tests, Packaging, Publish Checklist, Generated examples CI — all green.
 
 ## [0.1.19] - 2026-05-22
 

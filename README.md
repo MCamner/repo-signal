@@ -1,6 +1,7 @@
 # repo-signal
 
 [![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml)
+[![PyPI publish](https://github.com/MCamner/repo-signal/actions/workflows/pypi.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/pypi.yml)
 [![Release](https://img.shields.io/github/v/release/MCamner/repo-signal?label=release)](https://github.com/MCamner/repo-signal/releases)
 
 AI-native repository intelligence for structured reasoning systems.
@@ -13,7 +14,7 @@ prototypes into clear, publishable GitHub projects.
 
 ## Install
 
-After PyPI publish (v0.2.0 target):
+From PyPI:
 
 ```bash
 pipx install repo-signal
@@ -29,8 +30,7 @@ source .venv/bin/activate
 pip install -e ".[ai]"
 ```
 
-`pipx install repo-signal` will replace the dev install once the package is
-published to PyPI. See [PyPI publishing guide](docs/PYPI.md).
+See [PyPI publishing guide](docs/PYPI.md) for the release workflow.
 
 ---
 

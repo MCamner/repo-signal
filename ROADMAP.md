@@ -6,6 +6,59 @@ local repositories into clear, documented, publishable GitHub projects.
 This roadmap is intentionally practical. It tracks what is stable, what is
 next, and what must be true before each release.
 
+## v0.3.0 Target — Integration Polish and Positioning
+
+v0.3.0 should make `repo-signal` feel less like a collection of useful checks and more like a coherent repository intelligence layer for local AI-assisted development workflows.
+
+### Goal
+
+Make `repo-signal` the small, dependable CLI that answers:
+
+> What is this repo, what state is it in, what should happen next, and what context should an AI assistant receive?
+
+### Primary focus
+
+- Strengthen `inspect.v1` as the stable integration contract.
+- Improve positioning so the project is clearly understood as a repo intelligence and publish-readiness tool.
+- Keep the CLI surface small, predictable, and script-friendly.
+- Make generated examples and schemas reliable enough for downstream tools.
+- Prepare cleaner integration paths for `mqlaunch`, `mq-mcp`, `mq-hal`, and Bridget.
+
+### Scope
+
+Planned for v0.3.0:
+
+- `doctor --json` contract stabilization.
+- Stronger command reference coverage.
+- Clearer roadmap and positioning documentation.
+- Integration examples for local assistant workflows.
+- Packaging and install smoke tests kept in release readiness.
+- Generated examples verified before release.
+
+Not planned for v0.3.0:
+
+- Automatic code rewriting.
+- Risky patch application.
+- Remote repository mutation.
+- Release automation beyond existing safe checks.
+
+### Readiness checklist
+
+- [ ] `repo-signal inspect --json` produces valid `inspect.v1`.
+- [ ] `repo-signal doctor` gives a clear human-readable readiness report.
+- [ ] `repo-signal doctor --json` is documented or explicitly marked experimental.
+- [ ] `repo-signal publish-checklist . --fail-under 16` passes.
+- [ ] `repo-signal demo --generate` refreshes example outputs.
+- [ ] Generated examples are verified by CI.
+- [ ] Packaging smoke test passes.
+- [ ] README explains who the tool is for in one sentence.
+- [ ] Integrations doc explains how `mqlaunch`, `mq-mcp`, `mq-hal`, and Bridget consume `inspect.v1`.
+- [ ] CHANGELOG has a clear v0.3.0 section before release.
+
+### Recommended v0.3.0 release theme
+
+> Stable repo intelligence contracts for local AI-assisted development workflows.
+
 ## Current status
 
 Current release: `v0.1.19 — PyPI / pipx readiness plan`

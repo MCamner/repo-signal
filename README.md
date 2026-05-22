@@ -101,6 +101,7 @@ repo-signal demo --generate
 
 ## Deep Documentation
 
+- [**Positioning**](docs/POSITIONING.md) — What repo-signal is, who it is for, and how it fits local AI-assisted development workflows
 - [**Integrations**](docs/INTEGRATIONS.md) — How mqlaunch, mq-mcp, mq-hal, and Bridget consume `inspect.v1`
 - [**RepoAware**](docs/REPOAWARE.md) — High-signal AI context ranking and export
 - [**Semantic Memory**](docs/SEMANTIC_MEMORY.md) — Uploading symbol maps to vector stores

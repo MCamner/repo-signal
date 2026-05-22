@@ -8,7 +8,7 @@
       "scripts/check-generated-examples.sh"
     ],
     "repo_graph_edges": 81,
-    "symbols": 377,
+    "symbols": 387,
     "tooling": [
       "Python packaging",
       "GitHub Actions",
@@ -108,18 +108,18 @@
     "architecture-map"
   ],
   "summary": {
-    "files_scanned": 157,
-    "git_branch": "main",
+    "files_scanned": 171,
+    "git_branch": "chore/v0.3.0-readiness",
     "git_repo": true,
     "languages": {
       "HTML": 1,
       "JSON": 7,
-      "Markdown": 57,
+      "Markdown": 64,
       "Python": 54,
-      "Shell": 3,
+      "Shell": 7,
       "TOML": 1,
-      "YAML": 4
+      "YAML": 7
     },
-    "working_tree_changes": 13
+    "working_tree_changes": 3
   }
 }

@@ -6,19 +6,19 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `157`
-- Approx size: `4.06 MB`
+- Files scanned: `171`
+- Approx size: `4.10 MB`
 - Git repo: `yes`
-- Git branch: `main`
-- Working tree changes: `13`
+- Git branch: `chore/v0.3.0-readiness`
+- Working tree changes: `3`
 
 ## Languages
 
-- Markdown: `57` files
+- Markdown: `64` files
 - Python: `54` files
+- YAML: `7` files
+- Shell: `7` files
 - JSON: `7` files
-- YAML: `4` files
-- Shell: `3` files
 - TOML: `1` files
 - HTML: `1` files
 
@@ -29,24 +29,24 @@ Path: `/Users/mansys/repo-signal`
 - repo_signal/cli.py
 - repo_signal/repoaware/__main__.py
 - scripts/check-generated-examples.sh
+- scripts/check-packaging.sh
+- scripts/check-pypi-readiness.sh
+- scripts/check-testpypi-readiness.sh
+- scripts/check-trusted-publishing-setup.sh
 - scripts/generate-examples.sh
-- scripts/generate_screenshots.py
-- tools/build_prompt.py
-- tools/generate_wiki_command_ref.py
-- tools/skill_router.py
 
 ## Top Directories
 
 - `repo_signal`: `47` files
-- `docs`: `30` files
+- `docs`: `35` files
 - `examples`: `27` files
-- `skills`: `14` files
+- `skills`: `16` files
 - `.`: `11` files
+- `.github`: `10` files
 - `.repo-signal`: `9` files
-- `.github`: `7` files
+- `scripts`: `7` files
 - `tools`: `3` files
 - `tests`: `3` files
-- `scripts`: `3` files
 - `.claude`: `2` files
 - `bin`: `1` files
 
@@ -60,17 +60,10 @@ Path: `/Users/mansys/repo-signal`
 
 ## Git Health
 
-- [MED] Working tree has changes: `13`
-  - `M CHANGELOG.md`
-  - ` M README.md`
+- [MED] Working tree has changes: `3`
+  - `M README.md`
   - ` M ROADMAP.md`
-  - ` M examples/analyze/analyze.txt`
-  - ` M examples/doctor/doctor.txt`
-  - ` M examples/doctor/doctor.v1.json`
-  - ` M examples/inspect/inspect.txt`
-  - ` M examples/inspect/inspect.v1.json`
-  - ` M examples/repoaware/review.md`
-  - `?? .github/workflows/examples.yml`
+  - `?? docs/POSITIONING.md`
 
 ## Suggested Focus Areas
 

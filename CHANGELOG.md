@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-05-22
+
+### Added
+
+* Added `docs/PYPI.md` with PyPI Trusted Publisher values and install verification guidance.
+* Added `scripts/check-pypi-readiness.sh` to run all checks before real PyPI publish.
+* Added manual PyPI publish workflow (`.github/workflows/pypi.yml`).
+
+### Changed
+
+* Updated README install section to show `pipx install repo-signal` as v0.2.0 target.
+* Updated roadmap to v0.2.0 stable install story focus.
+
+### Verified
+
+* `scripts/check-pypi-readiness.sh` passes.
+* TestPyPI install verified — wheel, CLI, and `inspect.v1` all confirmed.
+* 78 tests pass.
+* `repo-signal publish-checklist . --fail-under 16` passes 16/16.
+
 ## [0.1.21] - 2026-05-22
 
 ### Added

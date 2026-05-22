@@ -53,7 +53,7 @@ repo-signal
 
 ## Now
 
-Focus: `v0.1.21 — TestPyPI trusted publishing setup`
+Focus: `v0.2.0 — stable install story`
 
 Planned work:
 
@@ -63,12 +63,21 @@ Planned work:
 - [x] Verify build artifacts with `twine check`
 - [x] Document TestPyPI install verification
 - [x] Keep real PyPI publishing disabled until TestPyPI is proven
-- [ ] Add `docs/TRUSTED_PUBLISHING.md`
-- [ ] Add `scripts/check-trusted-publishing-setup.sh`
-- [ ] Document TestPyPI Trusted Publisher values
-- [ ] Verify GitHub Actions workflow uses `id-token: write`
-- [ ] Verify workflow uses `environment: testpypi`
-- [ ] Keep upload manual behind `publish_to_testpypi = true`
+- [x] Add `docs/TRUSTED_PUBLISHING.md`
+- [x] Add `scripts/check-trusted-publishing-setup.sh`
+- [x] Document TestPyPI Trusted Publisher values
+- [x] Verify GitHub Actions workflow uses `id-token: write`
+- [x] Verify workflow uses `environment: testpypi`
+- [x] Keep upload manual behind `publish_to_testpypi = true`
+- [x] Verify TestPyPI install in clean venv — CLI and inspect.v1 OK
+- [ ] Add `docs/PYPI.md`
+- [ ] Add `scripts/check-pypi-readiness.sh`
+- [ ] Add manual PyPI publish workflow
+- [ ] Configure PyPI Trusted Publisher on pypi.org
+- [ ] Create GitHub environment `pypi`
+- [ ] Publish to real PyPI
+- [ ] Verify `pipx install repo-signal` in clean environment
+- [ ] Update README install section to `pipx install repo-signal`
 
 ## Next
 
@@ -113,6 +122,7 @@ scripts/check-generated-examples.sh
 scripts/check-packaging.sh
 scripts/check-testpypi-readiness.sh
 scripts/check-trusted-publishing-setup.sh
+scripts/check-pypi-readiness.sh
 ```
 
 A release should only be created when:
@@ -141,7 +151,7 @@ v0.1.17 — generated examples verification
 v0.1.19 — PyPI / pipx readiness plan
 v0.1.20 — TestPyPI publishing dry run
 v0.1.21 — TestPyPI trusted publishing setup
-v0.2.0  — stable local repo intelligence CLI
+v0.2.0  — stable install story
 ```
 
 ## Version milestones

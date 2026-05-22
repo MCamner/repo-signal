@@ -13,6 +13,12 @@ prototypes into clear, publishable GitHub projects.
 
 ## Install
 
+After PyPI publish (v0.2.0 target):
+
+```bash
+pipx install repo-signal
+```
+
 Current local development install:
 
 ```bash
@@ -23,14 +29,8 @@ source .venv/bin/activate
 pip install -e ".[ai]"
 ```
 
-Future target:
-
-```bash
-pipx install repo-signal
-```
-
-`pipx` support is a packaging goal, not a published install path yet.
-See [Packaging](docs/PACKAGING.md).
+`pipx install repo-signal` will replace the dev install once the package is
+published to PyPI. See [PyPI publishing guide](docs/PYPI.md).
 
 ---
 
@@ -111,6 +111,7 @@ repo-signal demo --generate
 - [**Packaging**](docs/PACKAGING.md) — PyPI / pipx readiness plan and packaging smoke tests
 - [**TestPyPI**](docs/TESTPYPI.md) — Safe dry-run path before real PyPI publishing
 - [**Trusted Publishing**](docs/TRUSTED_PUBLISHING.md) — TestPyPI Trusted Publisher setup values and safety rules
+- [**PyPI**](docs/PYPI.md) — Real PyPI publishing guide and Trusted Publisher values
 - [**Inspect Schema**](docs/INSPECT_SCHEMA.md) — Machine-readable contract for `inspect --json`
 - [**Doctor Schema**](docs/DOCTOR_SCHEMA.md) — Machine-readable contract for `doctor --json`
 - [**Repo Structure**](docs/README_STRUCTURE.md) — Best practices for project layout

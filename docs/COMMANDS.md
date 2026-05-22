@@ -125,6 +125,33 @@ Checks include:
 - issue templates
 - safe sharing and security notes
 
+## repo-signal positioning
+
+Purpose:
+Analyzes README and repository signals to produce a product-positioning report.
+
+Usage:
+
+```bash
+repo-signal positioning .
+repo-signal positioning ~/some-repo
+repo-signal positioning . --json
+repo-signal positioning . --format json
+```
+
+Answers:
+
+- what the project is
+- who it is for
+- what problem it solves
+- the strongest README angle
+- what is unclear
+- a one-sentence positioning draft
+
+JSON output uses schema `positioning.v1`.
+
+See [POSITIONING_REPORT.md](POSITIONING_REPORT.md).
+
 ## repo-signal readme-score
 
 Purpose:

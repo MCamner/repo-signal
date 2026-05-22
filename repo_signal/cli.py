@@ -12,6 +12,7 @@ from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
 from repo_signal.export_codex import main as export_codex_main
 from repo_signal.inspect import inspect_repo
+from repo_signal.positioning import build_positioning_report, format_positioning_report
 from repo_signal.publish_checklist import (
     VALID_FORMATS,
     build_publish_checklist,
@@ -36,6 +37,7 @@ Usage:
   repo-signal demo [--generate] [path] [--output path] [--force]
   repo-signal doctor [path] [--format markdown|json] [--json]
   repo-signal inspect [path] [--json|--format text|json]
+  repo-signal positioning [path] [--json|--format text|json]
   repo-signal scan
   repo-signal skill new <name> [--description text]
   repo-signal readme
@@ -61,6 +63,8 @@ Commands:
   demo      Print or generate a short repo-signal demo flow
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
   inspect   Show fast repo status, detected signals, issues, next commit, or inspect.v1 JSON
+  positioning
+             Analyze README/project positioning and produce a positioning report
   scan       Scan repo structure and basic project signals
   skill      Create repo-local Codex skills
   readme     Analyze README clarity and missing sections
@@ -82,6 +86,8 @@ Examples:
   repo-signal actions init
   repo-signal analyze
   repo-signal inspect
+  repo-signal positioning .
+  repo-signal positioning . --json
   repo-signal doctor
   repo-signal demo
   repo-signal demo --generate
@@ -354,6 +360,52 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str, int | None
         raise SystemExit(2)
 
     return repo, output_format, fail_under
+
+
+def parse_positioning_args(args: list[str]) -> tuple[Path, str]:
+    repo = Path.cwd()
+    output_format = "text"
+    path_seen = False
+
+    index = 0
+    while index < len(args):
+        arg = args[index]
+
+        if arg in {"--json"}:
+            output_format = "json"
+            index += 1
+            continue
+
+        if arg == "--format":
+            if index + 1 >= len(args):
+                print("Missing value for --format")
+                raise SystemExit(2)
+            output_format = args[index + 1]
+            index += 2
+            continue
+
+        if arg.startswith("--format="):
+            output_format = arg.split("=", 1)[1]
+            index += 1
+            continue
+
+        if arg.startswith("-"):
+            print(f"Unknown positioning option: {arg}")
+            raise SystemExit(2)
+
+        if path_seen:
+            print(f"Unexpected positioning argument: {arg}")
+            raise SystemExit(2)
+
+        repo = Path(arg).expanduser().resolve()
+        path_seen = True
+        index += 1
+
+    if output_format not in {"text", "json"}:
+        print("Available formats: text, json")
+        raise SystemExit(2)
+
+    return repo, output_format
 
 
 def parse_actions_init_args(args: list[str]) -> tuple[Path, int, bool]:
@@ -1588,6 +1640,12 @@ def main() -> None:
             raise SystemExit(1)
         return
 
+    if command == "positioning":
+        repo, output_format = parse_positioning_args(sys.argv[2:])
+        result = build_positioning_report(str(repo))
+        print(format_positioning_report(result, output_format=output_format))
+        return
+
     if command == "wiki":
         wiki_command, repo, output = parse_wiki_args(sys.argv[2:])
         if wiki_command == "plan":
@@ -1635,7 +1693,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, demo, doctor, inspect, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, demo, doctor, inspect, positioning, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

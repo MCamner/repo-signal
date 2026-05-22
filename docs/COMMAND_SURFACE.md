@@ -7,6 +7,7 @@ repo-signal
 ├── inspect
 ├── ask
 ├── doctor
+├── positioning
 ├── skill new
 ├── repoaware
 ├── readme
@@ -40,6 +41,14 @@ suggested focus areas.
 
 ```bash
 repo-signal analyze
+```
+
+`positioning` turns README and repository signals into a concise product
+positioning report:
+
+```bash
+repo-signal positioning .
+repo-signal positioning . --json
 ```
 
 `doctor` is the readiness report. It connects the scanner, README scoring,

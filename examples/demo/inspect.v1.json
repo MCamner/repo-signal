@@ -68,20 +68,20 @@
       "repo_signal/cli.py",
       "repo_signal/repoaware/__main__.py",
       "scripts/check-generated-examples.sh",
-      "scripts/generate-examples.sh",
-      "scripts/generate_screenshots.py",
-      "tools/build_prompt.py",
-      "tools/generate_wiki_command_ref.py",
-      "tools/skill_router.py"
+      "scripts/check-packaging.sh",
+      "scripts/check-pypi-readiness.sh",
+      "scripts/check-testpypi-readiness.sh",
+      "scripts/check-trusted-publishing-setup.sh",
+      "scripts/generate-examples.sh"
     ],
     "languages": {
       "HTML": 1,
       "JSON": 7,
-      "Markdown": 57,
+      "Markdown": 64,
       "Python": 54,
-      "Shell": 3,
+      "Shell": 7,
       "TOML": 1,
-      "YAML": 4
+      "YAML": 7
     },
     "tooling": [
       "Python packaging",
@@ -93,24 +93,24 @@
     "top_directories": {
       ".": 11,
       ".claude": 2,
-      ".github": 7,
+      ".github": 10,
       ".repo-signal": 9,
       "bin": 1,
-      "docs": 30,
+      "docs": 35,
       "examples": 27,
       "repo_signal": 47,
-      "scripts": 3,
-      "skills": 14,
+      "scripts": 7,
+      "skills": 16,
       "tests": 3,
       "tools": 3
     }
   },
   "git": {
-    "branch": "main",
-    "change_count": 13,
+    "branch": "chore/v0.3.0-readiness",
+    "change_count": 3,
     "clean": false,
     "is_repo": true,
-    "summary": "git repo, branch main, 13 working tree change(s)"
+    "summary": "git repo, branch chore/v0.3.0-readiness, 3 working tree change(s)"
   },
   "issues": [],
   "public_readiness": {
@@ -125,7 +125,7 @@
   "recommended_next_commit": "Keep docs, examples, and command reference synced with the CLI",
   "repo": {
     "exists": true,
-    "files": 157,
+    "files": 171,
     "name": "repo-signal",
     "path": "/Users/mansys/repo-signal",
     "type": "Python CLI / repo intelligence toolkit"

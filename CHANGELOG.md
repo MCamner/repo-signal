@@ -6,14 +6,17 @@
 
 ### Added
 
+* Added `docs/TRUSTED_PUBLISHING.md` with TestPyPI Trusted Publisher setup values.
+* Added `scripts/check-trusted-publishing-setup.sh` to verify workflow and docs are correctly configured.
 * Added `docs/TESTPYPI.md` with safe TestPyPI dry-run guidance.
 * Added `scripts/check-testpypi-readiness.sh` to verify build artifacts with `twine check`.
 * Added manual TestPyPI GitHub Actions workflow.
-* Added TestPyPI documentation link from README and release checklist.
+* Added TestPyPI and Trusted Publishing documentation links from README.
 
 ### Changed
 
-* Updated roadmap toward `v0.1.20 — TestPyPI publishing dry run`.
+* Updated TestPyPI workflow to run Trusted Publishing setup check in readiness job.
+* Updated roadmap and release checklist with Trusted Publishing verification steps.
 
 ## [0.1.19] - 2026-05-22
 

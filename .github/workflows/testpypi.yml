@@ -28,6 +28,7 @@ jobs:
       - name: Run TestPyPI readiness check
         run: |
           scripts/check-testpypi-readiness.sh
+          scripts/check-trusted-publishing-setup.sh
 
   publish-testpypi:
     if: ${{ github.event.inputs.publish_to_testpypi == 'true' }}

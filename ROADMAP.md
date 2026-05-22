@@ -53,16 +53,22 @@ repo-signal
 
 ## Now
 
-Focus: `v0.1.20 — TestPyPI publishing dry run`
+Focus: `v0.1.21 — TestPyPI trusted publishing setup`
 
 Planned work:
 
-- [ ] Add `docs/TESTPYPI.md`
-- [ ] Add `scripts/check-testpypi-readiness.sh`
-- [ ] Add manual GitHub Actions workflow for TestPyPI dry run
-- [ ] Verify build artifacts with `twine check`
-- [ ] Document TestPyPI install verification
-- [ ] Keep real PyPI publishing disabled until TestPyPI is proven
+- [x] Add `docs/TESTPYPI.md`
+- [x] Add `scripts/check-testpypi-readiness.sh`
+- [x] Add manual GitHub Actions workflow for TestPyPI dry run
+- [x] Verify build artifacts with `twine check`
+- [x] Document TestPyPI install verification
+- [x] Keep real PyPI publishing disabled until TestPyPI is proven
+- [ ] Add `docs/TRUSTED_PUBLISHING.md`
+- [ ] Add `scripts/check-trusted-publishing-setup.sh`
+- [ ] Document TestPyPI Trusted Publisher values
+- [ ] Verify GitHub Actions workflow uses `id-token: write`
+- [ ] Verify workflow uses `environment: testpypi`
+- [ ] Keep upload manual behind `publish_to_testpypi = true`
 
 ## Next
 
@@ -106,6 +112,7 @@ repo-signal demo --generate . --output examples/demo --force
 scripts/check-generated-examples.sh
 scripts/check-packaging.sh
 scripts/check-testpypi-readiness.sh
+scripts/check-trusted-publishing-setup.sh
 ```
 
 A release should only be created when:
@@ -133,6 +140,7 @@ v0.1.16 — integration docs and release polish
 v0.1.17 — generated examples verification
 v0.1.19 — PyPI / pipx readiness plan
 v0.1.20 — TestPyPI publishing dry run
+v0.1.21 — TestPyPI trusted publishing setup
 v0.2.0  — stable local repo intelligence CLI
 ```
 

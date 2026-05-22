@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+### Added
+
+* Added `docs/TESTPYPI.md` with safe TestPyPI dry-run guidance.
+* Added `scripts/check-testpypi-readiness.sh` to verify build artifacts with `twine check`.
+* Added manual TestPyPI GitHub Actions workflow.
+* Added TestPyPI documentation link from README and release checklist.
+
+### Changed
+
+* Updated roadmap toward `v0.1.20 — TestPyPI publishing dry run`.
+
 ## [0.1.19] - 2026-05-22
 
 ### Added

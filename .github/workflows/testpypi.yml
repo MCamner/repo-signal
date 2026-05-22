@@ -1,0 +1,58 @@
+name: TestPyPI dry run
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_to_testpypi:
+        description: "Upload to TestPyPI? Type true to publish."
+        required: true
+        default: "false"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  testpypi-readiness:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run TestPyPI readiness check
+        run: |
+          scripts/check-testpypi-readiness.sh
+
+  publish-testpypi:
+    if: ${{ github.event.inputs.publish_to_testpypi == 'true' }}
+    needs: testpypi-readiness
+    runs-on: ubuntu-latest
+    environment: testpypi
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+          rm -rf dist
+          python -m build
+          python -m twine check dist/*
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/

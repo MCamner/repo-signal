@@ -57,17 +57,12 @@ Focus: `v0.1.20 — TestPyPI publishing dry run`
 
 Planned work:
 
-- [x] Add `docs/PACKAGING.md`
-- [x] Add `scripts/check-packaging.sh`
-- [x] Add packaging CI workflow
-- [x] Validate wheel build and clean virtual environment install
-- [x] Verify console script from installed wheel
-- [x] Document future pipx install path without claiming publication
-- [x] Add `scripts/check-generated-examples.sh`
-- [x] Add `scripts/generate-examples.sh`
-- [x] Add CI workflow for generated examples
-- [x] Add generated examples documentation
-- [x] Verify `inspect.v1` and `doctor.v1` examples before release
+- [ ] Add `docs/TESTPYPI.md`
+- [ ] Add `scripts/check-testpypi-readiness.sh`
+- [ ] Add manual GitHub Actions workflow for TestPyPI dry run
+- [ ] Verify build artifacts with `twine check`
+- [ ] Document TestPyPI install verification
+- [ ] Keep real PyPI publishing disabled until TestPyPI is proven
 
 ## Next
 
@@ -110,6 +105,7 @@ repo-signal publish-checklist . --fail-under 16
 repo-signal demo --generate . --output examples/demo --force
 scripts/check-generated-examples.sh
 scripts/check-packaging.sh
+scripts/check-testpypi-readiness.sh
 ```
 
 A release should only be created when:
@@ -136,6 +132,7 @@ v0.1.15 — inspect JSON integration contract
 v0.1.16 — integration docs and release polish
 v0.1.17 — generated examples verification
 v0.1.19 — PyPI / pipx readiness plan
+v0.1.20 — TestPyPI publishing dry run
 v0.2.0  — stable local repo intelligence CLI
 ```
 

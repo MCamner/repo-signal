@@ -109,6 +109,7 @@ repo-signal demo --generate
 - [**Roadmap**](ROADMAP.md) — Release direction, integration plan, and readiness checklist
 - [**Generated Examples**](docs/GENERATED_EXAMPLES.md) — How examples are generated and verified before release
 - [**Packaging**](docs/PACKAGING.md) — PyPI / pipx readiness plan and packaging smoke tests
+- [**TestPyPI**](docs/TESTPYPI.md) — Safe dry-run path before real PyPI publishing
 - [**Inspect Schema**](docs/INSPECT_SCHEMA.md) — Machine-readable contract for `inspect --json`
 - [**Doctor Schema**](docs/DOCTOR_SCHEMA.md) — Machine-readable contract for `doctor --json`
 - [**Repo Structure**](docs/README_STRUCTURE.md) — Best practices for project layout

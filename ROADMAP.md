@@ -8,7 +8,7 @@ next, and what must be true before each release.
 
 ## Current status
 
-Current release: `v0.1.15 — inspect JSON integration contract`
+Current release: `v0.1.19 — PyPI / pipx readiness plan`
 
 Stable enough to use:
 
@@ -53,21 +53,21 @@ repo-signal
 
 ## Now
 
-Focus: `v0.1.19 — PyPI / pipx readiness plan`
+Focus: `v0.1.20 — TestPyPI publishing dry run`
 
 Planned work:
 
-- [ ] Add `docs/PACKAGING.md`
-- [ ] Add `scripts/check-packaging.sh`
-- [ ] Add packaging CI workflow
-- [ ] Validate wheel build and clean virtual environment install
-- [ ] Verify console script from installed wheel
-- [ ] Document future pipx install path without claiming publication
-- [ ] Add `scripts/check-generated-examples.sh`
-- [ ] Add `scripts/generate-examples.sh`
-- [ ] Add CI workflow for generated examples
-- [ ] Add generated examples documentation
-- [ ] Verify `inspect.v1` and `doctor.v1` examples before release
+- [x] Add `docs/PACKAGING.md`
+- [x] Add `scripts/check-packaging.sh`
+- [x] Add packaging CI workflow
+- [x] Validate wheel build and clean virtual environment install
+- [x] Verify console script from installed wheel
+- [x] Document future pipx install path without claiming publication
+- [x] Add `scripts/check-generated-examples.sh`
+- [x] Add `scripts/generate-examples.sh`
+- [x] Add CI workflow for generated examples
+- [x] Add generated examples documentation
+- [x] Verify `inspect.v1` and `doctor.v1` examples before release
 
 ## Next
 

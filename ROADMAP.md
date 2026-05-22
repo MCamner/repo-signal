@@ -28,6 +28,7 @@ Make `repo-signal` the small, dependable CLI that answers:
 
 Planned for v0.3.0:
 
+- `positioning` report for README/product clarity.
 - `doctor --json` contract stabilization.
 - Stronger command reference coverage.
 - Clearer roadmap and positioning documentation.
@@ -51,7 +52,8 @@ Not planned for v0.3.0:
 - [ ] `repo-signal demo --generate` refreshes example outputs.
 - [ ] Generated examples are verified by CI.
 - [ ] Packaging smoke test passes.
-- [ ] README explains who the tool is for in one sentence.
+- [x] README explains who the tool is for in one sentence.
+- [ ] `repo-signal positioning . --json` produces valid `positioning.v1`.
 - [ ] Integrations doc explains how `mqlaunch`, `mq-mcp`, `mq-hal`, and Bridget consume `inspect.v1`.
 - [ ] CHANGELOG has a clear v0.3.0 section before release.
 
@@ -150,7 +152,7 @@ Planned work:
 
 Longer-term ideas:
 
-- [ ] `repo-signal positioning`
+- [x] `repo-signal positioning`
 - [ ] safe patch suggestions
 - [ ] public portfolio report
 - [ ] repo comparison mode

@@ -14,6 +14,7 @@ from repo_signal.doctor import doctor_repo
 from repo_signal.graph.graph_builder import build_repository_graph
 from repo_signal.pipeline.ask import run_ask_pipeline
 from repo_signal.pipeline.context import rank_files
+from repo_signal.positioning import build_positioning_report, format_positioning_report
 from repo_signal.publish_checklist import check_publish_readiness
 from repo_signal.repoaware.context_builder import build_context, extract_keywords
 from repo_signal.repoaware.ranking import rank_relevant_files, read_relevant_snippet
@@ -217,6 +218,47 @@ class RepoSignalCLITests(unittest.TestCase):
         self.assertIn("Key Entry Points", result.stdout)
         self.assertIn("Detected Tooling", result.stdout)
         self.assertIn("Suggested Focus Areas", result.stdout)
+
+    def test_positioning_report_extracts_repo_message(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "pyproject.toml").write_text("[project]\nname = 'sample'\n", encoding="utf-8")
+
+        report = build_positioning_report(str(root))
+
+        self.assertEqual(report["schema"], "positioning.v1")
+        self.assertEqual(report["repo"], root.name)
+        self.assertIn("sample repo", report["what_is_this"])
+        self.assertIn("who_is_it_for", report)
+        self.assertIn("one_sentence", report)
+        self.assertTrue(report["evidence"]["readme_exists"])
+
+    def test_positioning_command_supports_text_and_json(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        text_result = run_repo_signal(["positioning", str(root)], REPO_ROOT)
+
+        self.assertEqual(text_result.returncode, 0)
+        self.assertIn("# Positioning Report", text_result.stdout)
+        self.assertIn("What is this project?", text_result.stdout)
+        self.assertIn("One-sentence positioning", text_result.stdout)
+
+        json_result = run_repo_signal(["positioning", str(root), "--json"], REPO_ROOT)
+
+        self.assertEqual(json_result.returncode, 0)
+        payload = json.loads(json_result.stdout)
+        self.assertEqual(payload["schema"], "positioning.v1")
+        self.assertEqual(payload["repo"], root.name)
+
+    def test_positioning_format_rejects_unknown_format(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+        report = build_positioning_report(str(root))
+
+        with self.assertRaises(ValueError):
+            format_positioning_report(report, output_format="xml")
 
     def test_doctor_command_reports_repo_health_and_ai_readiness(self):
         temp, root = make_sample_repo()

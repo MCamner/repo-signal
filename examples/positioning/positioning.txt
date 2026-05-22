@@ -1,0 +1,35 @@
+# Positioning Report
+
+Repo: `repo-signal`
+Project type: `Python CLI / repo intelligence toolkit`
+
+## What is this project?
+
+AI-native repository intelligence for structured reasoning systems.
+
+## Who is it for?
+
+Developers who need a fast, local view of repository readiness and AI context.
+
+## What problem does it solve?
+
+It reduces the friction of understanding whether a repo is clear, documented, and ready to publish.
+
+## Strongest README angle
+
+Lead with repo intelligence for AI-assisted publish readiness.
+
+## What is unclear?
+
+- Positioning is reasonably clear; polish the one-sentence promise next.
+
+## One-sentence positioning
+
+AI-native repository intelligence for structured reasoning systems.
+
+## Evidence
+
+- README exists: `true`
+- Top keywords: `docs, inspect, repo-signal, doctor, examples, pypi, report, positioning`
+- Entry points: `bin/repo-signal, release.sh, repo_signal/cli.py, repo_signal/repoaware/__main__.py, scripts/check-generated-examples.sh, scripts/check-packaging.sh, scripts/check-pypi-readiness.sh, scripts/check-testpypi-readiness.sh, scripts/check-trusted-publishing-setup.sh, scripts/generate-examples.sh`
+- Tooling: `Python packaging, GitHub Actions, GitHub Pages docs, README, License`

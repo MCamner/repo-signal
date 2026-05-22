@@ -63,6 +63,7 @@ repo-signal
 ├── inspect            # Fast status and next commit
 ├── inspect --json     # Machine-readable inspect.v1 contract
 ├── doctor             # Full readiness diagnosis
+├── positioning        # Product positioning report
 ├── publish-checklist  # Public signal quality gate
 ├── repoaware          # AI context export
 └── demo               # Generate example reports
@@ -89,6 +90,7 @@ See the [Command Surface](docs/COMMAND_SURFACE.md), [Command Reference](docs/COM
 - [Analyze Report](examples/analyze/analyze.txt)
 - [Inspect Report](examples/inspect/inspect.txt)
 - [Inspect JSON (inspect.v1)](examples/inspect/inspect.v1.json)
+- [Positioning Report](examples/positioning/positioning.txt)
 - [RepoAware Review](examples/repoaware/review.md)
 
 Generate your own local demo reports:
@@ -102,6 +104,7 @@ repo-signal demo --generate
 ## Deep Documentation
 
 - [**Positioning**](docs/POSITIONING.md) — What repo-signal is, who it is for, and how it fits local AI-assisted development workflows
+- [**Positioning Report**](docs/POSITIONING_REPORT.md) — CLI report for repo audience, problem statement, README angle, and one-sentence pitch
 - [**Integrations**](docs/INTEGRATIONS.md) — How mqlaunch, mq-mcp, mq-hal, and Bridget consume `inspect.v1`
 - [**RepoAware**](docs/REPOAWARE.md) — High-signal AI context ranking and export
 - [**Semantic Memory**](docs/SEMANTIC_MEMORY.md) — Uploading symbol maps to vector stores
@@ -124,10 +127,10 @@ repo-signal demo --generate
 Not started:
 
 - safe patch suggestions
-- positioning report
 
 Partially implemented:
 
+- positioning report
 - GitHub Pages detection
 - project type detection
 - script/tool discovery

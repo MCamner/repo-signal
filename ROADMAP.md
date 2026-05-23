@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v0.2.0 — stable install story
+v0.2.1 — version sync, source readability and release hygiene
 ```
 
 Current highest-priority gate:
@@ -84,9 +84,9 @@ repo-signal should remain small, scriptable and contract-driven.
 | ------- | ---------------------------------------------------- | -------------------- |
 | v0.1.x  | Useful local repo intelligence CLI                   | Done                 |
 | v0.1.19 | PyPI / pipx readiness plan                           | Done                 |
-| v0.2.0  | Stable install story                                 | Done / verify        |
-| v0.2.1  | Version sync, source readability and release hygiene | Next maintenance     |
-| v0.3.0  | Stable repo intelligence contracts                   | Next major focus     |
+| v0.2.0  | Stable install story                                 | Done                 |
+| v0.2.1  | Version sync, source readability and release hygiene | Next                 |
+| v0.3.0  | Stable repo intelligence contracts                   | Planned              |
 | v0.4.0  | mq ecosystem integration                             | Planned              |
 | v0.5.0  | Semantic repository memory hardening                 | Planned              |
 | v0.6.0  | Report/export and dashboard artifacts                | Planned              |
@@ -597,7 +597,7 @@ A release should only be created when:
 Work on:
 
 ```text
-v0.2.0 completion, then v0.2.1 release hygiene.
+v0.2.1 — version sync, source readability and release hygiene
 ```
 
 Do not start v0.3.0 contract work until version sync, packaging truth and source
@@ -606,9 +606,8 @@ readability are clean.
 The most efficient path is:
 
 ```text
-1. Finish stable install story
-2. Fix version/source/readability drift
-3. Stabilize inspect.v1 and doctor.v1
-4. Integrate with mq ecosystem
-5. Harden semantic memory
+1. Fix version/source/readability drift  ← current
+2. Stabilize inspect.v1 and doctor.v1
+3. Integrate with mq ecosystem
+4. Harden semantic memory
 ```

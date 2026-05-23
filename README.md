@@ -139,6 +139,19 @@ Partially implemented:
 
 ---
 
+## v0.2.1 status
+
+- [x] Version sync — VERSION, pyproject.toml, `__version__` all agree
+- [x] CHANGELOG entry for v0.2.1
+- [x] `scripts/check-docs-consistency.sh` — version and readability guards
+- [x] `scripts/check-packaging.sh` passes
+- [x] `pipx install repo-signal` installs v0.2.0 from PyPI
+- [x] 81 tests pass — `python3 -m pytest -q`
+- [x] GitHub Actions green (Tests, Packaging, Generated examples, Publish checklist)
+- [x] `.markdownlint.json` configured
+
+---
+
 ## Author
 
 Mattias Camner

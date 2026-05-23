@@ -16,6 +16,7 @@ repo-signal doctor ~/some-repo --format json
 
 ```json
 {
+  "schema": "doctor.v1",
   "schema_version": "doctor.v1",
   "repo": {
     "name": "repo-signal",
@@ -49,7 +50,8 @@ repo-signal doctor ~/some-repo --format json
 
 | Field | Type | Meaning |
 | --- | --- | --- |
-| `schema_version` | string | Schema version. Current value is `doctor.v1`. |
+| `schema` | string | Schema identifier. Always `"doctor.v1"`. Check this field before parsing. |
+| `schema_version` | string | Legacy alias for `schema`. Same value. |
 | `repo` | object | Repository identity and project classification. |
 | `summary` | object | Scan summary, language counts, and Git state. |
 | `scores` | object | Readiness scores grouped by area. |

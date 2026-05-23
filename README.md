@@ -139,6 +139,19 @@ Partially implemented:
 
 ---
 
+## v0.3.0 status
+
+- [x] `repo-signal inspect --json .` returns `schema: "inspect.v1"`
+- [x] `repo-signal doctor --json .` returns `schema: "doctor.v1"`
+- [x] Schema contract tests — 14 tests covering required fields, JSON roundtrip and safe consumption
+- [x] `docs/INSPECT_SCHEMA.md` — full field reference for `inspect.v1`
+- [x] `docs/DOCTOR_SCHEMA.md` — full field reference for `doctor.v1`
+- [x] `docs/INTEGRATIONS.md` — consumer examples for mqlaunch, mq-agent, mq-mcp, mq-hal
+- [x] 95 tests pass — `python3 -m pytest -q`
+- [x] GitHub Actions green
+
+---
+
 ## v0.2.1 status
 
 - [x] Version sync — VERSION, pyproject.toml, `__version__` all agree

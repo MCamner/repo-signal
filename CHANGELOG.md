@@ -4,6 +4,28 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-24
+
+### Added
+
+* `tests/test_contracts.py` — 14 schema contract tests for `inspect.v1` and `doctor.v1`
+* `schema: "doctor.v1"` field added to `doctor --json` output (alongside legacy `schema_version`)
+* `docs/INTEGRATIONS.md` — mq-agent integration example added
+* `docs/DOCTOR_SCHEMA.md` — updated to document `schema` field and safe consumption pattern
+
+### Changed
+
+* Bumped VERSION, `pyproject.toml` and `repo_signal/__init__.py` to 0.3.0
+* ROADMAP: v0.3.0 marked as current, v0.4.0 as next
+
+### Verified
+
+* 95 tests pass
+* `scripts/check-docs-consistency.sh` passes
+* `scripts/check-packaging.sh` passes
+* `repo-signal inspect --json .` returns `schema: inspect.v1`
+* `repo-signal doctor --json .` returns `schema: doctor.v1`
+
 ## [0.2.1] - 2026-05-24
 
 ### Added

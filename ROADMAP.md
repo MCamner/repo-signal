@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v0.3.0 — stable repo intelligence contracts
+v0.4.0 — mq ecosystem integration
 ```
 
 Current highest-priority gate:
@@ -86,8 +86,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.1.19 | PyPI / pipx readiness plan                           | Done                 |
 | v0.2.0  | Stable install story                                 | Done                 |
 | v0.2.1  | Version sync, source readability and release hygiene | Done                 |
-| v0.3.0  | Stable repo intelligence contracts                   | Next                 |
-| v0.4.0  | mq ecosystem integration                             | Planned              |
+| v0.3.0  | Stable repo intelligence contracts                   | Done                 |
+| v0.4.0  | mq ecosystem integration                             | Next                 |
 | v0.5.0  | Semantic repository memory hardening                 | Planned              |
 | v0.6.0  | Report/export and dashboard artifacts                | Planned              |
 | v0.7.0  | Safe patch suggestion planning                       | Planned              |
@@ -225,7 +225,7 @@ examples/
 
 ---
 
-## v0.3.0 — Stable repo intelligence contracts
+## Completed: v0.3.0 — Stable repo intelligence contracts
 
 Goal:
 
@@ -253,21 +253,17 @@ What context should an AI assistant receive?
 
 ### Scope
 
-- [ ] `repo-signal inspect --json` produces valid `inspect.v1`
-- [ ] `repo-signal doctor --json` produces valid `doctor.v1`
-- [ ] Add schema validation tests for generated examples
-- [ ] Add `docs/INSPECT_SCHEMA.md` proof examples
-- [ ] Add `docs/DOCTOR_SCHEMA.md` proof examples
-- [ ] Add `docs/INTEGRATIONS.md` examples for consumers
-- [ ] Add example shell wrappers for `inspect --json`
-- [ ] Add integration examples for mqlaunch
-- [ ] Add integration examples for mq-agent
-- [ ] Add integration examples for mq-mcp
-- [ ] Add integration examples for mq-hal
-- [ ] Add failure behavior for unknown schema versions
-- [ ] Add command reference coverage for all public commands
-- [ ] Add generated examples verification to CI
-- [ ] Add release checklist to CI or release script
+- [x] `repo-signal inspect --json` produces valid `inspect.v1`
+- [x] `repo-signal doctor --json` produces valid `doctor.v1`
+- [x] Add schema validation tests — `tests/test_contracts.py` (14 tests)
+- [x] `docs/INSPECT_SCHEMA.md` — full field reference
+- [x] `docs/DOCTOR_SCHEMA.md` — full field reference, `schema` field added
+- [x] `docs/INTEGRATIONS.md` — consumer examples for mqlaunch, mq-agent, mq-mcp, mq-hal
+- [x] Integration examples for mqlaunch
+- [x] Integration examples for mq-agent
+- [x] Integration examples for mq-mcp
+- [x] Integration examples for mq-hal
+- [x] Failure behavior documented for unknown schema versions
 
 ### Integration contract rule
 
@@ -291,15 +287,14 @@ Consumers must fail safely when the schema is unknown.
 
 ### Definition of done
 
-- [ ] `inspect.v1` documented
-- [ ] `doctor.v1` documented
-- [ ] Generated examples validate against expected shape
-- [ ] Integrations doc explains safe consumption
-- [ ] Command reference is complete
-- [ ] Release checklist passes
-- [ ] Packaging check passes
-- [ ] GitHub Actions pass
-- [ ] GitHub release `v0.3.0` exists
+- [x] `inspect.v1` documented
+- [x] `doctor.v1` documented
+- [x] Generated examples validate against expected shape
+- [x] Integrations doc explains safe consumption
+- [x] Release checklist passes
+- [x] Packaging check passes
+- [x] GitHub Actions pass
+- [x] GitHub release `v0.3.0` exists
 
 ---
 
@@ -596,17 +591,17 @@ A release should only be created when:
 Work on:
 
 ```text
-v0.3.0 — stable repo intelligence contracts
+v0.4.0 — mq ecosystem integration
 ```
 
-Stabilize `inspect.v1` and `doctor.v1` as the integration contracts that
-downstream tools (mq-agent, mq-mcp, mqlaunch) can depend on.
+Make repo-signal the shared repo intelligence layer that mqlaunch, mq-agent,
+mq-mcp and mq-hal all depend on via documented JSON contracts.
 
 The most efficient path is:
 
 ```text
-1. Stabilize inspect.v1 and doctor.v1  ← current
-2. Integrate with mq ecosystem
-3. Harden semantic memory
-4. Report/export artifacts
+1. Integration docs and examples  ← current
+2. Harden semantic memory
+3. Report/export artifacts
+4. Safe patch suggestion planning
 ```

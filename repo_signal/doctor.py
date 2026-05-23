@@ -182,6 +182,7 @@ def build_doctor_result_from_repo(repo: Repository, readme_result: dict[str, Any
     priorities = suggested_priorities(repo, docs_score, health_score, release_score, ai_score)
 
     return {
+        "schema": "doctor.v1",
         "schema_version": "doctor.v1",
         "repo": {
             "name": repo.name,

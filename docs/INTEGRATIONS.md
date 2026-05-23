@@ -177,6 +177,52 @@ def repo_context_block(repo_path: str = ".") -> str:
 
 ---
 
+## mq-agent
+
+`mq-agent` uses `inspect.v1` for repo scoring and `doctor.v1` for semantic
+memory context.
+
+### Repo score command
+
+```bash
+mq-agent score .
+```
+
+Internally calls `repo-signal inspect --json .` and reads `public_readiness.score`.
+
+### Semantic memory
+
+```bash
+mq-agent memory status
+mq-agent memory build .
+mq-agent memory refresh . --approve
+```
+
+Uses `repo-signal semantic-upload` to push repository context to a vector store.
+
+### Safe consumption in mq-agent
+
+```python
+import subprocess, json
+
+def repo_inspect_json(path: str = ".") -> dict | None:
+    result = subprocess.run(
+        ["repo-signal", "inspect", "--json", path],
+        capture_output=True, text=True, timeout=30,
+    )
+    if result.returncode != 0:
+        return None
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
+    if data.get("schema") != "inspect.v1":
+        return None
+    return data
+```
+
+---
+
 ## Validation rule
 
 Every consumer must check `schema` before using any fields:

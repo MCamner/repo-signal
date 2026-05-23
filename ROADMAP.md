@@ -139,13 +139,13 @@ Make repo-signal installable, testable and believable as a daily CLI.
 - [x] Add `docs/PYPI.md`
 - [x] Add `scripts/check-pypi-readiness.sh`
 - [x] Add manual PyPI publish workflow
-- [ ] Configure PyPI Trusted Publisher on pypi.org
-- [ ] Create GitHub environment `pypi`
-- [ ] Publish to real PyPI only after TestPyPI is proven
-- [ ] Verify `pipx install repo-signal` in clean environment
+- [x] Configure PyPI Trusted Publisher on pypi.org
+- [x] Create GitHub environment `pypi`
+- [x] Publish to real PyPI
+- [x] Verify `pipx install repo-signal` in clean environment — installs v0.2.0
 - [x] Update README install section after real PyPI publishing
-- [ ] Keep local editable install documented for development
-- [ ] Keep TestPyPI workflow manual and gated
+- [x] Keep local editable install documented for development
+- [x] Keep TestPyPI workflow manual and gated
 
 ### Required verification
 
@@ -169,10 +169,10 @@ scripts/check-pypi-readiness.sh
 - [x] `pyproject.toml` matches release target
 - [x] README install path is accurate
 - [x] CHANGELOG has release entry
-- [ ] Packaging smoke test passes
+- [x] Packaging smoke test passes
 - [x] TestPyPI path is documented
 - [x] PyPI path is documented
-- [ ] GitHub Actions are green
+- [x] GitHub Actions are green
 - [x] GitHub release exists
 
 ---

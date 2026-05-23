@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-05-24
+
+### Added
+
+* `scripts/check-docs-consistency.sh` — version sync, CHANGELOG and readability guards
+* `## v0.2.1 status` proof section in README
+* `.markdownlint.json` with `siblings_only: true` to suppress expected duplicate heading warnings
+
+### Changed
+
+* Bumped VERSION, `pyproject.toml` and `repo_signal/__init__.py` to 0.2.1
+* Updated ROADMAP: v0.2.0 fully done, v0.2.1 as current next step
+
+### Verified
+
+* 81 tests pass
+* `scripts/check-docs-consistency.sh` passes
+* `scripts/check-packaging.sh` passes
+* `repo-signal publish-checklist . --fail-under 16` passes
+
 ## [0.2.0] - 2026-05-22
 
 ### Added

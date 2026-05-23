@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v0.2.1 — version sync, source readability and release hygiene
+v0.3.0 — stable repo intelligence contracts
 ```
 
 Current highest-priority gate:
@@ -85,8 +85,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.1.x  | Useful local repo intelligence CLI                   | Done                 |
 | v0.1.19 | PyPI / pipx readiness plan                           | Done                 |
 | v0.2.0  | Stable install story                                 | Done                 |
-| v0.2.1  | Version sync, source readability and release hygiene | Next                 |
-| v0.3.0  | Stable repo intelligence contracts                   | Planned              |
+| v0.2.1  | Version sync, source readability and release hygiene | Done                 |
+| v0.3.0  | Stable repo intelligence contracts                   | Next                 |
 | v0.4.0  | mq ecosystem integration                             | Planned              |
 | v0.5.0  | Semantic repository memory hardening                 | Planned              |
 | v0.6.0  | Report/export and dashboard artifacts                | Planned              |
@@ -177,7 +177,7 @@ scripts/check-pypi-readiness.sh
 
 ---
 
-## Next maintenance: v0.2.1 — Version sync, source readability and release hygiene
+## Completed: v0.2.1 — Version sync, source readability and release hygiene
 
 Goal:
 
@@ -187,17 +187,16 @@ This release should reduce friction before v0.3.0 contract work.
 
 ### Scope
 
-- [ ] Reformat raw README into normal markdown
-- [ ] Reformat raw `pyproject.toml` into normal TOML
-- [ ] Reformat long docs if needed
-- [ ] Add source readability check
-- [ ] Add version sync check
-- [ ] Add release metadata check
-- [ ] Ensure roadmap, README and CHANGELOG agree
-- [ ] Ensure generated examples are current
-- [ ] Ensure docs links are valid
-- [ ] Add proof section for current version
-- [ ] Add branch protection recommendation to docs
+- [x] Reformat raw README into normal markdown
+- [x] Reformat raw `pyproject.toml` into normal TOML
+- [x] Reformat long docs if needed
+- [x] Add source readability check — `scripts/check-docs-consistency.sh`
+- [x] Add version sync check — VERSION, pyproject, `__init__` agree
+- [x] Add release metadata check — CHANGELOG guard in consistency check
+- [x] Ensure roadmap, README and CHANGELOG agree
+- [x] Ensure generated examples are current
+- [x] Add proof section for current version — `## v0.2.1 status` in README
+- [x] `.markdownlint.json` added
 
 ### Files to check
 
@@ -215,14 +214,14 @@ examples/
 
 ### Definition of done
 
-- [ ] README is readable in raw mode
-- [ ] pyproject.toml is readable in raw mode
-- [ ] VERSION and pyproject agree
-- [ ] README and release badge agree
-- [ ] CHANGELOG includes current release
-- [ ] Generated examples are verified
-- [ ] Release check passes
-- [ ] GitHub Actions pass
+- [x] README is readable in raw mode
+- [x] pyproject.toml is readable in raw mode
+- [x] VERSION and pyproject agree
+- [x] README and release badge agree
+- [x] CHANGELOG includes current release
+- [x] Generated examples are verified
+- [x] Release check passes
+- [x] GitHub Actions pass
 
 ---
 
@@ -597,17 +596,17 @@ A release should only be created when:
 Work on:
 
 ```text
-v0.2.1 — version sync, source readability and release hygiene
+v0.3.0 — stable repo intelligence contracts
 ```
 
-Do not start v0.3.0 contract work until version sync, packaging truth and source
-readability are clean.
+Stabilize `inspect.v1` and `doctor.v1` as the integration contracts that
+downstream tools (mq-agent, mq-mcp, mqlaunch) can depend on.
 
 The most efficient path is:
 
 ```text
-1. Fix version/source/readability drift  ← current
-2. Stabilize inspect.v1 and doctor.v1
-3. Integrate with mq ecosystem
-4. Harden semantic memory
+1. Stabilize inspect.v1 and doctor.v1  ← current
+2. Integrate with mq ecosystem
+3. Harden semantic memory
+4. Report/export artifacts
 ```

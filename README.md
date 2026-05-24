@@ -139,6 +139,18 @@ Partially implemented:
 
 ---
 
+## v0.4.0 status
+
+- [x] `docs/MQ_ECOSYSTEM.md` — ecosystem overview, architecture, troubleshooting and CI gate examples
+- [x] `examples/integrations/inspect_safe.sh` — safe shell consumer for `inspect.v1`
+- [x] `examples/integrations/readiness_gate.sh` — CI publish-readiness gate
+- [x] `examples/integrations/mq_agent_consumer.py` — Python consumer for `inspect.v1` and `doctor.v1`
+- [x] `tests/test_mq_ecosystem.py` — 10 integration smoke tests
+- [x] 105 tests pass — `python3 -m pytest -q`
+- [x] GitHub Actions green
+
+---
+
 ## v0.3.0 status
 
 - [x] `repo-signal inspect --json .` returns `schema: "inspect.v1"`

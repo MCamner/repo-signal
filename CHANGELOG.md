@@ -4,6 +4,27 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-05-24
+
+### Added
+
+* `docs/MQ_ECOSYSTEM.md` — ecosystem overview, architecture diagram, troubleshooting and CI gate examples
+* `examples/integrations/inspect_safe.sh` — safe shell consumer for `inspect.v1`
+* `examples/integrations/readiness_gate.sh` — CI publish-readiness gate script
+* `examples/integrations/mq_agent_consumer.py` — Python consumer pattern for `inspect.v1` and `doctor.v1`
+* `tests/test_mq_ecosystem.py` — 10 integration smoke tests
+
+### Changed
+
+* Bumped VERSION, `pyproject.toml` and `repo_signal/__init__.py` to 0.4.0
+* ROADMAP: v0.4.0 marked done, v0.5.0 next
+
+### Verified
+
+* 105 tests pass
+* `scripts/check-docs-consistency.sh` passes
+* Integration examples run against this repo
+
 ## [0.3.0] - 2026-05-24
 
 ### Added

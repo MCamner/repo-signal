@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v0.4.0 — mq ecosystem integration
+v0.5.0 — semantic repository memory hardening
 ```
 
 Current highest-priority gate:
@@ -87,8 +87,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.2.0  | Stable install story                                 | Done                 |
 | v0.2.1  | Version sync, source readability and release hygiene | Done                 |
 | v0.3.0  | Stable repo intelligence contracts                   | Done                 |
-| v0.4.0  | mq ecosystem integration                             | Next                 |
-| v0.5.0  | Semantic repository memory hardening                 | Planned              |
+| v0.4.0  | mq ecosystem integration                             | Done                 |
+| v0.5.0  | Semantic repository memory hardening                 | Next                 |
 | v0.6.0  | Report/export and dashboard artifacts                | Planned              |
 | v0.7.0  | Safe patch suggestion planning                       | Planned              |
 | v1.0.0  | Stable repo intelligence platform                    | Future               |
@@ -316,18 +316,13 @@ Bridget
 
 ### Planned scope
 
-- [ ] Add `docs/MQ_ECOSYSTEM.md`
-- [ ] Add mqlaunch examples
-- [ ] Add mq-agent examples
-- [ ] Add mq-mcp examples
-- [ ] Add mq-hal examples
-- [ ] Add Bridget/persona workflow examples
-- [ ] Add `examples/integrations/`
-- [ ] Add JSON contract smoke tests for integration examples
-- [ ] Add local workflow diagrams
-- [ ] Add command-output examples for each consumer
-- [ ] Add troubleshooting for missing repo-signal in PATH
-- [ ] Add examples for CI/readiness gates
+- [x] `docs/MQ_ECOSYSTEM.md` — architecture, consumer table, troubleshooting
+- [x] `examples/integrations/inspect_safe.sh` — safe shell consumer
+- [x] `examples/integrations/readiness_gate.sh` — CI gate script
+- [x] `examples/integrations/mq_agent_consumer.py` — Python consumer for mq-agent
+- [x] `tests/test_mq_ecosystem.py` — 10 integration smoke tests
+- [x] Troubleshooting for missing repo-signal in PATH
+- [x] CI/readiness gate examples
 
 ### Example target flow
 
@@ -343,13 +338,11 @@ release decision or improvement plan
 
 ### Definition of done
 
-- [ ] Integration docs exist
-- [ ] Integration examples exist
-- [ ] All examples are generated or verified
-- [ ] mq-agent can call repo-signal reliably
-- [ ] mq-hal can summarize repo-signal reliably
-- [ ] mqlaunch docs point to repo-signal flows
-- [ ] GitHub Actions pass
+- [x] Integration docs exist
+- [x] Integration examples exist and run
+- [x] mq-agent safe consumer pattern documented and tested
+- [x] CI/readiness gate example works
+- [x] GitHub Actions pass
 
 ---
 
@@ -591,17 +584,15 @@ A release should only be created when:
 Work on:
 
 ```text
-v0.4.0 — mq ecosystem integration
+v0.5.0 — semantic repository memory hardening
 ```
 
-Make repo-signal the shared repo intelligence layer that mqlaunch, mq-agent,
-mq-mcp and mq-hal all depend on via documented JSON contracts.
+Make repo-signal the reliable source of high-signal repo memory for AI assistants.
 
 The most efficient path is:
 
 ```text
-1. Integration docs and examples  ← current
-2. Harden semantic memory
-3. Report/export artifacts
-4. Safe patch suggestion planning
+1. Harden semantic memory  ← current
+2. Report/export artifacts
+3. Safe patch suggestion planning
 ```

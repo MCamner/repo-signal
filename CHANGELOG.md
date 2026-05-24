@@ -4,6 +4,29 @@
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-05-24
+
+### Added
+
+* `repo-signal suggest [path] [--format text|markdown|json]` — safe patch suggestions, no mutations
+* `suggest.v1` JSON schema for machine-readable suggestion output
+* `repo_signal/suggest.py` — `build_suggestions`, `format_suggestions`
+* `tests/test_suggest.py` — 23 tests including explicit no-mutation guarantees
+* `repo_suggest` tool registered in mq-agent TOOL_REGISTRY
+* `tasks/suggest.yaml` — mqlaunch task using 8 tools: `repo_scan`, `repo_publish_checklist`, `repo_readme_score`, `git_status`, `git_log`, `repo_signal_json`, `repo_suggest`
+
+### Changed
+
+* Bumped VERSION, `pyproject.toml` and `repo_signal/__init__.py` to 0.7.0
+* ROADMAP: v0.7.0 marked done, v1.0.0 next
+
+### Verified
+
+* 157 tests pass
+* `repo-signal suggest .` — text, markdown och JSON output verified
+* `mq-agent task run suggest-patches` — all 8 steps pass
+* No files created or modified during suggest run
+
 ## [0.6.0] - 2026-05-24
 
 ### Added

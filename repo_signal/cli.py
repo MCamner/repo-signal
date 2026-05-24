@@ -25,6 +25,7 @@ from repo_signal.semantic_upload import main as semantic_upload_main
 from repo_signal.skill import main as skill_main
 from repo_signal.wiki_export import export_wiki_pages
 from repo_signal.report import build_report, format_report
+from repo_signal.suggest import VALID_FORMATS as SUGGEST_FORMATS, build_suggestions, format_suggestions
 
 
 HELP_TEXT = """repo-signal
@@ -53,6 +54,7 @@ Usage:
   repo-signal wiki plan [path]
   repo-signal wiki export [path] [--output path]
   repo-signal report [path] [--format text|markdown|json]
+  repo-signal suggest [path] [--format text|markdown|json]
   repo-signal roadmap
   repo-signal --help
   repo-signal --version
@@ -82,6 +84,7 @@ Commands:
              Export repo-local skills into Codex skill storage
   hygiene    Check junk files, .gitignore, large files, and Git status
   report     Unified report — inspect + publish-checklist in text, markdown or JSON
+  suggest    Safe patch suggestions — what to improve, no mutations
   wiki       Generate suggested GitHub Wiki structure, Home draft, or plan
   roadmap    Generate a practical roadmap based on repo state
 
@@ -110,6 +113,9 @@ Examples:
   repo-signal wiki
   repo-signal wiki plan .
   repo-signal wiki export . --output docs/wiki-export
+  repo-signal suggest .
+  repo-signal suggest . --format markdown
+  repo-signal suggest . --format json
   repo-signal roadmap
 
 Run from any repository root.
@@ -1691,6 +1697,39 @@ def main() -> None:
         print(analyze_hygiene(repo))
         return
 
+    if command == "suggest":
+        args = sys.argv[2:]
+        suggest_path = "."
+        suggest_format = "text"
+        i = 0
+        while i < len(args):
+            if args[i] == "--format" and i + 1 < len(args):
+                suggest_format = args[i + 1]
+                i += 2
+            elif args[i].startswith("--format="):
+                suggest_format = args[i].split("=", 1)[1]
+                i += 1
+            elif args[i] == "--json":
+                suggest_format = "json"
+                i += 1
+            elif not args[i].startswith("--"):
+                suggest_path = args[i]
+                i += 1
+            else:
+                print(f"Unknown suggest option: {args[i]}")
+                raise SystemExit(2)
+        if suggest_format not in SUGGEST_FORMATS:
+            print(f"Unknown suggest format: {suggest_format}")
+            print(f"Available formats: {', '.join(sorted(SUGGEST_FORMATS))}")
+            raise SystemExit(2)
+        try:
+            data = build_suggestions(suggest_path)
+            print(format_suggestions(data, output_format=suggest_format))
+        except ValueError as exc:
+            print(exc)
+            raise SystemExit(2)
+        return
+
     if command == "roadmap":
         print(generate_roadmap_plan(repo))
         return
@@ -1725,7 +1764,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, demo, doctor, inspect, positioning, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, demo, doctor, inspect, positioning, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

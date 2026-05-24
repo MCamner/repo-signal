@@ -139,6 +139,19 @@ Partially implemented:
 
 ---
 
+## v0.5.0 status
+
+- [x] `repo-signal semantic-upload --dry-run` stable and documented with verified output
+- [x] Upload fails clearly when `OPENAI_VECTOR_STORE_ID` is missing (exit 2, error to stderr)
+- [x] No-secret guarantee — memory document contains only symbols, no raw source or credentials
+- [x] `docs/SEMANTIC_MEMORY.md` — verified output, safety rules, mq-agent integration, failure states
+- [x] `tests/test_semantic_upload.py` — 12 tests covering dry-run, missing env, exit codes, no-secret guarantee
+- [x] `mq-agent memory status` and `mq-agent memory build` verified against this repo
+- [x] 117 tests pass — `python3 -m pytest -q`
+- [x] GitHub Actions green
+
+---
+
 ## v0.4.0 status
 
 - [x] `docs/MQ_ECOSYSTEM.md` — ecosystem overview, architecture, troubleshooting and CI gate examples

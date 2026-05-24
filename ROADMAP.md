@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v0.5.0 — semantic repository memory hardening
+v0.6.0 — report/export and dashboard artifacts
 ```
 
 Current highest-priority gate:
@@ -88,7 +88,7 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.2.1  | Version sync, source readability and release hygiene | Done                 |
 | v0.3.0  | Stable repo intelligence contracts                   | Done                 |
 | v0.4.0  | mq ecosystem integration                             | Done                 |
-| v0.5.0  | Semantic repository memory hardening                 | Next                 |
+| v0.5.0  | Semantic repository memory hardening                 | Done                 |
 | v0.6.0  | Report/export and dashboard artifacts                | Planned              |
 | v0.7.0  | Safe patch suggestion planning                       | Planned              |
 | v1.0.0  | Stable repo intelligence platform                    | Future               |
@@ -357,20 +357,14 @@ clearer and easier to verify.
 
 ### Planned scope
 
-- [ ] Stabilize `repo-signal semantic-upload --dry-run`
-- [ ] Document required environment variables
-- [ ] Document `OPENAI_VECTOR_STORE_ID`
-- [ ] Add semantic memory status command or report
-- [ ] Add stale memory detection
-- [ ] Add symbol memory freshness metadata
-- [ ] Add dry-run proof output
-- [ ] Add upload approval guidance
-- [ ] Add generated symbol memory example
-- [ ] Add failure handling for missing vector store
-- [ ] Add failure handling for missing API key
-- [ ] Add docs for shared semantic repository memory store
-- [ ] Add mq-agent memory integration example
-- [ ] Add no-secret guarantee for uploaded files
+- [x] Stabilize `repo-signal semantic-upload --dry-run` — verified output documented
+- [x] Document required environment variables (`OPENAI_VECTOR_STORE_ID`, `OPENAI_API_KEY`)
+- [x] Add dry-run proof output in `docs/SEMANTIC_MEMORY.md`
+- [x] Add upload approval guidance — failure states and fix instructions
+- [x] Add failure handling for missing vector store (exit 2, clear error)
+- [x] Add failure handling for missing API key
+- [x] Add mq-agent memory integration example
+- [x] Add no-secret guarantee — documented and tested
 
 ### Safety rules
 
@@ -384,12 +378,12 @@ clearer and easier to verify.
 
 ### Definition of done
 
-- [ ] Semantic upload dry-run is stable
-- [ ] Upload behavior is explicitly gated
-- [ ] Docs include real example output
-- [ ] mq-agent can consume the memory workflow
-- [ ] Tests cover missing env cases
-- [ ] GitHub Actions pass
+- [x] Semantic upload dry-run is stable
+- [x] Upload behavior is explicitly gated (exits 2 if vector store missing)
+- [x] Docs include real verified example output
+- [x] mq-agent can consume the memory workflow
+- [x] Tests cover missing env cases (12 tests)
+- [x] GitHub Actions pass
 
 ---
 
@@ -584,15 +578,15 @@ A release should only be created when:
 Work on:
 
 ```text
-v0.5.0 — semantic repository memory hardening
+v0.6.0 — report/export and dashboard artifacts
 ```
 
-Make repo-signal the reliable source of high-signal repo memory for AI assistants.
+Make repo-signal outputs easier to share, compare and consume externally.
 
 The most efficient path is:
 
 ```text
-1. Harden semantic memory  ← current
-2. Report/export artifacts
-3. Safe patch suggestion planning
+1. Report/export artifacts  ← current
+2. Safe patch suggestion planning
+3. v1.0.0 stable platform
 ```

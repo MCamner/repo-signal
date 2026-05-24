@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v0.7.0 — safe patch suggestion planning
+v1.0.0 — stable repo intelligence platform
 ```
 
 Current highest-priority gate:
@@ -54,20 +54,22 @@ repo-signal
 ├── inspect --json
 ├── doctor
 ├── publish-checklist
+├── report
+├── suggest
 ├── repoaware
 └── demo
 ```
 
 Additional documented commands include `positioning`, `semantic-upload`,
 `ask`, `readme`, `roadmap`, `wiki`, `hygiene`, `actions init` and `skill new`.
-The contract work below should separate stable integration commands from
-experimental or helper commands.
 
 Current stable contracts:
 
 ```text
 inspect.v1
 doctor.v1
+report.v1
+suggest.v1
 ```
 
 Current strategic direction:
@@ -90,9 +92,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.4.0  | mq ecosystem integration                             | Done                 |
 | v0.5.0  | Semantic repository memory hardening                 | Done                 |
 | v0.6.0  | Report/export and dashboard artifacts                | Done                 |
-| v0.7.0  | Safe patch suggestion planning                       | Next                 |
-| v0.7.0  | Safe patch suggestion planning                       | Planned              |
-| v1.0.0  | Stable repo intelligence platform                    | Future               |
+| v0.7.0  | Safe patch suggestion planning                       | Done                 |
+| v1.0.0  | Stable repo intelligence platform                    | Next                 |
 
 ---
 
@@ -413,22 +414,26 @@ repo-signal compare ./repo-a ./repo-b
 
 ---
 
-## v0.7.0 — Safe patch suggestion planning
+## Completed: v0.7.0 — Safe patch suggestion planning
 
 Goal:
 
 Help users understand possible improvements without mutating repositories
 automatically.
 
-### Planned scope
+### Completed scope
 
-- [ ] Add safe patch suggestion report
-- [ ] Add no-write default
-- [ ] Add diff preview format
-- [ ] Add risk classification
-- [ ] Add suggested commit grouping
-- [ ] Add docs for human review
-- [ ] Add tests for no-mutation behavior
+- [x] `repo-signal suggest [path] [--format text|markdown|json]` — safe patch suggestions
+- [x] `suggest.v1` JSON schema for machine-readable integrations
+- [x] `repo_signal/suggest.py` — `build_suggestions`, `format_suggestions`
+- [x] No-write default — never touches the repository
+- [x] Diff preview format per suggestion
+- [x] Risk classification (low / medium / high)
+- [x] Suggested commit grouping (docs / hygiene / release / testing / ci / pages)
+- [x] `tests/test_suggest.py` — 23 tests including explicit no-mutation guarantees
+- [x] `repo_suggest` tool registered in mq-agent TOOL_REGISTRY
+- [x] `tasks/suggest.yaml` — mqlaunch task using 8 tools end-to-end
+- [x] 157 tests pass
 
 ### Non-goals
 
@@ -575,15 +580,16 @@ A release should only be created when:
 Work on:
 
 ```text
-v0.7.0 — safe patch suggestion planning
+v1.0.0 — stable repo intelligence platform
 ```
 
-Help users understand possible improvements without mutating repositories automatically.
+Make repo-signal stable enough to be the default repo intelligence engine for
+local AI-assisted development workflows.
 
 The most efficient path is:
 
 ```text
-1. Report/export artifacts  ← done
-2. Safe patch suggestion planning  ← current
-3. v1.0.0 stable platform
+1. Report/export artifacts         ← done
+2. Safe patch suggestion planning  ← done
+3. v1.0.0 stable platform          ← current
 ```

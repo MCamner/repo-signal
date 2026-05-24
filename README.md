@@ -139,6 +139,16 @@ Partially implemented:
 
 ---
 
+## v0.7.0 status
+
+- [x] `repo-signal suggest [path] [--format text|markdown|json]` — safe patch suggestions, no mutations
+- [x] `suggest.v1` JSON schema — machine-readable output for integrations
+- [x] `repo_signal/suggest.py` — `build_suggestions`, `format_suggestions`
+- [x] `tests/test_suggest.py` — 23 tests including explicit no-mutation guarantees
+- [x] `repo_suggest` tool registered in mq-agent TOOL_REGISTRY
+- [x] `tasks/suggest.yaml` — mqlaunch task using 8 tools end-to-end
+- [x] 157 tests pass — `python3 -m pytest -q`
+
 ## v0.6.0 status
 
 - [x] `repo-signal report [path] [--format text|markdown|json]` — unified report: inspect + publish-checklist in one command

@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-05-24
+
+### Added
+
+* `tests/test_semantic_upload.py` — 12 tests covering dry-run, missing env, exit codes, no-secret guarantee and mq-agent integration
+* `docs/SEMANTIC_MEMORY.md` — rewritten with verified dry-run output, safety rules table, no-secret guarantee, mq-agent integration and failure states
+
+### Changed
+
+* Bumped VERSION, `pyproject.toml` and `repo_signal/__init__.py` to 0.5.0
+* ROADMAP: v0.5.0 marked done, v0.6.0 next
+
+### Verified
+
+* 117 tests pass
+* `scripts/check-docs-consistency.sh` passes
+* `repo-signal semantic-upload --dry-run` verified output documented
+* `mq-agent memory status` and `mq-agent memory build` verified against this repo
+
 ## [0.4.0] - 2026-05-24
 
 ### Added

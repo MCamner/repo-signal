@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v0.6.0 — report/export and dashboard artifacts
+v0.7.0 — safe patch suggestion planning
 ```
 
 Current highest-priority gate:
@@ -89,7 +89,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.3.0  | Stable repo intelligence contracts                   | Done                 |
 | v0.4.0  | mq ecosystem integration                             | Done                 |
 | v0.5.0  | Semantic repository memory hardening                 | Done                 |
-| v0.6.0  | Report/export and dashboard artifacts                | Planned              |
+| v0.6.0  | Report/export and dashboard artifacts                | Done                 |
+| v0.7.0  | Safe patch suggestion planning                       | Next                 |
 | v0.7.0  | Safe patch suggestion planning                       | Planned              |
 | v1.0.0  | Stable repo intelligence platform                    | Future               |
 
@@ -126,7 +127,7 @@ Completed:
 
 ---
 
-## Current: v0.2.0 — Stable install story
+## Completed: v0.2.0 — Stable install story
 
 Goal:
 
@@ -298,7 +299,7 @@ Consumers must fail safely when the schema is unknown.
 
 ---
 
-## v0.4.0 — mq ecosystem integration
+## Completed: v0.4.0 — mq ecosystem integration
 
 Goal:
 
@@ -346,7 +347,7 @@ release decision or improvement plan
 
 ---
 
-## v0.5.0 — Semantic repository memory hardening
+## Completed: v0.5.0 — Semantic repository memory hardening
 
 Goal:
 
@@ -387,23 +388,19 @@ clearer and easier to verify.
 
 ---
 
-## v0.6.0 — Report/export and dashboard artifacts
+## Completed: v0.6.0 — Report/export and dashboard artifacts
 
 Goal:
 
 Make repo-signal outputs easier to share and compare.
 
-### Planned scope
+### Completed scope
 
-- [ ] Add markdown report export
-- [ ] Add JSON report export
-- [ ] Add dashboard-ready export
-- [ ] Add repo health history format
-- [ ] Add publish-readiness report
-- [ ] Add portfolio report
-- [ ] Add comparison-friendly output
-- [ ] Add generated artifact examples
-- [ ] Add GitHub Pages report demo
+- [x] `repo-signal report [path] [--format text|markdown|json]` — unified report
+- [x] `report.v1` JSON schema
+- [x] `repo_signal/report.py` — `build_report`, `format_report`
+- [x] `tests/test_report.py` — 17 tests
+- [x] 134 tests total
 
 ### Possible commands
 
@@ -578,15 +575,15 @@ A release should only be created when:
 Work on:
 
 ```text
-v0.6.0 — report/export and dashboard artifacts
+v0.7.0 — safe patch suggestion planning
 ```
 
-Make repo-signal outputs easier to share, compare and consume externally.
+Help users understand possible improvements without mutating repositories automatically.
 
 The most efficient path is:
 
 ```text
-1. Report/export artifacts  ← current
-2. Safe patch suggestion planning
+1. Report/export artifacts  ← done
+2. Safe patch suggestion planning  ← current
 3. v1.0.0 stable platform
 ```

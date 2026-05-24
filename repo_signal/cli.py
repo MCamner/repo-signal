@@ -24,6 +24,7 @@ from repo_signal.semantic import main as semantic_main
 from repo_signal.semantic_upload import main as semantic_upload_main
 from repo_signal.skill import main as skill_main
 from repo_signal.wiki_export import export_wiki_pages
+from repo_signal.report import build_report, format_report
 
 
 HELP_TEXT = """repo-signal
@@ -51,6 +52,7 @@ Usage:
   repo-signal wiki [path]
   repo-signal wiki plan [path]
   repo-signal wiki export [path] [--output path]
+  repo-signal report [path] [--format text|markdown|json]
   repo-signal roadmap
   repo-signal --help
   repo-signal --version
@@ -79,6 +81,7 @@ Commands:
   export-codex
              Export repo-local skills into Codex skill storage
   hygiene    Check junk files, .gitignore, large files, and Git status
+  report     Unified report — inspect + publish-checklist in text, markdown or JSON
   wiki       Generate suggested GitHub Wiki structure, Home draft, or plan
   roadmap    Generate a practical roadmap based on repo state
 
@@ -1690,6 +1693,35 @@ def main() -> None:
 
     if command == "roadmap":
         print(generate_roadmap_plan(repo))
+        return
+
+    if command == "report":
+        args = sys.argv[2:]
+        report_path = "."
+        report_format = "text"
+        i = 0
+        while i < len(args):
+            if args[i] == "--format" and i + 1 < len(args):
+                report_format = args[i + 1]
+                i += 2
+            elif args[i].startswith("--format="):
+                report_format = args[i].split("=", 1)[1]
+                i += 1
+            elif args[i] == "--json":
+                report_format = "json"
+                i += 1
+            elif not args[i].startswith("--"):
+                report_path = args[i]
+                i += 1
+            else:
+                print(f"Unknown report option: {args[i]}")
+                raise SystemExit(2)
+        try:
+            data = build_report(report_path)
+            print(format_report(data, output_format=report_format))
+        except ValueError as exc:
+            print(exc)
+            raise SystemExit(2)
         return
 
     print(f"Unknown command: {command}")

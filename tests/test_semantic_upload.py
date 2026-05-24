@@ -114,6 +114,12 @@ class TestNoSecretGuarantee:
         assert "#" in doc
 
 
+import shutil
+
+@pytest.mark.skipif(
+    shutil.which("mq-agent") is None,
+    reason="mq-agent not installed in this environment",
+)
 class TestMqAgentIntegration:
     def test_mq_agent_memory_status_reports_correctly(self):
         env = {**os.environ, "OPENAI_VECTOR_STORE_ID": ""}

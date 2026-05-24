@@ -139,6 +139,15 @@ Partially implemented:
 
 ---
 
+## v0.6.0 status
+
+- [x] `repo-signal report [path] [--format text|markdown|json]` — unified report: inspect + publish-checklist in one command
+- [x] `report.v1` JSON schema — machine-readable output for integrations
+- [x] `repo_signal/report.py` — `build_report`, `format_report`
+- [x] `tests/test_report.py` — 17 tests covering build, format and CLI
+- [x] 134 tests pass — `python3 -m pytest -q`
+- [x] ROADMAP headers corrected (v0.2.0/v0.4.0/v0.5.0 all marked Completed)
+
 ## v0.5.0 status
 
 - [x] `repo-signal semantic-upload --dry-run` stable and documented with verified output

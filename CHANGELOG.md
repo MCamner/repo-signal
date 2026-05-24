@@ -4,6 +4,27 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-05-24
+
+### Added
+
+* `repo-signal report [path] [--format text|markdown|json]` — unified report combining inspect and publish-checklist
+* `report.v1` JSON schema for machine-readable output
+* `repo_signal/report.py` — `build_report`, `format_report`
+* `tests/test_report.py` — 17 tests
+
+### Changed
+
+* Bumped VERSION, `pyproject.toml` and `repo_signal/__init__.py` to 0.6.0
+* ROADMAP: v0.6.0 marked done, v0.7.0 next
+* ROADMAP headers: corrected v0.2.0/v0.4.0/v0.5.0 to `## Completed:`
+
+### Verified
+
+* 134 tests pass
+* `scripts/check-docs-consistency.sh` passes
+* `repo-signal report .` verified text, markdown and JSON output
+
 ## [0.5.0] - 2026-05-24
 
 ### Added

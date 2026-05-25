@@ -142,6 +142,38 @@ else
   fail "inspect --json returned unexpected schema: '$SCHEMA'"
 fi
 
+# ── report --format json schema ───────────────────────────────────────────────
+
+section "report --format json schema"
+
+REPORT_SCHEMA="$(python3 -m repo_signal.cli report . --format json | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+print(d.get('schema', ''))
+")"
+
+if [[ "$REPORT_SCHEMA" == "report.v1" ]]; then
+  ok "report --format json returns schema: report.v1"
+else
+  fail "report --format json returned unexpected schema: '$REPORT_SCHEMA'"
+fi
+
+# ── suggest --format json schema ──────────────────────────────────────────────
+
+section "suggest --format json schema"
+
+SUGGEST_SCHEMA="$(python3 -m repo_signal.cli suggest . --format json | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+print(d.get('schema', ''))
+")"
+
+if [[ "$SUGGEST_SCHEMA" == "suggest.v1" ]]; then
+  ok "suggest --format json returns schema: suggest.v1"
+else
+  fail "suggest --format json returned unexpected schema: '$SUGGEST_SCHEMA'"
+fi
+
 # ── Publish checklist ────────────────────────────────────────────────────────
 
 section "Publish checklist"

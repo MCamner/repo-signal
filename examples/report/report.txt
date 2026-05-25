@@ -1,0 +1,13 @@
+repo-signal report — repo-signal
+  branch : main
+  tree   : dirty
+  langs  : Markdown, Python, Shell, JSON, YAML, TOML, HTML
+  score  : 16/16 (PASS)
+  next   : Repo looks publish-ready from the static checklist.
+
+recommended commit: Keep docs, examples, and command reference synced with the CLI
+
+useful commands:
+  repo-signal doctor
+  repo-signal publish-checklist . --fail-under 16
+  repo-signal repoaware --mode review --format markdown "what should I inspect first"

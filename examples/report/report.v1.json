@@ -1,0 +1,92 @@
+{
+  "schema": "report.v1",
+  "repo": "repo-signal",
+  "path": "/Users/mansys/repo-signal",
+  "git": {
+    "branch": "main",
+    "clean": false,
+    "summary": "git repo, branch main, 1 working tree change(s)"
+  },
+  "languages": {
+    "Markdown": 66,
+    "Python": 63,
+    "Shell": 10,
+    "JSON": 9,
+    "YAML": 7,
+    "TOML": 1,
+    "HTML": 1
+  },
+  "publish_score": 16,
+  "publish_total": 16,
+  "publish_status": "pass",
+  "core_files": [
+    {
+      "path": "README.md",
+      "label": "README",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "LICENSE",
+      "label": "License",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": ".gitignore",
+      "label": "Git ignore rules",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "label": "Changelog",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "VERSION",
+      "label": "Version file",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "docs",
+      "label": "Docs folder",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "docs/index.html",
+      "label": "GitHub Pages landing",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "docs/screenshots",
+      "label": "Screenshots/output gallery",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "examples",
+      "label": "Examples folder",
+      "exists": true,
+      "status": "ok"
+    },
+    {
+      "path": "tests",
+      "label": "Tests folder",
+      "exists": true,
+      "status": "ok"
+    }
+  ],
+  "issues": [],
+  "recommended_next_action": "Repo looks publish-ready from the static checklist.",
+  "recommended_next_commit": "Keep docs, examples, and command reference synced with the CLI",
+  "useful_next_commands": [
+    "repo-signal doctor",
+    "repo-signal publish-checklist . --fail-under 16",
+    "repo-signal repoaware --mode review --format markdown \"what should I inspect first\""
+  ]
+}

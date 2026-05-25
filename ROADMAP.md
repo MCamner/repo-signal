@@ -91,8 +91,9 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.3.0  | Stable repo intelligence contracts                   | Done                 |
 | v0.4.0  | mq ecosystem integration                             | Done                 |
 | v0.5.0  | Semantic repository memory hardening                 | Done                 |
-| v0.6.0  | Report/export and dashboard artifacts                | Done                 |
+| v0.6.0  | Unified report and export                            | Done                 |
 | v0.7.0  | Safe patch suggestion planning                       | Done                 |
+| v0.7.1  | Contract proof and docs completeness                 | Done                 |
 | v1.0.0  | Stable repo intelligence platform                    | Next                 |
 
 ---
@@ -389,7 +390,7 @@ clearer and easier to verify.
 
 ---
 
-## Completed: v0.6.0 — Report/export and dashboard artifacts
+## Completed: v0.6.0 — Unified report and export
 
 Goal:
 
@@ -442,6 +443,26 @@ automatically.
 - No automatic commit
 - No automatic push
 - No destructive file changes
+
+---
+
+## Completed: v0.7.1 — Contract proof and docs completeness
+
+Goal:
+
+Prove that `report.v1` and `suggest.v1` contracts are documented, tested, and
+verifiable — closing the gap between v0.7.0 and v1.0.0 stability.
+
+### Completed scope
+
+- [x] `docs/REPORT_SCHEMA.md` — full field reference for `report.v1`
+- [x] `docs/SUGGEST_SCHEMA.md` — full field reference for `suggest.v1`, no-mutation guarantee
+- [x] `docs/COMMANDS.md` — added `repo-signal report` and `repo-signal suggest` command entries
+- [x] `examples/report/` — generated `report.v1.json`, `report.txt`, `report.md`
+- [x] `examples/suggest/` — generated `suggest.v1.json`, `suggest.txt`, `suggest.md`
+- [x] `release.sh` — added `report.v1` and `suggest.v1` schema checks
+- [x] ROADMAP v0.6.0 title cleanup — "dashboard artifacts" → "unified report and export"
+- [x] CHANGELOG v0.7.1
 
 ---
 
@@ -591,5 +612,6 @@ The most efficient path is:
 ```text
 1. Report/export artifacts         ← done
 2. Safe patch suggestion planning  ← done
-3. v1.0.0 stable platform          ← current
+3. Contract proof and docs         ← done
+4. v1.0.0 stable platform          ← current
 ```

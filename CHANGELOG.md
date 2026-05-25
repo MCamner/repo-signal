@@ -4,6 +4,29 @@
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-05-25
+
+### Added
+
+* `docs/REPORT_SCHEMA.md` — full field reference for `report.v1` JSON contract
+* `docs/SUGGEST_SCHEMA.md` — full field reference for `suggest.v1`, no-mutation guarantee documented
+* `docs/COMMANDS.md` — added `repo-signal report` and `repo-signal suggest` command entries
+* `examples/report/` — generated `report.v1.json`, `report.txt`, `report.md`
+* `examples/suggest/` — generated `suggest.v1.json`, `suggest.txt`, `suggest.md`
+* `release.sh` — `report.v1` and `suggest.v1` schema checks added
+
+### Changed
+
+* Bumped VERSION, `pyproject.toml` and `repo_signal/__init__.py` to 0.7.1
+* ROADMAP: v0.7.1 marked done, v0.6.0 title cleaned up ("dashboard artifacts" → "unified report and export")
+
+### Verified
+
+* 157 tests pass
+* `repo-signal report .` — text, markdown and JSON output verified
+* `repo-signal suggest .` — text, markdown and JSON output verified
+* `release.sh` — report.v1 and suggest.v1 schema checks pass
+
 ## [0.7.0] - 2026-05-24
 
 ### Added

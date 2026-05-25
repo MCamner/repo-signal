@@ -139,6 +139,16 @@ Partially implemented:
 
 ---
 
+## v0.7.1 status
+
+- [x] `docs/REPORT_SCHEMA.md` — full field reference for `report.v1` JSON contract
+- [x] `docs/SUGGEST_SCHEMA.md` — full field reference for `suggest.v1`, no-mutation guarantee
+- [x] `docs/COMMANDS.md` — `report` and `suggest` command entries added
+- [x] `examples/report/` — generated `report.v1.json`, `report.txt`, `report.md`
+- [x] `examples/suggest/` — generated `suggest.v1.json`, `suggest.txt`, `suggest.md`
+- [x] `release.sh` — `report.v1` and `suggest.v1` schema checks added
+- [x] 157 tests pass — `python3 -m pytest -q`
+
 ## v0.7.0 status
 
 - [x] `repo-signal suggest [path] [--format text|markdown|json]` — safe patch suggestions, no mutations

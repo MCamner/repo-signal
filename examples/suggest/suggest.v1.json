@@ -1,0 +1,13 @@
+{
+  "schema": "suggest.v1",
+  "repo": "repo-signal",
+  "path": "/Users/mansys/repo-signal",
+  "total": 0,
+  "by_risk": {
+    "low": 0,
+    "medium": 0,
+    "high": 0
+  },
+  "by_group": {},
+  "suggestions": []
+}

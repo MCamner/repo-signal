@@ -342,8 +342,67 @@ Usage:
 repo-signal roadmap
 ```
 
+## repo-signal report
+
+Purpose:
+Unified report combining inspect, publish-checklist, and hygiene signals into one output.
+Produces `report.v1` JSON for machine-readable integrations.
+
+Usage:
+
+```bash
+repo-signal report
+repo-signal report ~/some-repo
+repo-signal report . --format text
+repo-signal report . --format markdown
+repo-signal report . --format json
+```
+
+Good for:
+
+- single-command repo health overview
+- CI report artifacts
+- integration with mqlaunch, mq-agent, and mq-mcp via `report.v1` JSON
+
+See also: [Report JSON schema](REPORT_SCHEMA.md).
+
+## repo-signal suggest
+
+Purpose:
+Produces safe, human-reviewable patch suggestions based on publish-checklist signals.
+Never writes to the repository. Read-only output only.
+
+Usage:
+
+```bash
+repo-signal suggest
+repo-signal suggest ~/some-repo
+repo-signal suggest . --format text
+repo-signal suggest . --format markdown
+repo-signal suggest . --format json
+```
+
+Good for:
+
+- identifying missing docs, hygiene, or release files
+- planning the next batch of commits
+- integration with mq-agent for automated improvement workflows
+
+Output includes:
+
+- suggestion title and explanation
+- risk classification: `low`, `medium`, `high`
+- commit group: `docs`, `hygiene`, `release`, `testing`, `ci`, `pages`, `examples`
+- illustrative diff preview (not a real patch)
+- shell command hint for applying the suggestion
+
+See also: [Suggest JSON schema](SUGGEST_SCHEMA.md).
+
 ## See Also
 
+- [Report JSON Schema](REPORT_SCHEMA.md)
+- [Suggest JSON Schema](SUGGEST_SCHEMA.md)
+- [Inspect JSON Schema](INSPECT_SCHEMA.md)
 - [Doctor JSON Schema](DOCTOR_SCHEMA.md)
 - [Doctor JSON Output](DOCTOR_JSON.md)
 - [Screenshots and output gallery](screenshots/README.md)

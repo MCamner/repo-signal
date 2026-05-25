@@ -1522,7 +1522,7 @@ wheels = [
 
 [[package]]
 name = "repo-signal"
-version = "0.1.11"
+version = "0.7.1"
 source = { editable = "." }
 
 [package.optional-dependencies]

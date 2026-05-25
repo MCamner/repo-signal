@@ -470,28 +470,74 @@ verifiable — closing the gap between v0.7.0 and v1.0.0 stability.
 
 Goal:
 
-Make repo-signal stable enough to be the default repo intelligence engine for
-local AI-assisted development workflows.
+Lock CLI surface, contracts, docs, and release flow. No new commands until stable.
 
-### v1.0.0 requirements
+### What "stable" means for v1.0.0
 
-- [ ] Stable CLI command surface
-- [ ] Stable `inspect.v1`
-- [ ] Stable `doctor.v1`
-- [ ] Stable generated examples
-- [ ] Stable install path
-- [ ] Stable PyPI package
-- [ ] Stable docs
-- [ ] Stable release flow
-- [ ] Stable semantic memory workflow
-- [ ] Complete integration docs
-- [ ] Complete command reference
-- [ ] Complete troubleshooting docs
-- [ ] Green CI
-- [ ] Protected main branch
-- [ ] GitHub release
-- [ ] GitHub Pages documentation
-- [ ] No known critical safety gaps
+```text
+Stable CLI   = command names and flags do not change without major version bump
+Stable JSON  = schema field names do not change without schema version bump
+Stable docs  = every stable command has a schema doc, command doc, and example
+Stable CI    = tests pass on every push, release.sh gates every release
+Stable PyPI  = `pipx install repo-signal` installs a working version
+```
+
+### Stable commands (locked at v1.0.0)
+
+```text
+repo-signal analyze
+repo-signal inspect / inspect --json    → inspect.v1
+repo-signal doctor  / doctor --json     → doctor.v1
+repo-signal publish-checklist
+repo-signal report  / report --json     → report.v1
+repo-signal suggest / suggest --json    → suggest.v1
+repo-signal repoaware
+repo-signal demo
+```
+
+### v1.0.0 checklist
+
+**CLI freeze:**
+
+- [ ] No rename or removal of stable commands above before v2.0.0
+- [ ] `--help` output accurate for all stable commands
+- [ ] `--version` returns correct version
+
+**Contract freeze:**
+
+- [ ] `inspect.v1` schema fields frozen
+- [ ] `doctor.v1` schema fields frozen
+- [ ] `report.v1` schema fields frozen
+- [ ] `suggest.v1` schema fields frozen
+- [ ] All four schemas documented in `docs/`
+
+**Docs complete:**
+
+- [ ] Every stable command has an entry in `docs/COMMANDS.md`
+- [ ] `examples/` has generated output for all stable JSON commands
+- [ ] `docs/INTEGRATIONS.md` covers all four JSON contracts
+
+**Release discipline:**
+
+- [ ] `release.sh` validates all four schema contracts
+- [ ] VERSION, pyproject.toml, `__init__.py` agree before every release
+- [ ] CHANGELOG has entry for every release
+- [ ] GitHub release exists for every tagged version
+- [ ] `pipx install repo-signal` works
+
+**Quality gates:**
+
+- [ ] 157+ tests pass on every push
+- [ ] Green CI on main
+- [ ] `repo-signal publish-checklist . --fail-under 16` passes
+
+### Not in v1.0.0 scope
+
+- New commands (wiki, roadmap, positioning, hygiene, ask, readme are not stable)
+- Breaking changes to stable commands
+- Dashboard export
+- Repo comparison mode
+- TUI or GUI
 
 ---
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "repo-signal"
-version = "0.7.1"
+version = "1.0.0"
 description = "AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -21,7 +21,7 @@ keywords = [
   "developer-tools"
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3",

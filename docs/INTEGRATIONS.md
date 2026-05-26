@@ -1,11 +1,25 @@
 # Integrations
 
-This document shows how external tools should consume `repo-signal inspect --json`
-via the stable `inspect.v1` JSON contract.
+This document shows how external tools should consume repo-signal's stable JSON
+contracts.
 
 ---
 
-## The integration contract
+## Stable JSON contracts
+
+| Command | Schema | Purpose |
+| --- | --- | --- |
+| `repo-signal inspect --json` | `inspect.v1` | Fast repo status for tools and menus |
+| `repo-signal doctor --json` | `doctor.v1` | Deeper readiness, docs, release, and AI-readiness diagnosis |
+| `repo-signal report --format json` | `report.v1` | Unified report artifact for CI and assistant workflows |
+| `repo-signal suggest --format json` | `suggest.v1` | Read-only improvement suggestions with no repository mutation |
+
+Every consumer must check `schema` before reading fields. If the schema is
+unknown, fail safely instead of parsing terminal text.
+
+---
+
+## Inspect integration
 
 Always use the JSON output, not the terminal text:
 
@@ -25,6 +39,137 @@ The first field to check is `schema`:
 If `schema` is not `"inspect.v1"`, treat the output as unknown and fail safely.
 
 Full field reference: [INSPECT_SCHEMA.md](INSPECT_SCHEMA.md)
+
+---
+
+## Doctor integration
+
+Use `doctor.v1` when a tool needs broader readiness context:
+
+```bash
+repo-signal doctor --json
+repo-signal doctor . --format json
+```
+
+Safe consumption pattern:
+
+```python
+import json
+import subprocess
+
+def repo_doctor_json(path: str = ".") -> dict | None:
+    result = subprocess.run(
+        ["repo-signal", "doctor", "--json", path],
+        capture_output=True, text=True, timeout=30,
+    )
+    if result.returncode != 0:
+        return None
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
+    if data.get("schema") != "doctor.v1":
+        return None
+    return data
+```
+
+Useful fields:
+
+- `scores.repo_health`
+- `scores.release_maturity`
+- `scores.docs_quality`
+- `scores.ai_readiness`
+- `repoaware_context.summary`
+- `suggested_priorities`
+- `suggested_skills`
+
+Full field reference: [DOCTOR_SCHEMA.md](DOCTOR_SCHEMA.md)
+
+---
+
+## Report integration
+
+Use `report.v1` when a CI job or assistant needs one combined artifact:
+
+```bash
+repo-signal report . --format json
+```
+
+Safe consumption pattern:
+
+```python
+import json
+import subprocess
+
+def repo_report_json(path: str = ".") -> dict | None:
+    result = subprocess.run(
+        ["repo-signal", "report", path, "--format", "json"],
+        capture_output=True, text=True, timeout=30,
+    )
+    if result.returncode != 0:
+        return None
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
+    if data.get("schema") != "report.v1":
+        return None
+    return data
+```
+
+Useful fields:
+
+- `repo`
+- `git`
+- `public_readiness`
+- `issues`
+- `recommended_next_commit`
+- `sections`
+
+Full field reference: [REPORT_SCHEMA.md](REPORT_SCHEMA.md)
+
+---
+
+## Suggest integration
+
+Use `suggest.v1` when a tool needs next-step improvement suggestions without
+letting repo-signal mutate files:
+
+```bash
+repo-signal suggest . --format json
+```
+
+Safe consumption pattern:
+
+```python
+import json
+import subprocess
+
+def repo_suggest_json(path: str = ".") -> dict | None:
+    result = subprocess.run(
+        ["repo-signal", "suggest", path, "--format", "json"],
+        capture_output=True, text=True, timeout=30,
+    )
+    if result.returncode != 0:
+        return None
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
+    if data.get("schema") != "suggest.v1":
+        return None
+    return data
+```
+
+Useful fields:
+
+- `suggestions`
+- `suggestions[].risk`
+- `suggestions[].commit_group`
+- `suggestions[].diff_preview`
+- `no_mutation_guarantee`
+
+Full field reference: [SUGGEST_SCHEMA.md](SUGGEST_SCHEMA.md)
 
 ---
 
@@ -179,8 +324,9 @@ def repo_context_block(repo_path: str = ".") -> str:
 
 ## mq-agent
 
-`mq-agent` uses `inspect.v1` for repo scoring and `doctor.v1` for semantic
-memory context.
+`mq-agent` uses `inspect.v1` for repo scoring, `doctor.v1` for semantic memory
+context, `report.v1` for combined review artifacts, and `suggest.v1` for safe
+improvement planning.
 
 ### Repo score command
 
@@ -238,7 +384,7 @@ or returns an error message instead of JSON.
 
 ---
 
-## Useful fields at a glance
+## Inspect fields at a glance
 
 | Field                          | Type    | Use                                  |
 | ------------------------------ | ------- | ------------------------------------ |

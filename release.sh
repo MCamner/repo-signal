@@ -16,6 +16,14 @@ for arg in "$@"; do
   [[ "$arg" == "--publish" || "$arg" == "--github-release" ]] && PUBLISH=1
 done
 
+if [[ -z "${PYTHON_BIN:-}" ]]; then
+  if [[ -x ".venv/bin/python" ]]; then
+    PYTHON_BIN=".venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
+
 PASS=0
 FAIL=0
 
@@ -35,13 +43,13 @@ section() {
 section "Version"
 
 VERSION_FILE="$(cat VERSION 2>/dev/null | tr -d '[:space:]')"
-PYPROJECT_VERSION="$(python3 -c "
+PYPROJECT_VERSION="$("$PYTHON_BIN" -c "
 import re, sys
 t = open('pyproject.toml').read()
 m = re.search(r'^version\s*=\s*\"([^\"]+)\"', t, re.MULTILINE)
 print(m.group(1) if m else '')
 ")"
-INIT_VERSION="$(python3 -c "from repo_signal import __version__; print(__version__)")"
+INIT_VERSION="$("$PYTHON_BIN" -c "from repo_signal import __version__; print(__version__)")"
 
 echo "  VERSION:              $VERSION_FILE"
 echo "  pyproject.toml:       $PYPROJECT_VERSION"
@@ -96,7 +104,7 @@ fi
 
 section "Tests"
 
-if python3 -m pytest -q 2>&1 | tee /tmp/repo-signal-release-pytest.txt | tail -1 | grep -qE "passed"; then
+if "$PYTHON_BIN" -m pytest -q 2>&1 | tee /tmp/repo-signal-release-pytest.txt | tail -1 | grep -qE "passed"; then
   PASSED="$(grep -E "passed" /tmp/repo-signal-release-pytest.txt | tail -1)"
   ok "Tests: $PASSED"
 else
@@ -108,7 +116,7 @@ fi
 
 section "Packaging readiness"
 
-if scripts/check-packaging.sh > /tmp/repo-signal-release-packaging.txt 2>&1; then
+if PYTHON_BIN="$PYTHON_BIN" scripts/check-packaging.sh > /tmp/repo-signal-release-packaging.txt 2>&1; then
   ok "Packaging check passed"
 else
   fail "Packaging check failed"
@@ -130,7 +138,7 @@ fi
 
 section "inspect --json schema"
 
-SCHEMA="$(python3 -m repo_signal.cli inspect --json . | python3 -c "
+SCHEMA="$("$PYTHON_BIN" -m repo_signal.cli inspect --json . | "$PYTHON_BIN" -c "
 import json, sys
 d = json.load(sys.stdin)
 print(d.get('schema', ''))
@@ -142,11 +150,27 @@ else
   fail "inspect --json returned unexpected schema: '$SCHEMA'"
 fi
 
+# ── doctor --json schema ─────────────────────────────────────────────────────
+
+section "doctor --json schema"
+
+DOCTOR_SCHEMA="$("$PYTHON_BIN" -m repo_signal.cli doctor --json . | "$PYTHON_BIN" -c "
+import json, sys
+d = json.load(sys.stdin)
+print(d.get('schema', ''))
+")"
+
+if [[ "$DOCTOR_SCHEMA" == "doctor.v1" ]]; then
+  ok "doctor --json returns schema: doctor.v1"
+else
+  fail "doctor --json returned unexpected schema: '$DOCTOR_SCHEMA'"
+fi
+
 # ── report --format json schema ───────────────────────────────────────────────
 
 section "report --format json schema"
 
-REPORT_SCHEMA="$(python3 -m repo_signal.cli report . --format json | python3 -c "
+REPORT_SCHEMA="$("$PYTHON_BIN" -m repo_signal.cli report . --format json | "$PYTHON_BIN" -c "
 import json, sys
 d = json.load(sys.stdin)
 print(d.get('schema', ''))
@@ -162,7 +186,7 @@ fi
 
 section "suggest --format json schema"
 
-SUGGEST_SCHEMA="$(python3 -m repo_signal.cli suggest . --format json | python3 -c "
+SUGGEST_SCHEMA="$("$PYTHON_BIN" -m repo_signal.cli suggest . --format json | "$PYTHON_BIN" -c "
 import json, sys
 d = json.load(sys.stdin)
 print(d.get('schema', ''))
@@ -178,8 +202,8 @@ fi
 
 section "Publish checklist"
 
-SCORE="$(python3 -m repo_signal.cli publish-checklist . 2>&1 | grep -E "Score:" | head -1 | grep -oE "[0-9]+/[0-9]+")"
-if python3 -m repo_signal.cli publish-checklist . --fail-under 16 > /tmp/repo-signal-release-checklist.txt 2>&1; then
+SCORE="$("$PYTHON_BIN" -m repo_signal.cli publish-checklist . 2>&1 | grep -E "Score:" | head -1 | grep -oE "[0-9]+/[0-9]+")"
+if "$PYTHON_BIN" -m repo_signal.cli publish-checklist . --fail-under 16 > /tmp/repo-signal-release-checklist.txt 2>&1; then
   ok "Publish checklist: ${SCORE:-passed}"
 else
   fail "Publish checklist below threshold"
@@ -190,13 +214,13 @@ fi
 
 section "README score"
 
-python3 -m repo_signal.cli readme-score . 2>&1 | tail -3
+"$PYTHON_BIN" -m repo_signal.cli readme-score . 2>&1 | tail -3
 
 # ── Wiki Command-Reference ───────────────────────────────────────────────────
 
 section "Wiki Command-Reference"
 
-if python3 tools/generate_wiki_command_ref.py > /tmp/repo-signal-wiki.txt 2>&1; then
+if "$PYTHON_BIN" tools/generate_wiki_command_ref.py > /tmp/repo-signal-wiki.txt 2>&1; then
   WIKI_TMP="$(mktemp -d)"
   if git clone --quiet git@github.com:MCamner/repo-signal.wiki.git "$WIKI_TMP" 2>/dev/null; then
     GENERATED="$HOME/repo-signal.wiki/Command-Reference.md"
@@ -259,7 +283,7 @@ git tag "v${VERSION_FILE}"
 git push
 git push origin "v${VERSION_FILE}"
 
-NOTES="$(python3 - "$VERSION_FILE" <<'PY'
+NOTES="$("$PYTHON_BIN" - "$VERSION_FILE" <<'PY'
 import re, sys
 from pathlib import Path
 

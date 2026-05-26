@@ -139,6 +139,8 @@ See [Integrations](docs/INTEGRATIONS.md) for mqlaunch, mq-agent, mq-mcp, and mq-
 
 ## Documentation
 
+Live docs: [mcamner.github.io/repo-signal](https://mcamner.github.io/repo-signal/)
+
 **Contracts:**
 
 - [**Inspect Schema**](docs/INSPECT_SCHEMA.md) — `inspect.v1` field reference
@@ -162,13 +164,14 @@ See [Integrations](docs/INTEGRATIONS.md) for mqlaunch, mq-agent, mq-mcp, and mq-
 
 ---
 
-## Current version — v0.7.1
+## v1.0.0 status
 
 - [x] 4 stable JSON contracts: `inspect.v1`, `doctor.v1`, `report.v1`, `suggest.v1`
-- [x] 157 tests pass — `python3 -m pytest -q`
-- [x] Schema checks in `release.sh`
+- [x] Full test suite passes — `155 passed, 2 skipped`
+- [x] Schema checks in `release.sh` for all four stable contracts
 - [x] Contract docs: `INSPECT_SCHEMA.md`, `DOCTOR_SCHEMA.md`, `REPORT_SCHEMA.md`, `SUGGEST_SCHEMA.md`
 - [x] Generated examples: `examples/report/`, `examples/suggest/`, `examples/inspect/`, `examples/doctor/`
+- [x] CLI surface frozen for v1.x
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 - [x] GitHub Actions green (Tests, Packaging, Generated examples, Publish checklist)

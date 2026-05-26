@@ -94,7 +94,7 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.6.0  | Unified report and export                            | Done                 |
 | v0.7.0  | Safe patch suggestion planning                       | Done                 |
 | v0.7.1  | Contract proof and docs completeness                 | Done                 |
-| v1.0.0  | Stable repo intelligence platform                    | Next                 |
+| v1.0.0  | Stable repo intelligence platform                    | Current              |
 
 ---
 
@@ -499,37 +499,37 @@ repo-signal demo
 
 **CLI freeze:**
 
-- [ ] No rename or removal of stable commands above before v2.0.0
-- [ ] `--help` output accurate for all stable commands
-- [ ] `--version` returns correct version
+- [x] No rename or removal of stable commands above before v2.0.0
+- [x] `--help` output accurate for all stable commands
+- [x] `--version` returns correct version
 
 **Contract freeze:**
 
-- [ ] `inspect.v1` schema fields frozen
-- [ ] `doctor.v1` schema fields frozen
-- [ ] `report.v1` schema fields frozen
-- [ ] `suggest.v1` schema fields frozen
-- [ ] All four schemas documented in `docs/`
+- [x] `inspect.v1` schema fields frozen
+- [x] `doctor.v1` schema fields frozen
+- [x] `report.v1` schema fields frozen
+- [x] `suggest.v1` schema fields frozen
+- [x] All four schemas documented in `docs/`
 
 **Docs complete:**
 
-- [ ] Every stable command has an entry in `docs/COMMANDS.md`
-- [ ] `examples/` has generated output for all stable JSON commands
-- [ ] `docs/INTEGRATIONS.md` covers all four JSON contracts
+- [x] Every stable command has an entry in `docs/COMMANDS.md`
+- [x] `examples/` has generated output for all stable JSON commands
+- [x] `docs/INTEGRATIONS.md` covers all four JSON contracts
 
 **Release discipline:**
 
-- [ ] `release.sh` validates all four schema contracts
-- [ ] VERSION, pyproject.toml, `__init__.py` agree before every release
-- [ ] CHANGELOG has entry for every release
-- [ ] GitHub release exists for every tagged version
-- [ ] `pipx install repo-signal` works
+- [x] `release.sh` validates all four schema contracts
+- [x] VERSION, pyproject.toml, `__init__.py` agree before every release
+- [x] CHANGELOG has entry for every release
+- [x] GitHub release exists for every tagged version
+- [x] `pipx install repo-signal` works
 
 **Quality gates:**
 
-- [ ] 157+ tests pass on every push
-- [ ] Green CI on main
-- [ ] `repo-signal publish-checklist . --fail-under 16` passes
+- [x] Full test suite passes on every push
+- [x] Green CI on main
+- [x] `repo-signal publish-checklist . --fail-under 16` passes
 
 ### Not in v1.0.0 scope
 

@@ -4,6 +4,26 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-05-26
+
+### Changed
+
+* Promoted package metadata to `1.0.0` and `Development Status :: 5 - Production/Stable`
+* Locked the documented stable CLI surface for v1.x: `analyze`, `inspect`, `doctor`, `publish-checklist`, `report`, `suggest`, `repoaware`, and `demo`
+* Updated README and ROADMAP to mark v1.0.0 stability gates complete
+
+### Added
+
+* `release.sh` now validates all four stable JSON contracts: `inspect.v1`, `doctor.v1`, `report.v1`, `suggest.v1`
+* `docs/INTEGRATIONS.md` now documents safe consumption for all four stable JSON contracts
+
+### Verified
+
+* `repo-signal --version` returns `repo-signal 1.0.0`
+* `repo-signal --help` includes all stable commands
+* Full test suite passes: 155 passed, 2 skipped
+* `repo-signal publish-checklist . --fail-under 16` passes
+
 ## [0.7.1] - 2026-05-25
 
 ### Added

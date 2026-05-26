@@ -805,8 +805,8 @@ def analyze_hygiene(repo: Path) -> str:
     if not tracked_junk:
         lines.append("- [OK] No tracked junk files")
     else:
-        for item in tracked_junk[:30]:
-            lines.append(f"- [HIGH] `{item}`")
+        for junk_name in tracked_junk[:30]:
+            lines.append(f"- [HIGH] `{junk_name}`")
         if len(tracked_junk) > 30:
             lines.append(f"- [INFO] Additional tracked junk entries hidden: `{len(tracked_junk) - 30}`")
 
@@ -1642,10 +1642,10 @@ def main() -> None:
         return
 
     if command == "publish-checklist":
-        repo, output_format, fail_under = parse_publish_checklist_args(sys.argv[2:])
+        repo, output_format, score_threshold = parse_publish_checklist_args(sys.argv[2:])
         result = build_publish_checklist(str(repo))
         print(format_publish_checklist(result, output_format=output_format))
-        if fail_under is not None and result["score"] < fail_under:
+        if score_threshold is not None and result["score"] < score_threshold:
             raise SystemExit(1)
         return
 
@@ -1656,11 +1656,11 @@ def main() -> None:
         return
 
     if command == "wiki":
-        wiki_command, repo, output = parse_wiki_args(sys.argv[2:])
+        wiki_command, repo, wiki_output = parse_wiki_args(sys.argv[2:])
         if wiki_command == "plan":
             print(generate_wiki_plan_report(repo))
         elif wiki_command == "export":
-            print(export_wiki_pages(str(repo), output))
+            print(export_wiki_pages(str(repo), wiki_output))
         else:
             print(generate_wiki_plan(repo))
         return

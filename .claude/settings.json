@@ -9,7 +9,15 @@
       "Bash(repo-signal publish-checklist *)",
       "Bash(repo-signal analyze *)",
       "Bash(repo-signal doctor *)",
-      "Bash(repo-signal readme-score *)"
+      "Bash(repo-signal readme-score *)",
+      "Bash(python -m pyright repo_signal/cli.py)",
+      "Bash(python -m mypy repo_signal/cli.py --ignore-missing-imports)",
+      "Bash(python -m ruff check repo_signal/cli.py)",
+      "Bash(python -c \"import repo_signal.cli\")",
+      "Bash(npx pyright *)",
+      "Bash(git -C /Users/mansys/repo-signal diff)",
+      "Bash(git -C /Users/mansys/repo-signal add repo_signal/cli.py .claude/settings.json)",
+      "Bash(git -C /Users/mansys/repo-signal commit -m ' *)"
     ]
   }
 }

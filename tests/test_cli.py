@@ -1290,6 +1290,19 @@ class AskCommandTests(unittest.TestCase):
         self.assertIn("router.py", provider.prompt)
         self.assertIn("The dispatch route function", result.answer)
 
+    def test_publish_checklist_command_supports_fix_plan(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        result = run_repo_signal(
+            ["publish-checklist", str(root), "--fix-plan"],
+            REPO_ROOT,
+        )
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("PUBLISH CHECKLIST FIX PLAN", result.stdout)
+        self.assertIn("mkdir -p .github/ISSUE_TEMPLATE", result.stdout)
+
 
 class InspectJsonContractTests(unittest.TestCase):
     def test_inspect_json_contract_reports_stable_fields(self):
@@ -1315,6 +1328,31 @@ class InspectJsonContractTests(unittest.TestCase):
         self.assertIn("issues", payload)
         self.assertIn("recommended_next_commit", payload)
         self.assertIn("useful_next_commands", payload)
+
+    def test_inspect_marks_examples_as_optional(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        (root / "docs" / "screenshots").mkdir(parents=True)
+        (root / ".github" / "ISSUE_TEMPLATE").mkdir(parents=True)
+        (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+        (root / "VERSION").write_text("0.1.0\n", encoding="utf-8")
+        (root / "ROADMAP.md").write_text("# Roadmap\n", encoding="utf-8")
+        (root / "tests").mkdir()
+        (root / "bin").mkdir()
+        (root / "bin" / "sample").write_text("#!/usr/bin/env bash\necho sample\n", encoding="utf-8")
+        with (root / "README.md").open("a", encoding="utf-8") as readme:
+            readme.write(
+                "\nLive demo: https://example.github.io/sample\n"
+                "Screenshots gallery available in docs/screenshots.\n"
+                "Security: keep secrets out of examples.\n"
+            )
+
+        result = run_repo_signal(["inspect", str(root)], REPO_ROOT)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("[OPTIONAL] Missing Examples folder: examples", result.stdout)
+        self.assertIn("None — repo is publish-ready. Optional polish only.", result.stdout)
 
     def test_inspect_format_json_alias_works(self):
         temp, root = make_sample_repo()

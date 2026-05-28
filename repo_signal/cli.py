@@ -16,6 +16,7 @@ from repo_signal.positioning import build_positioning_report, format_positioning
 from repo_signal.publish_checklist import (
     VALID_FORMATS,
     build_publish_checklist,
+    format_fix_plan,
     format_publish_checklist,
 )
 from repo_signal.repoaware.__main__ import main as repoaware_main
@@ -44,7 +45,7 @@ Usage:
   repo-signal skill new <name> [--description text]
   repo-signal readme
   repo-signal readme-score [path]
-  repo-signal publish-checklist [path] [--format text|markdown|json] [--fail-under score]
+  repo-signal publish-checklist [path] [--format text|markdown|json] [--fail-under score] [--fix-plan]
   repo-signal repoaware [--mode mode] [--format format] "question"
   repo-signal semantic [--limit n] [--use-chroma] "query"
   repo-signal semantic-upload [--dry-run] [--vector-store-id id]
@@ -311,10 +312,11 @@ def find_large_files(repo: Path, limit_mb: int = LARGE_FILE_LIMIT_MB) -> list[tu
     return sorted(found, key=lambda item: item[1], reverse=True)
 
 
-def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str, int | None]:
+def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str, int | None, bool]:
     repo = Path.cwd()
     output_format = "text"
     fail_under = None
+    fix_plan = False
     index = 0
 
     while index < len(args):
@@ -355,6 +357,11 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str, int | None
             index += 1
             continue
 
+        if arg == "--fix-plan":
+            fix_plan = True
+            index += 1
+            continue
+
         if arg.startswith("-"):
             print(f"Unknown publish-checklist option: {arg}")
             raise SystemExit(2)
@@ -368,7 +375,7 @@ def parse_publish_checklist_args(args: list[str]) -> tuple[Path, str, int | None
         print(f"Available formats: {formats}")
         raise SystemExit(2)
 
-    return repo, output_format, fail_under
+    return repo, output_format, fail_under, fix_plan
 
 
 def parse_positioning_args(args: list[str]) -> tuple[Path, str]:
@@ -1642,9 +1649,12 @@ def main() -> None:
         return
 
     if command == "publish-checklist":
-        repo, output_format, score_threshold = parse_publish_checklist_args(sys.argv[2:])
+        repo, output_format, score_threshold, fix_plan = parse_publish_checklist_args(sys.argv[2:])
         result = build_publish_checklist(str(repo))
-        print(format_publish_checklist(result, output_format=output_format))
+        if fix_plan:
+            print(format_fix_plan(result))
+        else:
+            print(format_publish_checklist(result, output_format=output_format))
         if score_threshold is not None and result["score"] < score_threshold:
             raise SystemExit(1)
         return

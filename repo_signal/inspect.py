@@ -25,16 +25,16 @@ from repo_signal.publish_checklist import build_publish_checklist
 INSPECT_SCHEMA = "inspect.v1"
 
 CORE_FILES = [
-    ("README.md", "README"),
-    ("LICENSE", "License"),
-    (".gitignore", "Git ignore rules"),
-    ("CHANGELOG.md", "Changelog"),
-    ("VERSION", "Version file"),
-    ("docs", "Docs folder"),
-    ("docs/index.html", "GitHub Pages landing"),
-    ("docs/screenshots", "Screenshots/output gallery"),
-    ("examples", "Examples folder"),
-    ("tests", "Tests folder"),
+    ("README.md", "README", "required"),
+    ("LICENSE", "License", "required"),
+    (".gitignore", "Git ignore rules", "required"),
+    ("CHANGELOG.md", "Changelog", "required"),
+    ("VERSION", "Version file", "required"),
+    ("docs", "Docs folder", "required"),
+    ("docs/index.html", "GitHub Pages landing", "required"),
+    ("docs/screenshots", "Screenshots/output gallery", "optional"),
+    ("examples", "Examples folder", "optional"),
+    ("tests", "Tests folder", "required"),
 ]
 
 USEFUL_NEXT_COMMANDS = [
@@ -121,12 +121,13 @@ def _top_directories(repo_model: Any) -> Any:
 
 def _core_file_records(repo: Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
-    for rel_path, label in CORE_FILES:
+    for rel_path, label, importance in CORE_FILES:
         exists = (repo / rel_path).exists()
         records.append(
             {
                 "path": rel_path,
                 "label": label,
+                "importance": importance,
                 "exists": exists,
                 "status": "ok" if exists else "missing",
             }
@@ -246,9 +247,12 @@ def _possible_issues(
 ) -> list[str]:
     issues: list[str] = []
 
-    for rel_path, label in CORE_FILES:
+    for rel_path, label, importance in CORE_FILES:
         if not (repo_path / rel_path).exists():
-            issues.append(f"[WARN] Missing {label}: {rel_path}")
+            if importance == "optional":
+                issues.append(f"[OPTIONAL] Missing {label}: {rel_path}")
+            else:
+                issues.append(f"[WARN] Missing {label}: {rel_path}")
 
     entrypoints = _get(repo_model, "entrypoints", [])
     if not entrypoints:
@@ -276,6 +280,7 @@ def _issue_records(issues: list[str]) -> list[dict[str, str]]:
             ("[MED]", "medium"),
             ("[LOW]", "low"),
             ("[WARN]", "warn"),
+            ("[OPTIONAL]", "optional"),
             ("[INFO]", "info"),
             ("[OK]", "ok"),
         ):
@@ -302,11 +307,16 @@ def _recommended_next_commit(issues: list[str], publish_next: str) -> str:
                 clean = hint
         return clean[:1].upper() + clean[1:]
 
-    if issues:
-        first = issues[0]
+    actionable = [issue for issue in issues if not issue.startswith("[OPTIONAL]")]
+
+    if actionable:
+        first = actionable[0]
         for prefix in ("[WARN] ", "[INFO] ", "[HIGH] ", "[MED] ", "[LOW] "):
             first = first.replace(prefix, "")
         return first
+
+    if publish_ready:
+        return "None — repo is publish-ready. Optional polish only."
 
     return "Keep docs, examples, and command reference synced with the CLI"
 

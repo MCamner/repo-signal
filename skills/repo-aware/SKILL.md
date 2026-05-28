@@ -1,6 +1,6 @@
 ---
 name: repo-aware
-description: Use when working inside an existing repository and the user wants AI to inspect, reason, plan, review, or implement changes with repo-specific context. Guides Codex to combine local files, repo-signal reports, project conventions, Git state, docs, tests, release flow, and AI-readiness signals before acting.
+description: Use when working inside a repo and needing repo-specific context from docs, tooling, tests, git state, repo-signal reports, and local conventions before acting.
 ---
 
 # Repo Aware

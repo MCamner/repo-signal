@@ -269,6 +269,79 @@ def format_publish_checklist_json(result: dict) -> str:
     return json.dumps(output, indent=2)
 
 
+def build_fix_plan(result: dict) -> list[str]:
+    """Return concrete shell-oriented fixes for missing checklist items."""
+
+    commands: list[str] = []
+    for check in result.get("checks", []):
+        if check.get("status") == "ok":
+            continue
+
+        name = str(check.get("name", ""))
+        if name == "README exists":
+            commands.append("touch README.md")
+        elif name == "README has quick start":
+            commands.append("edit README.md  # add a Quick Start section")
+        elif name == "README links to GitHub Pages":
+            commands.append("edit README.md  # add the live GitHub Pages URL")
+        elif name == "README mentions demo":
+            commands.append("edit README.md  # add demo or example output")
+        elif name == "README mentions screenshots or gallery":
+            commands.append("mkdir -p docs/screenshots")
+            commands.append("edit README.md  # add screenshots or gallery links")
+        elif name == "LICENSE exists":
+            commands.append("add LICENSE")
+        elif name == "CHANGELOG exists":
+            commands.append("touch CHANGELOG.md")
+        elif name == "VERSION exists":
+            commands.append("printf '0.1.0\\n' > VERSION")
+        elif name == ".gitignore exists":
+            commands.append("touch .gitignore")
+        elif name == "README mentions roadmap":
+            commands.append("edit README.md  # link or summarize the roadmap")
+        elif name == "README mentions safe sharing/security":
+            commands.append("edit README.md  # add safe sharing or security notes")
+        elif name == "issue templates exist":
+            commands.append("mkdir -p .github/ISSUE_TEMPLATE")
+        elif name == "roadmap file exists":
+            commands.append("touch ROADMAP.md")
+        elif name == "docs folder exists":
+            commands.append("mkdir -p docs")
+        elif name == "GitHub Pages landing exists":
+            commands.append("mkdir -p docs && touch docs/index.html")
+        elif name == "docs screenshots folder exists":
+            commands.append("mkdir -p docs/screenshots")
+        else:
+            hint = str(check.get("hint") or "fix manually")
+            commands.append(f"# {name}: {hint}")
+
+    deduped: list[str] = []
+    for command in commands:
+        if command not in deduped:
+            deduped.append(command)
+    return deduped
+
+
+def format_fix_plan(result: dict) -> str:
+    lines = [
+        "PUBLISH CHECKLIST FIX PLAN",
+        "==========================",
+        f"Repo: {result['repo']}",
+        f"Score: {result['score']}/{result['total']}",
+        "",
+    ]
+
+    commands = build_fix_plan(result)
+    if not commands:
+        lines.append("No required fixes. Repo looks publish-ready from the static checklist.")
+        return "\n".join(lines)
+
+    for index, command in enumerate(commands, start=1):
+        lines.append(f"{index}. {command}")
+
+    return "\n".join(lines)
+
+
 def format_publish_checklist(result: dict, output_format: str = "text") -> str:
     if output_format == "text":
         return format_publish_checklist_text(result)

@@ -541,6 +541,33 @@ repo-signal demo
 
 ---
 
+## v1.1.0 — Symbolic intelligence exports
+
+Goal:
+
+Make repo-signal the preprocessing and repository-intelligence layer for the mq
+ecosystem without becoming a review or cognition engine.
+
+### Planned scope
+
+- [ ] Add `symbol_index.json` export for public symbols, files and ownership hints
+- [ ] Add `callgraph.json` export for imports and cross-file relationships
+- [ ] Add `repo_summary.json` export for stable, compact repository context
+- [ ] Add `risk_map.json` export for structural risk signals, not AI findings
+- [ ] Add semantic pack generation for mq-mcp and mq-agent consumers
+- [ ] Document export schemas and schema versions
+- [ ] Add generated examples for each export contract
+- [ ] Add integration tests proving mq-mcp can consume exports safely
+
+### Non-goals
+
+- No review generation
+- No architecture reasoning runtime
+- No prompt framework
+- No repository mutation
+
+---
+
 ## Long-term ideas
 
 These are intentionally not scheduled yet.

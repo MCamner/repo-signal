@@ -1,0 +1,5766 @@
+{
+  "schema": "symbol_index.v1",
+  "repo_name": "repo-signal",
+  "generated_at": "2026-05-28T20:27:45.965849+00:00",
+  "file_count": 204,
+  "symbol_count": 565,
+  "files": [
+    {
+      "path": ".DS_Store",
+      "extension": "",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "LICENSE",
+      "extension": "",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "uv.lock",
+      "extension": ".lock",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo-signal.yml",
+      "extension": ".yml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "CHANGELOG.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "pyproject.toml",
+      "extension": ".toml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "README.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "ROADMAP.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".gitignore",
+      "extension": "",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "VERSION",
+      "extension": "",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "release.sh",
+      "extension": ".sh",
+      "symbol_count": 4,
+      "public_symbols": [
+        "ok",
+        "warn",
+        "fail",
+        "section"
+      ]
+    },
+    {
+      "path": ".markdownlint.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "tools/build_prompt.py",
+      "extension": ".py",
+      "symbol_count": 4,
+      "public_symbols": [
+        "detect_skill",
+        "load_skill",
+        "build_prompt",
+        "main"
+      ]
+    },
+    {
+      "path": "tools/skill_router.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "detect_skill",
+        "main"
+      ]
+    },
+    {
+      "path": "tools/generate_wiki_command_ref.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "parse_commands",
+        "parse_usage",
+        "write_reference"
+      ]
+    },
+    {
+      "path": "bin/repo-signal",
+      "extension": "",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "tests/test_contracts.py",
+      "extension": ".py",
+      "symbol_count": 19,
+      "public_symbols": [
+        "TestInspectV1",
+        "TestDoctorV1",
+        "TestSafeConsumption",
+        "test_schema_field_is_inspect_v1",
+        "test_required_top_level_keys",
+        "test_repo_section_has_name_and_path",
+        "test_core_files_is_list",
+        "test_core_file_items_have_label_and_exists",
+        "test_json_roundtrip",
+        "test_schema_field_is_doctor_v1",
+        "test_required_top_level_keys",
+        "test_repo_section_has_name_and_path",
+        "test_scores_section_present",
+        "test_json_roundtrip",
+        "test_inspect_schema_check_pattern",
+        "test_doctor_schema_check_pattern",
+        "test_unknown_schema_is_detectable"
+      ]
+    },
+    {
+      "path": "tests/test_suggest.py",
+      "extension": ".py",
+      "symbol_count": 23,
+      "public_symbols": [
+        "test_build_suggestions_does_not_write_files",
+        "test_build_suggestions_does_not_create_new_files",
+        "test_build_suggestions_schema_field",
+        "test_build_suggestions_required_fields",
+        "test_build_suggestions_by_risk_keys",
+        "test_suggestion_fields",
+        "test_suggestion_risk_values",
+        "test_total_matches_suggestions_count",
+        "test_by_risk_sums_to_total",
+        "test_no_suggestions_when_all_pass",
+        "test_format_json_is_valid_json",
+        "test_format_json_schema_field_present",
+        "test_format_text_contains_repo_name",
+        "test_format_text_no_suggestions_message",
+        "test_format_markdown_has_heading",
+        "test_format_markdown_no_suggestions_message",
+        "test_format_invalid_raises",
+        "test_valid_formats_set",
+        "test_cli_suggest_exits_zero",
+        "test_cli_suggest_json_exits_zero",
+        "test_cli_suggest_markdown_exits_zero",
+        "test_cli_suggest_invalid_format_exits_nonzero",
+        "test_cli_suggest_does_not_create_files"
+      ]
+    },
+    {
+      "path": "tests/test_exports.py",
+      "extension": ".py",
+      "symbol_count": 33,
+      "public_symbols": [
+        "minimal_repo",
+        "no_docs_repo",
+        "test_symbol_index_schema",
+        "test_symbol_index_required_fields",
+        "test_symbol_index_finds_public_symbols",
+        "test_symbol_index_marks_private",
+        "test_symbol_index_is_json_serializable",
+        "test_callgraph_schema",
+        "test_callgraph_required_fields",
+        "test_callgraph_detects_import",
+        "test_callgraph_edge_fields",
+        "test_callgraph_edge_count_matches",
+        "test_callgraph_is_json_serializable",
+        "test_repo_summary_schema",
+        "test_repo_summary_required_fields",
+        "test_repo_summary_version",
+        "test_repo_summary_description_nonempty",
+        "test_repo_summary_key_files_has_readme",
+        "test_repo_summary_top_symbols_nonempty",
+        "test_repo_summary_is_json_serializable",
+        "test_risk_map_schema",
+        "test_risk_map_required_fields",
+        "test_risk_map_count_matches",
+        "test_risk_map_risk_fields",
+        "test_risk_map_no_docs_repo_high_risk",
+        "test_risk_map_ids_unique",
+        "test_risk_map_is_json_serializable",
+        "test_export_packs_writes_all_four",
+        "test_export_packs_json_valid",
+        "test_export_packs_selective",
+        "test_export_packs_result_schema",
+        "test_cli_export_runs",
+        "test_cli_export_json_format"
+      ]
+    },
+    {
+      "path": "tests/test_report.py",
+      "extension": ".py",
+      "symbol_count": 19,
+      "public_symbols": [
+        "test_build_report_schema",
+        "test_build_report_fields",
+        "test_build_report_issues",
+        "test_build_report_next_commit",
+        "test_build_report_useful_commands",
+        "test_format_text_contains_repo",
+        "test_format_text_contains_issues",
+        "test_format_markdown_has_heading",
+        "test_format_markdown_core_files_no_raw_dict",
+        "test_format_json_valid",
+        "test_format_json_and_text_equal_data",
+        "test_format_unknown_raises",
+        "test_valid_formats_set",
+        "test_cli_report_text",
+        "test_cli_report_json",
+        "test_cli_report_markdown",
+        "test_cli_report_invalid_format"
+      ]
+    },
+    {
+      "path": "tests/test_portfolio_check.py",
+      "extension": ".py",
+      "symbol_count": 10,
+      "public_symbols": [
+        "test_portfolio_text_ok",
+        "test_portfolio_json_ok",
+        "test_portfolio_markdown_ok",
+        "test_portfolio_warn_below_threshold",
+        "test_portfolio_missing_repo",
+        "test_portfolio_invalid_format",
+        "test_load_config_no_file",
+        "test_load_config_multiple_repos"
+      ]
+    },
+    {
+      "path": "tests/test_semantic_upload.py",
+      "extension": ".py",
+      "symbol_count": 16,
+      "public_symbols": [
+        "TestDryRun",
+        "TestMissingVectorStore",
+        "TestNoSecretGuarantee",
+        "TestMqAgentIntegration",
+        "test_dry_run_exits_zero_without_vector_store",
+        "test_dry_run_output_contains_repo_name",
+        "test_dry_run_shows_symbols_count",
+        "test_dry_run_shows_bytes",
+        "test_dry_run_status_is_dry_run",
+        "test_upload_without_vector_store_exits_nonzero",
+        "test_upload_without_vector_store_prints_error",
+        "test_upload_function_raises_on_missing_store",
+        "test_memory_document_contains_symbols_not_raw_source",
+        "test_memory_document_is_markdown",
+        "test_mq_agent_memory_status_reports_correctly",
+        "test_mq_agent_memory_build_dry_run"
+      ]
+    },
+    {
+      "path": "tests/test_cli.py",
+      "extension": ".py",
+      "symbol_count": 86,
+      "public_symbols": [
+        "RepoSignalCLITests",
+        "RepoAwareTests",
+        "CodexExportTests",
+        "CoreScannerTests",
+        "GraphBuilderTests",
+        "SymbolExtractorTests",
+        "SemanticMemoryTests",
+        "AskCommandTests",
+        "FakeProvider",
+        "InspectJsonContractTests",
+        "run_repo_signal",
+        "make_sample_repo",
+        "test_help_command",
+        "test_version_command",
+        "test_demo_command_prints_onboarding_flow",
+        "test_demo_generate_writes_demo_reports",
+        "test_demo_generate_skips_existing_files_without_force",
+        "test_scan_command_detects_core_files",
+        "test_inspect_command_reports_quick_repo_status",
+        "test_analyze_command_reports_front_door_summary",
+        "test_positioning_report_extracts_repo_message",
+        "test_positioning_command_supports_text_and_json",
+        "test_positioning_format_rejects_unknown_format",
+        "test_doctor_command_reports_repo_health_and_ai_readiness",
+        "test_doctor_repo_returns_dynamic_priorities_for_thin_repo",
+        "test_doctor_command_supports_json_format",
+        "test_doctor_command_supports_json_short_flag",
+        "test_doctor_command_rejects_unknown_format",
+        "test_readme_command_scores_readme",
+        "test_score_readme_returns_100_point_checklist",
+        "test_readme_score_command_accepts_path",
+        "test_publish_checklist_command_reports_static_publish_readiness",
+        "test_publish_checklist_command_supports_json_format",
+        "test_publish_checklist_command_supports_markdown_format",
+        "test_publish_checklist_command_passes_fail_under_when_score_meets_threshold",
+        "test_publish_checklist_command_fails_under_threshold",
+        "test_publish_checklist_command_rejects_invalid_fail_under",
+        "test_publish_checklist_command_rejects_unknown_format",
+        "test_publish_checklist_function_handles_missing_readme",
+        "test_publish_checklist_function_reports_missing_path",
+        "test_actions_init_command_writes_workflow",
+        "test_actions_init_command_rejects_invalid_fail_under",
+        "test_hygiene_command_detects_ds_store",
+        "test_wiki_command_generates_wiki_plan",
+        "test_wiki_plan_command_reports_existing_and_missing_pages",
+        "test_wiki_export_command_writes_target_pages",
+        "test_wiki_export_command_requires_output_value",
+        "test_roadmap_command_generates_roadmap",
+        "test_unknown_command_fails",
+        "test_extract_keywords_preserves_order_and_deduplicates",
+        "test_build_context_includes_repo_state_and_relevant_snippet",
+        "test_build_context_supports_modes_and_markdown_format",
+        "test_repoaware_command_runs_through_main_cli",
+        "test_ranking_prioritizes_routing_code_over_docs",
+        "test_relevant_snippet_prefers_matching_function",
+        "test_create_codex_skill_scaffolds_skill_md",
+        "test_create_codex_skill_refuses_existing_skill",
+        "test_skill_new_command_creates_repo_local_skill",
+        "test_available_skills_reads_repo_skill_dirs",
+        "test_export_codex_skill_copies_full_skill_directory",
+        "test_export_codex_command_lists_and_installs_to_local_target",
+        "test_scan_repository_detects_shared_repo_signals",
+        "test_repository_load_is_the_central_entrypoint",
+        "test_repository_load_builds_graph_edges",
+        "test_build_repository_graph_extracts_python_and_shell_edges",
+        "test_extract_symbols_finds_python_classes_functions_and_shell_functions",
+        "test_default_vectorstore_path_is_scoped_per_repo",
+        "test_symbol_chunks_use_symbol_metadata_and_small_snippets",
+        "test_symbol_summary_compresses_symbol_meaning",
+        "test_semantic_lexical_search_matches_symbol_chunks",
+        "test_semantic_command_runs_without_chroma",
+        "test_openai_memory_document_uses_summaries_not_raw_file_dump",
+        "test_openai_upload_dry_run_does_not_call_api",
+        "test_openai_upload_dry_run_works_without_vector_store_id",
+        "test_semantic_upload_command_dry_run",
+        "test_build_ask_prompt_uses_repoaware_context",
+        "test_ask_command_dry_run_does_not_require_provider",
+        "test_pipeline_rank_files_populates_repository_signals",
+        "test_ask_pipeline_runs_scan_rank_context_and_provider",
+        "generate",
+        "test_publish_checklist_command_supports_fix_plan",
+        "test_inspect_json_contract_reports_stable_fields",
+        "test_inspect_marks_examples_as_optional",
+        "test_inspect_format_json_alias_works",
+        "test_inspect_json_missing_path_returns_contract"
+      ]
+    },
+    {
+      "path": "tests/test_mq_ecosystem.py",
+      "extension": ".py",
+      "symbol_count": 14,
+      "public_symbols": [
+        "TestInspectSafeScript",
+        "TestReadinessGateScript",
+        "TestMqAgentConsumer",
+        "test_script_exists_and_is_executable",
+        "test_runs_and_returns_inspect_v1",
+        "test_output_is_valid_json",
+        "test_script_exists_and_is_executable",
+        "test_passes_with_low_threshold",
+        "test_fails_with_impossibly_high_threshold",
+        "test_inspect_returns_dict",
+        "test_inspect_returns_none_for_missing_repo_signal",
+        "test_doctor_returns_dict",
+        "test_repo_summary_returns_string"
+      ]
+    },
+    {
+      "path": "tests/test_actions_init.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "test_actions_init_writes_workflow",
+        "test_actions_init_does_not_overwrite_without_force",
+        "test_actions_init_overwrites_with_force"
+      ]
+    },
+    {
+      "path": ".claude/settings.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".claude/settings.local.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/skill.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "format_create_result",
+        "parse_args",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/positioning.py",
+      "extension": ".py",
+      "symbol_count": 13,
+      "public_symbols": [
+        "read_text",
+        "first_useful_readme_line",
+        "heading_names",
+        "top_keywords",
+        "has_any",
+        "infer_audience",
+        "infer_problem",
+        "strongest_angle",
+        "unclear_items",
+        "one_sentence",
+        "build_positioning_report",
+        "format_positioning_text",
+        "format_positioning_report"
+      ]
+    },
+    {
+      "path": "repo_signal/semantic.py",
+      "extension": ".py",
+      "symbol_count": 7,
+      "public_symbols": [
+        "lexical_score",
+        "lexical_search",
+        "format_lexical_results",
+        "format_chroma_results",
+        "semantic_repo",
+        "parse_args",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/wiki_export.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "display_path",
+        "export_wiki_pages"
+      ]
+    },
+    {
+      "path": "repo_signal/suggest.py",
+      "extension": ".py",
+      "symbol_count": 10,
+      "public_symbols": [
+        "build_suggestions",
+        "format_suggestions"
+      ]
+    },
+    {
+      "path": "repo_signal/actions_init.py",
+      "extension": ".py",
+      "symbol_count": 1,
+      "public_symbols": [
+        "init_actions_workflow"
+      ]
+    },
+    {
+      "path": "repo_signal/ask.py",
+      "extension": ".py",
+      "symbol_count": 4,
+      "public_symbols": [
+        "build_ask_prompt",
+        "ask_repo",
+        "parse_args",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/export_packs.py",
+      "extension": ".py",
+      "symbol_count": 4,
+      "public_symbols": [
+        "export_packs",
+        "format_export_result",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/portfolio_check.py",
+      "extension": ".py",
+      "symbol_count": 10,
+      "public_symbols": [
+        "PortfolioRepo",
+        "PortfolioResult",
+        "load_portfolio_config",
+        "check_portfolio"
+      ]
+    },
+    {
+      "path": "repo_signal/semantic_upload.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "format_upload_result",
+        "parse_args",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/inspect.py",
+      "extension": ".py",
+      "symbol_count": 17,
+      "public_symbols": [
+        "inspect_repo_data",
+        "inspect_repo"
+      ]
+    },
+    {
+      "path": "repo_signal/cli.py",
+      "extension": ".py",
+      "symbol_count": 39,
+      "public_symbols": [
+        "exists",
+        "read_text_safe",
+        "run_git",
+        "is_git_repo",
+        "git_tracked_files",
+        "git_status",
+        "read_gitignore",
+        "gitignore_has_rule",
+        "iter_files",
+        "find_junk",
+        "find_large_files",
+        "parse_publish_checklist_args",
+        "parse_positioning_args",
+        "parse_actions_init_args",
+        "parse_wiki_args",
+        "scan_repo",
+        "has_heading",
+        "analyze_readme",
+        "analyze_hygiene",
+        "repo_has_any",
+        "readme_title_and_summary",
+        "detect_repo_track",
+        "recommended_wiki_pages",
+        "generate_home_draft",
+        "generate_wiki_plan",
+        "wiki_page_locations",
+        "existing_wiki_pages",
+        "generate_wiki_plan_report",
+        "roadmap_has",
+        "roadmap_readme_has",
+        "roadmap_detect_track",
+        "generate_roadmap_plan",
+        "parse_doctor_args",
+        "demo_text",
+        "parse_inspect_args",
+        "parse_demo_args",
+        "write_demo_file",
+        "generate_demo_reports",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/export_codex.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "format_result",
+        "parse_args",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/doctor.py",
+      "extension": ".py",
+      "symbol_count": 14,
+      "public_symbols": [
+        "yes_no",
+        "status_label",
+        "score_release_maturity",
+        "score_repo_health",
+        "score_ai_readiness",
+        "suggested_skills",
+        "suggested_priorities",
+        "format_evidence",
+        "build_doctor_result_from_repo",
+        "build_doctor_result",
+        "format_doctor_report_from_result",
+        "format_doctor_report",
+        "format_doctor_json",
+        "doctor_repo"
+      ]
+    },
+    {
+      "path": "repo_signal/readme_score.py",
+      "extension": ".py",
+      "symbol_count": 9,
+      "public_symbols": [
+        "read_text_safe",
+        "resolve_readme_path",
+        "has_heading",
+        "has_title",
+        "has_short_pitch",
+        "has_badges",
+        "has_screenshot_or_demo",
+        "score_readme",
+        "format_readme_score"
+      ]
+    },
+    {
+      "path": "repo_signal/report.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "build_report",
+        "format_report"
+      ]
+    },
+    {
+      "path": "repo_signal/publish_checklist.py",
+      "extension": ".py",
+      "symbol_count": 12,
+      "public_symbols": [
+        "has_any",
+        "read_text",
+        "readme_has_any",
+        "format_check",
+        "build_publish_checklist",
+        "format_publish_checklist_text",
+        "format_publish_checklist_markdown",
+        "format_publish_checklist_json",
+        "build_fix_plan",
+        "format_fix_plan",
+        "format_publish_checklist",
+        "check_publish_readiness"
+      ]
+    },
+    {
+      "path": "repo_signal/analyze.py",
+      "extension": ".py",
+      "symbol_count": 4,
+      "public_symbols": [
+        "yes_no",
+        "format_list",
+        "format_analyze_report",
+        "analyze_repo"
+      ]
+    },
+    {
+      "path": "docs/README_STRUCTURE.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/index.html",
+      "extension": ".html",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/PACKAGING.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/REPORT_SCHEMA.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/COMMANDS.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/INTEGRATIONS.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/COMMAND_SURFACE.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/REPOAWARE.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/PUBLISH_CHECKLIST.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/PYPI.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/POSITIONING_REPORT.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/SUGGEST_SCHEMA.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/POSITIONING.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/MQ_ECOSYSTEM.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/TRUSTED_PUBLISHING.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/EXPORT_SCHEMAS.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/ROADMAP-0.2.0.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/DOCTOR_JSON.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/GENERATED_EXAMPLES.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/DOCTOR_SCHEMA.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/SEMANTIC_MEMORY.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/TESTPYPI.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/INSPECT_SCHEMA.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/coolthing-readme-report.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/sample-report.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/coolthing-scan-report.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/coolthing-roadmap-report.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/coolthing-wiki-report.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "scripts/generate_screenshots.py",
+      "extension": ".py",
+      "symbol_count": 5,
+      "public_symbols": [
+        "render",
+        "run",
+        "main"
+      ]
+    },
+    {
+      "path": "scripts/check-generated-examples.sh",
+      "extension": ".sh",
+      "symbol_count": 5,
+      "public_symbols": [
+        "run_cli",
+        "fail",
+        "check_file",
+        "check_contains",
+        "check_json_schema"
+      ]
+    },
+    {
+      "path": "scripts/check-docs-consistency.sh",
+      "extension": ".sh",
+      "symbol_count": 2,
+      "public_symbols": [
+        "fail",
+        "ok"
+      ]
+    },
+    {
+      "path": "scripts/check-testpypi-readiness.sh",
+      "extension": ".sh",
+      "symbol_count": 1,
+      "public_symbols": [
+        "fail"
+      ]
+    },
+    {
+      "path": "scripts/check-pypi-readiness.sh",
+      "extension": ".sh",
+      "symbol_count": 1,
+      "public_symbols": [
+        "fail"
+      ]
+    },
+    {
+      "path": "scripts/generate-examples.sh",
+      "extension": ".sh",
+      "symbol_count": 1,
+      "public_symbols": [
+        "run_cli"
+      ]
+    },
+    {
+      "path": "scripts/check-trusted-publishing-setup.sh",
+      "extension": ".sh",
+      "symbol_count": 3,
+      "public_symbols": [
+        "fail",
+        "check_file",
+        "check_contains"
+      ]
+    },
+    {
+      "path": "scripts/check-packaging.sh",
+      "extension": ".sh",
+      "symbol_count": 1,
+      "public_symbols": [
+        "fail"
+      ]
+    },
+    {
+      "path": "skills/platform-skills.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/chroma.sqlite3",
+      "extension": ".sqlite3",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/dacbe9a7-96c0-4117-b305-6c7a2e962245/data_level0.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/dacbe9a7-96c0-4117-b305-6c7a2e962245/length.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/dacbe9a7-96c0-4117-b305-6c7a2e962245/link_lists.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/dacbe9a7-96c0-4117-b305-6c7a2e962245/header.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/4a46518e-c05f-4d1f-9eb0-5998cfd46621/data_level0.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/4a46518e-c05f-4d1f-9eb0-5998cfd46621/length.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/4a46518e-c05f-4d1f-9eb0-5998cfd46621/link_lists.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".repo-signal/chroma/4a46518e-c05f-4d1f-9eb0-5998cfd46621/header.bin",
+      "extension": ".bin",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/symbolic-intelligence-exporter/SKILL.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/semantic-memory-maintainer/SKILL.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/repo-aware/SKILL.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/terminal-ui-polisher/SKILL.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/repo-product-auditor/SKILL.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/release-readiness/SKILL.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/docs-maintainer/SKILL.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/repo-product-auditor/references/audit-checklist.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/repo-product-auditor/references/scoring.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/repo-product-auditor/assets/example-audit-output.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/repo-product-auditor/assets/readme-hero-template.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/terminal-ui-polisher/references/terminal-ui-scoring.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/terminal-ui-polisher/references/terminal-ui-audit-checklist.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/terminal-ui-polisher/references/terminal-ui-patterns.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/terminal-ui-polisher/assets/example-terminal-ui-review.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "skills/terminal-ui-polisher/assets/shell-helper-snippets.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/workflows/packaging.yml",
+      "extension": ".yml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/workflows/pypi.yml",
+      "extension": ".yml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/workflows/testpypi.yml",
+      "extension": ".yml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/workflows/examples.yml",
+      "extension": ".yml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/workflows/tests.yml",
+      "extension": ".yml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/workflows/publish-checklist.yml",
+      "extension": ".yml",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/repo_audit_case.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/docs.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/suggest/suggest.v1.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/suggest/suggest.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/suggest/suggest.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/demo/doctor.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/demo/inspect.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/demo/publish-checklist.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/demo/doctor.v1.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/demo/analyze.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/demo/README.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/demo/inspect.v1.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/inspect/inspect.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/inspect/inspect.v1.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/portfolio-check/portfolio-check.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/portfolio-check/portfolio-check.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/portfolio-check/portfolio-check.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/portfolio-check/README.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/doctor/doctor.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/doctor/doctor.v1.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/positioning/positioning.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/integrations/mq_agent_consumer.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "inspect",
+        "doctor",
+        "repo_summary"
+      ]
+    },
+    {
+      "path": "examples/integrations/inspect_safe.sh",
+      "extension": ".sh",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/integrations/readiness_gate.sh",
+      "extension": ".sh",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/publish-checklist/macos-scripts.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/publish-checklist/README.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/publish-checklist/repo-signal.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/publish-checklist/mcamner-journal.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/publish-checklist/design-prototyp.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/repoaware/review.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/analyze/analyze.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/report/report.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/report/report.v1.json",
+      "extension": ".json",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "examples/report/report.txt",
+      "extension": ".txt",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/screenshots/publish-checklist.png",
+      "extension": ".png",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/screenshots/publish-checklist-repo-signal.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/screenshots/inspect-json.png",
+      "extension": ".png",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/screenshots/inspect.png",
+      "extension": ".png",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/screenshots/README.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/screenshots/publish-checklist-coolThing.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki/WIKI-GENERATOR-SPEC.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki/PUBLISH-FLOW.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Command-Reference.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Architecture.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Troubleshooting.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Getting-Started.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Home.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Roadmap.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Skills.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "docs/wiki-export/Release-Flow.md",
+      "extension": ".md",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/pipeline/ask.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "get_provider",
+        "run_ask_pipeline"
+      ]
+    },
+    {
+      "path": "repo_signal/pipeline/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/pipeline/response.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "AskPipelineResult",
+        "referenced_files",
+        "format_pipeline_output"
+      ]
+    },
+    {
+      "path": "repo_signal/pipeline/prompts.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "prompt_for_mode",
+        "build_ask_prompt"
+      ]
+    },
+    {
+      "path": "repo_signal/pipeline/context.py",
+      "extension": ".py",
+      "symbol_count": 4,
+      "public_symbols": [
+        "rank_files",
+        "build_focused_context"
+      ]
+    },
+    {
+      "path": "repo_signal/core/scanner.py",
+      "extension": ".py",
+      "symbol_count": 9,
+      "public_symbols": [
+        "run",
+        "should_ignore",
+        "extract_keywords",
+        "build_git_context",
+        "detect_project_type",
+        "detect_tooling",
+        "is_entrypoint",
+        "suggest_focus_areas",
+        "scan_repository"
+      ]
+    },
+    {
+      "path": "repo_signal/core/models.py",
+      "extension": ".py",
+      "symbol_count": 14,
+      "public_symbols": [
+        "GitContext",
+        "FileNode",
+        "Signal",
+        "Symbol",
+        "Edge",
+        "RepositoryGraph",
+        "Repository",
+        "status_lines",
+        "changed_files",
+        "outgoing",
+        "incoming",
+        "repo_size_files",
+        "repo_size_mb",
+        "load"
+      ]
+    },
+    {
+      "path": "repo_signal/core/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/codex/exporter.py",
+      "extension": ".py",
+      "symbol_count": 14,
+      "public_symbols": [
+        "SkillExportError",
+        "SkillExportResult",
+        "SkillCreateResult",
+        "repo_root_from_path",
+        "skills_root",
+        "available_skills",
+        "validate_skill_name",
+        "default_skill_description",
+        "skill_template",
+        "create_codex_skill",
+        "resolve_source",
+        "default_target_root",
+        "count_files",
+        "export_codex_skill"
+      ]
+    },
+    {
+      "path": "repo_signal/codex/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/graph/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/graph/graph_builder.py",
+      "extension": ".py",
+      "symbol_count": 10,
+      "public_symbols": [
+        "read_text",
+        "file_index",
+        "module_index",
+        "resolve_python_module",
+        "clean_shell_target",
+        "resolve_repo_path",
+        "python_import_edges",
+        "shell_edges",
+        "dedupe_edges",
+        "build_repository_graph"
+      ]
+    },
+    {
+      "path": "repo_signal/exports/repo_summary.py",
+      "extension": ".py",
+      "symbol_count": 7,
+      "public_symbols": [
+        "build_repo_summary"
+      ]
+    },
+    {
+      "path": "repo_signal/exports/callgraph.py",
+      "extension": ".py",
+      "symbol_count": 1,
+      "public_symbols": [
+        "build_callgraph"
+      ]
+    },
+    {
+      "path": "repo_signal/exports/risk_map.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "build_risk_map"
+      ]
+    },
+    {
+      "path": "repo_signal/exports/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/exports/symbol_index.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "build_symbol_index"
+      ]
+    },
+    {
+      "path": "repo_signal/repoaware/context_builder.py",
+      "extension": ".py",
+      "symbol_count": 12,
+      "public_symbols": [
+        "run",
+        "extract_keywords",
+        "build_repo_tree",
+        "build_git_context",
+        "read_file_snippet",
+        "validate_mode",
+        "validate_format",
+        "build_context_data",
+        "format_xml",
+        "format_markdown",
+        "format_claude",
+        "build_context"
+      ]
+    },
+    {
+      "path": "repo_signal/repoaware/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/repoaware/ranking.py",
+      "extension": ".py",
+      "symbol_count": 20,
+      "public_symbols": [
+        "run",
+        "extract_keywords",
+        "should_skip",
+        "to_repo_relative",
+        "read_text",
+        "discover_all_files",
+        "find_candidate_files",
+        "modified_files",
+        "recently_committed_files",
+        "topic_priority_terms",
+        "count_keyword_hits",
+        "has_symbol_match",
+        "is_docs_path",
+        "is_shell_entrypoint",
+        "score_file",
+        "rank_relevant_files",
+        "summarize_file",
+        "line_score",
+        "merge_ranges",
+        "read_relevant_snippet"
+      ]
+    },
+    {
+      "path": "repo_signal/repoaware/__main__.py",
+      "extension": ".py",
+      "symbol_count": 3,
+      "public_symbols": [
+        "copy_to_clipboard",
+        "parse_args",
+        "main"
+      ]
+    },
+    {
+      "path": "repo_signal/ai/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/symbols/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/symbols/symbol_extractor.py",
+      "extension": ".py",
+      "symbol_count": 5,
+      "public_symbols": [
+        "read_text",
+        "line_number_at",
+        "extract_python_symbols",
+        "extract_shell_symbols",
+        "extract_symbols"
+      ]
+    },
+    {
+      "path": "repo_signal/symbols/summarizer.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "humanize_name",
+        "summarize_symbol"
+      ]
+    },
+    {
+      "path": "repo_signal/vectorstore/openai_store.py",
+      "extension": ".py",
+      "symbol_count": 6,
+      "public_symbols": [
+        "OpenAIUploadResult",
+        "load_shell_env_if_available",
+        "resolve_vector_store_id",
+        "openai_client",
+        "build_openai_memory_document",
+        "upload_repository_memory"
+      ]
+    },
+    {
+      "path": "repo_signal/vectorstore/chroma_store.py",
+      "extension": ".py",
+      "symbol_count": 12,
+      "public_symbols": [
+        "ChromaUnavailableError",
+        "ChromaSymbolStore",
+        "tokenize",
+        "local_embedding",
+        "reset",
+        "upsert_chunks",
+        "query",
+        "safe_repo_store_name",
+        "default_vectorstore_root",
+        "default_repo_store_path",
+        "build_default_store"
+      ]
+    },
+    {
+      "path": "repo_signal/vectorstore/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/vectorstore/chunks.py",
+      "extension": ".py",
+      "symbol_count": 7,
+      "public_symbols": [
+        "SymbolChunk",
+        "metadata",
+        "language_for_symbol",
+        "chunk_id",
+        "read_symbol_snippet",
+        "build_symbol_chunk",
+        "build_symbol_chunks"
+      ]
+    },
+    {
+      "path": "repo_signal/ai/embeddings/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/ai/providers/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/ai/providers/openai_provider.py",
+      "extension": ".py",
+      "symbol_count": 6,
+      "public_symbols": [
+        "OpenAIProvider",
+        "load_dotenv_if_available",
+        "load_shell_openai_key_if_available",
+        "generate",
+        "embed"
+      ]
+    },
+    {
+      "path": "repo_signal/ai/providers/anthropic_provider.py",
+      "extension": ".py",
+      "symbol_count": 2,
+      "public_symbols": [
+        "AnthropicProvider"
+      ]
+    },
+    {
+      "path": "repo_signal/ai/providers/base.py",
+      "extension": ".py",
+      "symbol_count": 4,
+      "public_symbols": [
+        "BaseProvider",
+        "ProviderConfigurationError",
+        "generate",
+        "embed"
+      ]
+    },
+    {
+      "path": "repo_signal/ai/prompts/repo_question.py",
+      "extension": ".py",
+      "symbol_count": 1,
+      "public_symbols": [
+        "build_repo_question_prompt"
+      ]
+    },
+    {
+      "path": "repo_signal/ai/prompts/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    },
+    {
+      "path": "repo_signal/ai/vectorstore/__init__.py",
+      "extension": ".py",
+      "symbol_count": 0,
+      "public_symbols": []
+    }
+  ],
+  "symbols": [
+    {
+      "name": "ok",
+      "kind": "shell_function",
+      "file_path": "release.sh",
+      "line": 29,
+      "is_public": true
+    },
+    {
+      "name": "warn",
+      "kind": "shell_function",
+      "file_path": "release.sh",
+      "line": 31,
+      "is_public": true
+    },
+    {
+      "name": "fail",
+      "kind": "shell_function",
+      "file_path": "release.sh",
+      "line": 32,
+      "is_public": true
+    },
+    {
+      "name": "section",
+      "kind": "shell_function",
+      "file_path": "release.sh",
+      "line": 33,
+      "is_public": true
+    },
+    {
+      "name": "detect_skill",
+      "kind": "function",
+      "file_path": "tools/build_prompt.py",
+      "line": 43,
+      "is_public": true
+    },
+    {
+      "name": "load_skill",
+      "kind": "function",
+      "file_path": "tools/build_prompt.py",
+      "line": 73,
+      "is_public": true
+    },
+    {
+      "name": "build_prompt",
+      "kind": "function",
+      "file_path": "tools/build_prompt.py",
+      "line": 86,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "tools/build_prompt.py",
+      "line": 104,
+      "is_public": true
+    },
+    {
+      "name": "detect_skill",
+      "kind": "function",
+      "file_path": "tools/skill_router.py",
+      "line": 43,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "tools/skill_router.py",
+      "line": 64,
+      "is_public": true
+    },
+    {
+      "name": "parse_commands",
+      "kind": "function",
+      "file_path": "tools/generate_wiki_command_ref.py",
+      "line": 27,
+      "is_public": true
+    },
+    {
+      "name": "parse_usage",
+      "kind": "function",
+      "file_path": "tools/generate_wiki_command_ref.py",
+      "line": 58,
+      "is_public": true
+    },
+    {
+      "name": "write_reference",
+      "kind": "function",
+      "file_path": "tools/generate_wiki_command_ref.py",
+      "line": 66,
+      "is_public": true
+    },
+    {
+      "name": "TestInspectV1",
+      "kind": "class",
+      "file_path": "tests/test_contracts.py",
+      "line": 22,
+      "is_public": true
+    },
+    {
+      "name": "TestDoctorV1",
+      "kind": "class",
+      "file_path": "tests/test_contracts.py",
+      "line": 51,
+      "is_public": true
+    },
+    {
+      "name": "TestSafeConsumption",
+      "kind": "class",
+      "file_path": "tests/test_contracts.py",
+      "line": 75,
+      "is_public": true
+    },
+    {
+      "name": "_inspect",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 11,
+      "is_public": false
+    },
+    {
+      "name": "_doctor",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 15,
+      "is_public": false
+    },
+    {
+      "name": "test_schema_field_is_inspect_v1",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 24,
+      "is_public": true
+    },
+    {
+      "name": "test_required_top_level_keys",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 26,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_section_has_name_and_path",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 31,
+      "is_public": true
+    },
+    {
+      "name": "test_core_files_is_list",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 36,
+      "is_public": true
+    },
+    {
+      "name": "test_core_file_items_have_label_and_exists",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 39,
+      "is_public": true
+    },
+    {
+      "name": "test_json_roundtrip",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 44,
+      "is_public": true
+    },
+    {
+      "name": "test_schema_field_is_doctor_v1",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 53,
+      "is_public": true
+    },
+    {
+      "name": "test_required_top_level_keys",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 55,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_section_has_name_and_path",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 60,
+      "is_public": true
+    },
+    {
+      "name": "test_scores_section_present",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 65,
+      "is_public": true
+    },
+    {
+      "name": "test_json_roundtrip",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 68,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_schema_check_pattern",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 77,
+      "is_public": true
+    },
+    {
+      "name": "test_doctor_schema_check_pattern",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 81,
+      "is_public": true
+    },
+    {
+      "name": "test_unknown_schema_is_detectable",
+      "kind": "function",
+      "file_path": "tests/test_contracts.py",
+      "line": 86,
+      "is_public": true
+    },
+    {
+      "name": "test_build_suggestions_does_not_write_files",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 75,
+      "is_public": true
+    },
+    {
+      "name": "test_build_suggestions_does_not_create_new_files",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 89,
+      "is_public": true
+    },
+    {
+      "name": "test_build_suggestions_schema_field",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 103,
+      "is_public": true
+    },
+    {
+      "name": "test_build_suggestions_required_fields",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 109,
+      "is_public": true
+    },
+    {
+      "name": "test_build_suggestions_by_risk_keys",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 118,
+      "is_public": true
+    },
+    {
+      "name": "test_suggestion_fields",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 125,
+      "is_public": true
+    },
+    {
+      "name": "test_suggestion_risk_values",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 135,
+      "is_public": true
+    },
+    {
+      "name": "test_total_matches_suggestions_count",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 144,
+      "is_public": true
+    },
+    {
+      "name": "test_by_risk_sums_to_total",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 151,
+      "is_public": true
+    },
+    {
+      "name": "test_no_suggestions_when_all_pass",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 161,
+      "is_public": true
+    },
+    {
+      "name": "test_format_json_is_valid_json",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 172,
+      "is_public": true
+    },
+    {
+      "name": "test_format_json_schema_field_present",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 180,
+      "is_public": true
+    },
+    {
+      "name": "test_format_text_contains_repo_name",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 191,
+      "is_public": true
+    },
+    {
+      "name": "test_format_text_no_suggestions_message",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 198,
+      "is_public": true
+    },
+    {
+      "name": "test_format_markdown_has_heading",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 210,
+      "is_public": true
+    },
+    {
+      "name": "test_format_markdown_no_suggestions_message",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 217,
+      "is_public": true
+    },
+    {
+      "name": "test_format_invalid_raises",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 229,
+      "is_public": true
+    },
+    {
+      "name": "test_valid_formats_set",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 236,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_suggest_exits_zero",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 243,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_suggest_json_exits_zero",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 252,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_suggest_markdown_exits_zero",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 264,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_suggest_invalid_format_exits_nonzero",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 275,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_suggest_does_not_create_files",
+      "kind": "function",
+      "file_path": "tests/test_suggest.py",
+      "line": 284,
+      "is_public": true
+    },
+    {
+      "name": "minimal_repo",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 13,
+      "is_public": true
+    },
+    {
+      "name": "no_docs_repo",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 38,
+      "is_public": true
+    },
+    {
+      "name": "test_symbol_index_schema",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 48,
+      "is_public": true
+    },
+    {
+      "name": "test_symbol_index_required_fields",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 53,
+      "is_public": true
+    },
+    {
+      "name": "test_symbol_index_finds_public_symbols",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 60,
+      "is_public": true
+    },
+    {
+      "name": "test_symbol_index_marks_private",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 69,
+      "is_public": true
+    },
+    {
+      "name": "test_symbol_index_is_json_serializable",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 77,
+      "is_public": true
+    },
+    {
+      "name": "test_callgraph_schema",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 88,
+      "is_public": true
+    },
+    {
+      "name": "test_callgraph_required_fields",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 93,
+      "is_public": true
+    },
+    {
+      "name": "test_callgraph_detects_import",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 100,
+      "is_public": true
+    },
+    {
+      "name": "test_callgraph_edge_fields",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 109,
+      "is_public": true
+    },
+    {
+      "name": "test_callgraph_edge_count_matches",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 118,
+      "is_public": true
+    },
+    {
+      "name": "test_callgraph_is_json_serializable",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 124,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_schema",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 133,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_required_fields",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 138,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_version",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 149,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_description_nonempty",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 155,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_key_files_has_readme",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 161,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_top_symbols_nonempty",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 167,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_is_json_serializable",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 173,
+      "is_public": true
+    },
+    {
+      "name": "test_risk_map_schema",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 182,
+      "is_public": true
+    },
+    {
+      "name": "test_risk_map_required_fields",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 187,
+      "is_public": true
+    },
+    {
+      "name": "test_risk_map_count_matches",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 194,
+      "is_public": true
+    },
+    {
+      "name": "test_risk_map_risk_fields",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 200,
+      "is_public": true
+    },
+    {
+      "name": "test_risk_map_no_docs_repo_high_risk",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 212,
+      "is_public": true
+    },
+    {
+      "name": "test_risk_map_ids_unique",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 219,
+      "is_public": true
+    },
+    {
+      "name": "test_risk_map_is_json_serializable",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 226,
+      "is_public": true
+    },
+    {
+      "name": "test_export_packs_writes_all_four",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 235,
+      "is_public": true
+    },
+    {
+      "name": "test_export_packs_json_valid",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 245,
+      "is_public": true
+    },
+    {
+      "name": "test_export_packs_selective",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 254,
+      "is_public": true
+    },
+    {
+      "name": "test_export_packs_result_schema",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 264,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_export_runs",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 274,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_export_json_format",
+      "kind": "function",
+      "file_path": "tests/test_exports.py",
+      "line": 284,
+      "is_public": true
+    },
+    {
+      "name": "_patched_build_report",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 42,
+      "is_public": false
+    },
+    {
+      "name": "test_build_report_schema",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 51,
+      "is_public": true
+    },
+    {
+      "name": "test_build_report_fields",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 55,
+      "is_public": true
+    },
+    {
+      "name": "test_build_report_issues",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 66,
+      "is_public": true
+    },
+    {
+      "name": "test_build_report_next_commit",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 71,
+      "is_public": true
+    },
+    {
+      "name": "test_build_report_useful_commands",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 76,
+      "is_public": true
+    },
+    {
+      "name": "_sample_data",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 84,
+      "is_public": false
+    },
+    {
+      "name": "test_format_text_contains_repo",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 87,
+      "is_public": true
+    },
+    {
+      "name": "test_format_text_contains_issues",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 94,
+      "is_public": true
+    },
+    {
+      "name": "test_format_markdown_has_heading",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 99,
+      "is_public": true
+    },
+    {
+      "name": "test_format_markdown_core_files_no_raw_dict",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 106,
+      "is_public": true
+    },
+    {
+      "name": "test_format_json_valid",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 112,
+      "is_public": true
+    },
+    {
+      "name": "test_format_json_and_text_equal_data",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 119,
+      "is_public": true
+    },
+    {
+      "name": "test_format_unknown_raises",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 126,
+      "is_public": true
+    },
+    {
+      "name": "test_valid_formats_set",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 131,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_report_text",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 138,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_report_json",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 146,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_report_markdown",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 157,
+      "is_public": true
+    },
+    {
+      "name": "test_cli_report_invalid_format",
+      "kind": "function",
+      "file_path": "tests/test_report.py",
+      "line": 166,
+      "is_public": true
+    },
+    {
+      "name": "_make_publish_ready_repo",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 7,
+      "is_public": false
+    },
+    {
+      "name": "_write_config",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 23,
+      "is_public": false
+    },
+    {
+      "name": "test_portfolio_text_ok",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 30,
+      "is_public": true
+    },
+    {
+      "name": "test_portfolio_json_ok",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 44,
+      "is_public": true
+    },
+    {
+      "name": "test_portfolio_markdown_ok",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 58,
+      "is_public": true
+    },
+    {
+      "name": "test_portfolio_warn_below_threshold",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 71,
+      "is_public": true
+    },
+    {
+      "name": "test_portfolio_missing_repo",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 84,
+      "is_public": true
+    },
+    {
+      "name": "test_portfolio_invalid_format",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 93,
+      "is_public": true
+    },
+    {
+      "name": "test_load_config_no_file",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 101,
+      "is_public": true
+    },
+    {
+      "name": "test_load_config_multiple_repos",
+      "kind": "function",
+      "file_path": "tests/test_portfolio_check.py",
+      "line": 107,
+      "is_public": true
+    },
+    {
+      "name": "TestDryRun",
+      "kind": "class",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 11,
+      "is_public": true
+    },
+    {
+      "name": "TestMissingVectorStore",
+      "kind": "class",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 64,
+      "is_public": true
+    },
+    {
+      "name": "TestNoSecretGuarantee",
+      "kind": "class",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 97,
+      "is_public": true
+    },
+    {
+      "name": "TestMqAgentIntegration",
+      "kind": "class",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 123,
+      "is_public": true
+    },
+    {
+      "name": "test_dry_run_exits_zero_without_vector_store",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 14,
+      "is_public": true
+    },
+    {
+      "name": "test_dry_run_output_contains_repo_name",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 24,
+      "is_public": true
+    },
+    {
+      "name": "test_dry_run_shows_symbols_count",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 34,
+      "is_public": true
+    },
+    {
+      "name": "test_dry_run_shows_bytes",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 44,
+      "is_public": true
+    },
+    {
+      "name": "test_dry_run_status_is_dry_run",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 54,
+      "is_public": true
+    },
+    {
+      "name": "test_upload_without_vector_store_exits_nonzero",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 67,
+      "is_public": true
+    },
+    {
+      "name": "test_upload_without_vector_store_prints_error",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 78,
+      "is_public": true
+    },
+    {
+      "name": "test_upload_function_raises_on_missing_store",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 90,
+      "is_public": true
+    },
+    {
+      "name": "test_memory_document_contains_symbols_not_raw_source",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 100,
+      "is_public": true
+    },
+    {
+      "name": "test_memory_document_is_markdown",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 108,
+      "is_public": true
+    },
+    {
+      "name": "test_mq_agent_memory_status_reports_correctly",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 124,
+      "is_public": true
+    },
+    {
+      "name": "test_mq_agent_memory_build_dry_run",
+      "kind": "function",
+      "file_path": "tests/test_semantic_upload.py",
+      "line": 134,
+      "is_public": true
+    },
+    {
+      "name": "RepoSignalCLITests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 101,
+      "is_public": true
+    },
+    {
+      "name": "RepoAwareTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 672,
+      "is_public": true
+    },
+    {
+      "name": "CodexExportTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 801,
+      "is_public": true
+    },
+    {
+      "name": "CoreScannerTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 891,
+      "is_public": true
+    },
+    {
+      "name": "GraphBuilderTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 963,
+      "is_public": true
+    },
+    {
+      "name": "SymbolExtractorTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 995,
+      "is_public": true
+    },
+    {
+      "name": "SemanticMemoryTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 1034,
+      "is_public": true
+    },
+    {
+      "name": "AskCommandTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 1196,
+      "is_public": true
+    },
+    {
+      "name": "FakeProvider",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 1252,
+      "is_public": true
+    },
+    {
+      "name": "InspectJsonContractTests",
+      "kind": "class",
+      "file_path": "tests/test_cli.py",
+      "line": 1305,
+      "is_public": true
+    },
+    {
+      "name": "run_repo_signal",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 31,
+      "is_public": true
+    },
+    {
+      "name": "make_sample_repo",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 46,
+      "is_public": true
+    },
+    {
+      "name": "test_help_command",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 104,
+      "is_public": true
+    },
+    {
+      "name": "test_version_command",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 119,
+      "is_public": true
+    },
+    {
+      "name": "test_demo_command_prints_onboarding_flow",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 126,
+      "is_public": true
+    },
+    {
+      "name": "test_demo_generate_writes_demo_reports",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 137,
+      "is_public": true
+    },
+    {
+      "name": "test_demo_generate_skips_existing_files_without_force",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 157,
+      "is_public": true
+    },
+    {
+      "name": "test_scan_command_detects_core_files",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 170,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_command_reports_quick_repo_status",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 183,
+      "is_public": true
+    },
+    {
+      "name": "test_analyze_command_reports_front_door_summary",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 203,
+      "is_public": true
+    },
+    {
+      "name": "test_positioning_report_extracts_repo_message",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 221,
+      "is_public": true
+    },
+    {
+      "name": "test_positioning_command_supports_text_and_json",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 236,
+      "is_public": true
+    },
+    {
+      "name": "test_positioning_format_rejects_unknown_format",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 254,
+      "is_public": true
+    },
+    {
+      "name": "test_doctor_command_reports_repo_health_and_ai_readiness",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 262,
+      "is_public": true
+    },
+    {
+      "name": "test_doctor_repo_returns_dynamic_priorities_for_thin_repo",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 283,
+      "is_public": true
+    },
+    {
+      "name": "test_doctor_command_supports_json_format",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 295,
+      "is_public": true
+    },
+    {
+      "name": "test_doctor_command_supports_json_short_flag",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 320,
+      "is_public": true
+    },
+    {
+      "name": "test_doctor_command_rejects_unknown_format",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 332,
+      "is_public": true
+    },
+    {
+      "name": "test_readme_command_scores_readme",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 341,
+      "is_public": true
+    },
+    {
+      "name": "test_score_readme_returns_100_point_checklist",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 354,
+      "is_public": true
+    },
+    {
+      "name": "test_readme_score_command_accepts_path",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 403,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_reports_static_publish_readiness",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 415,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_supports_json_format",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 435,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_supports_markdown_format",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 459,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_passes_fail_under_when_score_meets_threshold",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 475,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_fails_under_threshold",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 491,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_rejects_invalid_fail_under",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 504,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_rejects_unknown_format",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 516,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_function_handles_missing_readme",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 528,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_function_reports_missing_path",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 536,
+      "is_public": true
+    },
+    {
+      "name": "test_actions_init_command_writes_workflow",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 545,
+      "is_public": true
+    },
+    {
+      "name": "test_actions_init_command_rejects_invalid_fail_under",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 563,
+      "is_public": true
+    },
+    {
+      "name": "test_hygiene_command_detects_ds_store",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 575,
+      "is_public": true
+    },
+    {
+      "name": "test_wiki_command_generates_wiki_plan",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 587,
+      "is_public": true
+    },
+    {
+      "name": "test_wiki_plan_command_reports_existing_and_missing_pages",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 598,
+      "is_public": true
+    },
+    {
+      "name": "test_wiki_export_command_writes_target_pages",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 620,
+      "is_public": true
+    },
+    {
+      "name": "test_wiki_export_command_requires_output_value",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 645,
+      "is_public": true
+    },
+    {
+      "name": "test_roadmap_command_generates_roadmap",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 654,
+      "is_public": true
+    },
+    {
+      "name": "test_unknown_command_fails",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 665,
+      "is_public": true
+    },
+    {
+      "name": "test_extract_keywords_preserves_order_and_deduplicates",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 675,
+      "is_public": true
+    },
+    {
+      "name": "test_build_context_includes_repo_state_and_relevant_snippet",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 679,
+      "is_public": true
+    },
+    {
+      "name": "test_build_context_supports_modes_and_markdown_format",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 707,
+      "is_public": true
+    },
+    {
+      "name": "test_repoaware_command_runs_through_main_cli",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 732,
+      "is_public": true
+    },
+    {
+      "name": "test_ranking_prioritizes_routing_code_over_docs",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 752,
+      "is_public": true
+    },
+    {
+      "name": "test_relevant_snippet_prefers_matching_function",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 778,
+      "is_public": true
+    },
+    {
+      "name": "test_create_codex_skill_scaffolds_skill_md",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 804,
+      "is_public": true
+    },
+    {
+      "name": "test_create_codex_skill_refuses_existing_skill",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 819,
+      "is_public": true
+    },
+    {
+      "name": "test_skill_new_command_creates_repo_local_skill",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 827,
+      "is_public": true
+    },
+    {
+      "name": "test_available_skills_reads_repo_skill_dirs",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 847,
+      "is_public": true
+    },
+    {
+      "name": "test_export_codex_skill_copies_full_skill_directory",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 854,
+      "is_public": true
+    },
+    {
+      "name": "test_export_codex_command_lists_and_installs_to_local_target",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 868,
+      "is_public": true
+    },
+    {
+      "name": "test_scan_repository_detects_shared_repo_signals",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 894,
+      "is_public": true
+    },
+    {
+      "name": "test_repository_load_is_the_central_entrypoint",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 926,
+      "is_public": true
+    },
+    {
+      "name": "test_repository_load_builds_graph_edges",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 939,
+      "is_public": true
+    },
+    {
+      "name": "test_build_repository_graph_extracts_python_and_shell_edges",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 966,
+      "is_public": true
+    },
+    {
+      "name": "test_extract_symbols_finds_python_classes_functions_and_shell_functions",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 998,
+      "is_public": true
+    },
+    {
+      "name": "test_default_vectorstore_path_is_scoped_per_repo",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1037,
+      "is_public": true
+    },
+    {
+      "name": "test_symbol_chunks_use_symbol_metadata_and_small_snippets",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1044,
+      "is_public": true
+    },
+    {
+      "name": "test_symbol_summary_compresses_symbol_meaning",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1066,
+      "is_public": true
+    },
+    {
+      "name": "test_semantic_lexical_search_matches_symbol_chunks",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1078,
+      "is_public": true
+    },
+    {
+      "name": "test_semantic_command_runs_without_chroma",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1099,
+      "is_public": true
+    },
+    {
+      "name": "test_openai_memory_document_uses_summaries_not_raw_file_dump",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1116,
+      "is_public": true
+    },
+    {
+      "name": "test_openai_upload_dry_run_does_not_call_api",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1135,
+      "is_public": true
+    },
+    {
+      "name": "test_openai_upload_dry_run_works_without_vector_store_id",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1155,
+      "is_public": true
+    },
+    {
+      "name": "test_semantic_upload_command_dry_run",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1177,
+      "is_public": true
+    },
+    {
+      "name": "test_build_ask_prompt_uses_repoaware_context",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1199,
+      "is_public": true
+    },
+    {
+      "name": "test_ask_command_dry_run_does_not_require_provider",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1215,
+      "is_public": true
+    },
+    {
+      "name": "test_pipeline_rank_files_populates_repository_signals",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1231,
+      "is_public": true
+    },
+    {
+      "name": "test_ask_pipeline_runs_scan_rank_context_and_provider",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1250,
+      "is_public": true
+    },
+    {
+      "name": "__init__",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1253,
+      "is_public": false
+    },
+    {
+      "name": "generate",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1255,
+      "is_public": true
+    },
+    {
+      "name": "test_publish_checklist_command_supports_fix_plan",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1292,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_json_contract_reports_stable_fields",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1308,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_marks_examples_as_optional",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1331,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_format_json_alias_works",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1356,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_json_missing_path_returns_contract",
+      "kind": "function",
+      "file_path": "tests/test_cli.py",
+      "line": 1366,
+      "is_public": true
+    },
+    {
+      "name": "TestInspectSafeScript",
+      "kind": "class",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 21,
+      "is_public": true
+    },
+    {
+      "name": "TestReadinessGateScript",
+      "kind": "class",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 46,
+      "is_public": true
+    },
+    {
+      "name": "TestMqAgentConsumer",
+      "kind": "class",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 68,
+      "is_public": true
+    },
+    {
+      "name": "_load_consumer",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 12,
+      "is_public": false
+    },
+    {
+      "name": "test_script_exists_and_is_executable",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 24,
+      "is_public": true
+    },
+    {
+      "name": "test_runs_and_returns_inspect_v1",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 28,
+      "is_public": true
+    },
+    {
+      "name": "test_output_is_valid_json",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 37,
+      "is_public": true
+    },
+    {
+      "name": "test_script_exists_and_is_executable",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 49,
+      "is_public": true
+    },
+    {
+      "name": "test_passes_with_low_threshold",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 53,
+      "is_public": true
+    },
+    {
+      "name": "test_fails_with_impossibly_high_threshold",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 61,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_returns_dict",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 71,
+      "is_public": true
+    },
+    {
+      "name": "test_inspect_returns_none_for_missing_repo_signal",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 76,
+      "is_public": true
+    },
+    {
+      "name": "test_doctor_returns_dict",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 82,
+      "is_public": true
+    },
+    {
+      "name": "test_repo_summary_returns_string",
+      "kind": "function",
+      "file_path": "tests/test_mq_ecosystem.py",
+      "line": 88,
+      "is_public": true
+    },
+    {
+      "name": "test_actions_init_writes_workflow",
+      "kind": "function",
+      "file_path": "tests/test_actions_init.py",
+      "line": 4,
+      "is_public": true
+    },
+    {
+      "name": "test_actions_init_does_not_overwrite_without_force",
+      "kind": "function",
+      "file_path": "tests/test_actions_init.py",
+      "line": 16,
+      "is_public": true
+    },
+    {
+      "name": "test_actions_init_overwrites_with_force",
+      "kind": "function",
+      "file_path": "tests/test_actions_init.py",
+      "line": 27,
+      "is_public": true
+    },
+    {
+      "name": "format_create_result",
+      "kind": "function",
+      "file_path": "repo_signal/skill.py",
+      "line": 7,
+      "is_public": true
+    },
+    {
+      "name": "parse_args",
+      "kind": "function",
+      "file_path": "repo_signal/skill.py",
+      "line": 21,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/skill.py",
+      "line": 39,
+      "is_public": true
+    },
+    {
+      "name": "read_text",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 24,
+      "is_public": true
+    },
+    {
+      "name": "first_useful_readme_line",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 33,
+      "is_public": true
+    },
+    {
+      "name": "heading_names",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 47,
+      "is_public": true
+    },
+    {
+      "name": "top_keywords",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 51,
+      "is_public": true
+    },
+    {
+      "name": "has_any",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 61,
+      "is_public": true
+    },
+    {
+      "name": "infer_audience",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 66,
+      "is_public": true
+    },
+    {
+      "name": "infer_problem",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 81,
+      "is_public": true
+    },
+    {
+      "name": "strongest_angle",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 94,
+      "is_public": true
+    },
+    {
+      "name": "unclear_items",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 104,
+      "is_public": true
+    },
+    {
+      "name": "one_sentence",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 121,
+      "is_public": true
+    },
+    {
+      "name": "build_positioning_report",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 130,
+      "is_public": true
+    },
+    {
+      "name": "format_positioning_text",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 161,
+      "is_public": true
+    },
+    {
+      "name": "format_positioning_report",
+      "kind": "function",
+      "file_path": "repo_signal/positioning.py",
+      "line": 208,
+      "is_public": true
+    },
+    {
+      "name": "lexical_score",
+      "kind": "function",
+      "file_path": "repo_signal/semantic.py",
+      "line": 9,
+      "is_public": true
+    },
+    {
+      "name": "lexical_search",
+      "kind": "function",
+      "file_path": "repo_signal/semantic.py",
+      "line": 27,
+      "is_public": true
+    },
+    {
+      "name": "format_lexical_results",
+      "kind": "function",
+      "file_path": "repo_signal/semantic.py",
+      "line": 39,
+      "is_public": true
+    },
+    {
+      "name": "format_chroma_results",
+      "kind": "function",
+      "file_path": "repo_signal/semantic.py",
+      "line": 65,
+      "is_public": true
+    },
+    {
+      "name": "semantic_repo",
+      "kind": "function",
+      "file_path": "repo_signal/semantic.py",
+      "line": 92,
+      "is_public": true
+    },
+    {
+      "name": "parse_args",
+      "kind": "function",
+      "file_path": "repo_signal/semantic.py",
+      "line": 112,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/semantic.py",
+      "line": 130,
+      "is_public": true
+    },
+    {
+      "name": "display_path",
+      "kind": "function",
+      "file_path": "repo_signal/wiki_export.py",
+      "line": 127,
+      "is_public": true
+    },
+    {
+      "name": "export_wiki_pages",
+      "kind": "function",
+      "file_path": "repo_signal/wiki_export.py",
+      "line": 133,
+      "is_public": true
+    },
+    {
+      "name": "_slug",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 30,
+      "is_public": false
+    },
+    {
+      "name": "_infer_commit_group",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 34,
+      "is_public": false
+    },
+    {
+      "name": "_infer_risk",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 42,
+      "is_public": false
+    },
+    {
+      "name": "_diff_preview_for_file",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 51,
+      "is_public": false
+    },
+    {
+      "name": "_diff_preview_for_section",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 61,
+      "is_public": false
+    },
+    {
+      "name": "_command_hint_from_hint",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 72,
+      "is_public": false
+    },
+    {
+      "name": "_suggestions_from_checklist",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 94,
+      "is_public": false
+    },
+    {
+      "name": "_suggestions_from_inspect",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 134,
+      "is_public": false
+    },
+    {
+      "name": "build_suggestions",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 183,
+      "is_public": true
+    },
+    {
+      "name": "format_suggestions",
+      "kind": "function",
+      "file_path": "repo_signal/suggest.py",
+      "line": 211,
+      "is_public": true
+    },
+    {
+      "name": "init_actions_workflow",
+      "kind": "function",
+      "file_path": "repo_signal/actions_init.py",
+      "line": 34,
+      "is_public": true
+    },
+    {
+      "name": "build_ask_prompt",
+      "kind": "function",
+      "file_path": "repo_signal/ask.py",
+      "line": 9,
+      "is_public": true
+    },
+    {
+      "name": "ask_repo",
+      "kind": "function",
+      "file_path": "repo_signal/ask.py",
+      "line": 19,
+      "is_public": true
+    },
+    {
+      "name": "parse_args",
+      "kind": "function",
+      "file_path": "repo_signal/ask.py",
+      "line": 36,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/ask.py",
+      "line": 62,
+      "is_public": true
+    },
+    {
+      "name": "export_packs",
+      "kind": "function",
+      "file_path": "repo_signal/export_packs.py",
+      "line": 22,
+      "is_public": true
+    },
+    {
+      "name": "format_export_result",
+      "kind": "function",
+      "file_path": "repo_signal/export_packs.py",
+      "line": 64,
+      "is_public": true
+    },
+    {
+      "name": "_parse_args",
+      "kind": "function",
+      "file_path": "repo_signal/export_packs.py",
+      "line": 82,
+      "is_public": false
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/export_packs.py",
+      "line": 130,
+      "is_public": true
+    },
+    {
+      "name": "PortfolioRepo",
+      "kind": "class",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 11,
+      "is_public": true
+    },
+    {
+      "name": "PortfolioResult",
+      "kind": "class",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 18,
+      "is_public": true
+    },
+    {
+      "name": "load_portfolio_config",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 26,
+      "is_public": true
+    },
+    {
+      "name": "_make_repo",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 64,
+      "is_public": false
+    },
+    {
+      "name": "_check_repo",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 74,
+      "is_public": false
+    },
+    {
+      "name": "_weakest",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 103,
+      "is_public": false
+    },
+    {
+      "name": "_render_text",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 107,
+      "is_public": false
+    },
+    {
+      "name": "_render_markdown",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 119,
+      "is_public": false
+    },
+    {
+      "name": "_render_json",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 135,
+      "is_public": false
+    },
+    {
+      "name": "check_portfolio",
+      "kind": "function",
+      "file_path": "repo_signal/portfolio_check.py",
+      "line": 156,
+      "is_public": true
+    },
+    {
+      "name": "format_upload_result",
+      "kind": "function",
+      "file_path": "repo_signal/semantic_upload.py",
+      "line": 8,
+      "is_public": true
+    },
+    {
+      "name": "parse_args",
+      "kind": "function",
+      "file_path": "repo_signal/semantic_upload.py",
+      "line": 23,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/semantic_upload.py",
+      "line": 46,
+      "is_public": true
+    },
+    {
+      "name": "_as_path",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 45,
+      "is_public": false
+    },
+    {
+      "name": "_get",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 51,
+      "is_public": false
+    },
+    {
+      "name": "_json_safe",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 55,
+      "is_public": false
+    },
+    {
+      "name": "_format_mapping",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 69,
+      "is_public": false
+    },
+    {
+      "name": "_format_list",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 89,
+      "is_public": false
+    },
+    {
+      "name": "_top_directories",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 113,
+      "is_public": false
+    },
+    {
+      "name": "_core_file_records",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 120,
+      "is_public": false
+    },
+    {
+      "name": "_status_for_path",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 136,
+      "is_public": false
+    },
+    {
+      "name": "_git_details",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 140,
+      "is_public": false
+    },
+    {
+      "name": "_git_summary",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 189,
+      "is_public": false
+    },
+    {
+      "name": "_publish_details",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 193,
+      "is_public": false
+    },
+    {
+      "name": "_publish_summary",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 229,
+      "is_public": false
+    },
+    {
+      "name": "_possible_issues",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 239,
+      "is_public": false
+    },
+    {
+      "name": "_issue_records",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 270,
+      "is_public": false
+    },
+    {
+      "name": "_recommended_next_commit",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 295,
+      "is_public": false
+    },
+    {
+      "name": "inspect_repo_data",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 322,
+      "is_public": true
+    },
+    {
+      "name": "inspect_repo",
+      "kind": "function",
+      "file_path": "repo_signal/inspect.py",
+      "line": 410,
+      "is_public": true
+    },
+    {
+      "name": "exists",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 202,
+      "is_public": true
+    },
+    {
+      "name": "read_text_safe",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 206,
+      "is_public": true
+    },
+    {
+      "name": "run_git",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 213,
+      "is_public": true
+    },
+    {
+      "name": "is_git_repo",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 228,
+      "is_public": true
+    },
+    {
+      "name": "git_tracked_files",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 233,
+      "is_public": true
+    },
+    {
+      "name": "git_status",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 244,
+      "is_public": true
+    },
+    {
+      "name": "read_gitignore",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 255,
+      "is_public": true
+    },
+    {
+      "name": "gitignore_has_rule",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 263,
+      "is_public": true
+    },
+    {
+      "name": "iter_files",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 268,
+      "is_public": true
+    },
+    {
+      "name": "find_junk",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 281,
+      "is_public": true
+    },
+    {
+      "name": "find_large_files",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 297,
+      "is_public": true
+    },
+    {
+      "name": "parse_publish_checklist_args",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 316,
+      "is_public": true
+    },
+    {
+      "name": "parse_positioning_args",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 382,
+      "is_public": true
+    },
+    {
+      "name": "parse_actions_init_args",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 428,
+      "is_public": true
+    },
+    {
+      "name": "parse_wiki_args",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 479,
+      "is_public": true
+    },
+    {
+      "name": "scan_repo",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 522,
+      "is_public": true
+    },
+    {
+      "name": "has_heading",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 561,
+      "is_public": true
+    },
+    {
+      "name": "analyze_readme",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 569,
+      "is_public": true
+    },
+    {
+      "name": "analyze_hygiene",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 717,
+      "is_public": true
+    },
+    {
+      "name": "repo_has_any",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 894,
+      "is_public": true
+    },
+    {
+      "name": "readme_title_and_summary",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 899,
+      "is_public": true
+    },
+    {
+      "name": "detect_repo_track",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 932,
+      "is_public": true
+    },
+    {
+      "name": "recommended_wiki_pages",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 954,
+      "is_public": true
+    },
+    {
+      "name": "generate_home_draft",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 978,
+      "is_public": true
+    },
+    {
+      "name": "generate_wiki_plan",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1041,
+      "is_public": true
+    },
+    {
+      "name": "wiki_page_locations",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1090,
+      "is_public": true
+    },
+    {
+      "name": "existing_wiki_pages",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1097,
+      "is_public": true
+    },
+    {
+      "name": "generate_wiki_plan_report",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1110,
+      "is_public": true
+    },
+    {
+      "name": "roadmap_has",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1154,
+      "is_public": true
+    },
+    {
+      "name": "roadmap_readme_has",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1158,
+      "is_public": true
+    },
+    {
+      "name": "roadmap_detect_track",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1167,
+      "is_public": true
+    },
+    {
+      "name": "generate_roadmap_plan",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1191,
+      "is_public": true
+    },
+    {
+      "name": "parse_doctor_args",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1346,
+      "is_public": true
+    },
+    {
+      "name": "demo_text",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1389,
+      "is_public": true
+    },
+    {
+      "name": "parse_inspect_args",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1419,
+      "is_public": true
+    },
+    {
+      "name": "parse_demo_args",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1460,
+      "is_public": true
+    },
+    {
+      "name": "write_demo_file",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1503,
+      "is_public": true
+    },
+    {
+      "name": "generate_demo_reports",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1511,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/cli.py",
+      "line": 1573,
+      "is_public": true
+    },
+    {
+      "name": "format_result",
+      "kind": "function",
+      "file_path": "repo_signal/export_codex.py",
+      "line": 7,
+      "is_public": true
+    },
+    {
+      "name": "parse_args",
+      "kind": "function",
+      "file_path": "repo_signal/export_codex.py",
+      "line": 18,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/export_codex.py",
+      "line": 35,
+      "is_public": true
+    },
+    {
+      "name": "yes_no",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 8,
+      "is_public": true
+    },
+    {
+      "name": "status_label",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 12,
+      "is_public": true
+    },
+    {
+      "name": "score_release_maturity",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 22,
+      "is_public": true
+    },
+    {
+      "name": "score_repo_health",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 55,
+      "is_public": true
+    },
+    {
+      "name": "score_ai_readiness",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 94,
+      "is_public": true
+    },
+    {
+      "name": "suggested_skills",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 130,
+      "is_public": true
+    },
+    {
+      "name": "suggested_priorities",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 145,
+      "is_public": true
+    },
+    {
+      "name": "format_evidence",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 170,
+      "is_public": true
+    },
+    {
+      "name": "build_doctor_result_from_repo",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 174,
+      "is_public": true
+    },
+    {
+      "name": "build_doctor_result",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 250,
+      "is_public": true
+    },
+    {
+      "name": "format_doctor_report_from_result",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 256,
+      "is_public": true
+    },
+    {
+      "name": "format_doctor_report",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 334,
+      "is_public": true
+    },
+    {
+      "name": "format_doctor_json",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 338,
+      "is_public": true
+    },
+    {
+      "name": "doctor_repo",
+      "kind": "function",
+      "file_path": "repo_signal/doctor.py",
+      "line": 342,
+      "is_public": true
+    },
+    {
+      "name": "read_text_safe",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 62,
+      "is_public": true
+    },
+    {
+      "name": "resolve_readme_path",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 69,
+      "is_public": true
+    },
+    {
+      "name": "has_heading",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 78,
+      "is_public": true
+    },
+    {
+      "name": "has_title",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 87,
+      "is_public": true
+    },
+    {
+      "name": "has_short_pitch",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 91,
+      "is_public": true
+    },
+    {
+      "name": "has_badges",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 115,
+      "is_public": true
+    },
+    {
+      "name": "has_screenshot_or_demo",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 119,
+      "is_public": true
+    },
+    {
+      "name": "score_readme",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 129,
+      "is_public": true
+    },
+    {
+      "name": "format_readme_score",
+      "kind": "function",
+      "file_path": "repo_signal/readme_score.py",
+      "line": 174,
+      "is_public": true
+    },
+    {
+      "name": "build_report",
+      "kind": "function",
+      "file_path": "repo_signal/report.py",
+      "line": 12,
+      "is_public": true
+    },
+    {
+      "name": "format_report",
+      "kind": "function",
+      "file_path": "repo_signal/report.py",
+      "line": 45,
+      "is_public": true
+    },
+    {
+      "name": "has_any",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 6,
+      "is_public": true
+    },
+    {
+      "name": "read_text",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 10,
+      "is_public": true
+    },
+    {
+      "name": "readme_has_any",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 19,
+      "is_public": true
+    },
+    {
+      "name": "format_check",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 24,
+      "is_public": true
+    },
+    {
+      "name": "build_publish_checklist",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 32,
+      "is_public": true
+    },
+    {
+      "name": "format_publish_checklist_text",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 197,
+      "is_public": true
+    },
+    {
+      "name": "format_publish_checklist_markdown",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 227,
+      "is_public": true
+    },
+    {
+      "name": "format_publish_checklist_json",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 255,
+      "is_public": true
+    },
+    {
+      "name": "build_fix_plan",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 270,
+      "is_public": true
+    },
+    {
+      "name": "format_fix_plan",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 323,
+      "is_public": true
+    },
+    {
+      "name": "format_publish_checklist",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 343,
+      "is_public": true
+    },
+    {
+      "name": "check_publish_readiness",
+      "kind": "function",
+      "file_path": "repo_signal/publish_checklist.py",
+      "line": 359,
+      "is_public": true
+    },
+    {
+      "name": "yes_no",
+      "kind": "function",
+      "file_path": "repo_signal/analyze.py",
+      "line": 3,
+      "is_public": true
+    },
+    {
+      "name": "format_list",
+      "kind": "function",
+      "file_path": "repo_signal/analyze.py",
+      "line": 7,
+      "is_public": true
+    },
+    {
+      "name": "format_analyze_report",
+      "kind": "function",
+      "file_path": "repo_signal/analyze.py",
+      "line": 13,
+      "is_public": true
+    },
+    {
+      "name": "analyze_repo",
+      "kind": "function",
+      "file_path": "repo_signal/analyze.py",
+      "line": 81,
+      "is_public": true
+    },
+    {
+      "name": "_font",
+      "kind": "function",
+      "file_path": "scripts/generate_screenshots.py",
+      "line": 28,
+      "is_public": false
+    },
+    {
+      "name": "_header",
+      "kind": "function",
+      "file_path": "scripts/generate_screenshots.py",
+      "line": 35,
+      "is_public": false
+    },
+    {
+      "name": "render",
+      "kind": "function",
+      "file_path": "scripts/generate_screenshots.py",
+      "line": 42,
+      "is_public": true
+    },
+    {
+      "name": "run",
+      "kind": "function",
+      "file_path": "scripts/generate_screenshots.py",
+      "line": 62,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "scripts/generate_screenshots.py",
+      "line": 73,
+      "is_public": true
+    },
+    {
+      "name": "run_cli",
+      "kind": "shell_function",
+      "file_path": "scripts/check-generated-examples.sh",
+      "line": 11,
+      "is_public": true
+    },
+    {
+      "name": "fail",
+      "kind": "shell_function",
+      "file_path": "scripts/check-generated-examples.sh",
+      "line": 15,
+      "is_public": true
+    },
+    {
+      "name": "check_file",
+      "kind": "shell_function",
+      "file_path": "scripts/check-generated-examples.sh",
+      "line": 20,
+      "is_public": true
+    },
+    {
+      "name": "check_contains",
+      "kind": "shell_function",
+      "file_path": "scripts/check-generated-examples.sh",
+      "line": 25,
+      "is_public": true
+    },
+    {
+      "name": "check_json_schema",
+      "kind": "shell_function",
+      "file_path": "scripts/check-generated-examples.sh",
+      "line": 31,
+      "is_public": true
+    },
+    {
+      "name": "fail",
+      "kind": "shell_function",
+      "file_path": "scripts/check-docs-consistency.sh",
+      "line": 7,
+      "is_public": true
+    },
+    {
+      "name": "ok",
+      "kind": "shell_function",
+      "file_path": "scripts/check-docs-consistency.sh",
+      "line": 9,
+      "is_public": true
+    },
+    {
+      "name": "fail",
+      "kind": "shell_function",
+      "file_path": "scripts/check-testpypi-readiness.sh",
+      "line": 6,
+      "is_public": true
+    },
+    {
+      "name": "fail",
+      "kind": "shell_function",
+      "file_path": "scripts/check-pypi-readiness.sh",
+      "line": 6,
+      "is_public": true
+    },
+    {
+      "name": "run_cli",
+      "kind": "shell_function",
+      "file_path": "scripts/generate-examples.sh",
+      "line": 6,
+      "is_public": true
+    },
+    {
+      "name": "fail",
+      "kind": "shell_function",
+      "file_path": "scripts/check-trusted-publishing-setup.sh",
+      "line": 3,
+      "is_public": true
+    },
+    {
+      "name": "check_file",
+      "kind": "shell_function",
+      "file_path": "scripts/check-trusted-publishing-setup.sh",
+      "line": 8,
+      "is_public": true
+    },
+    {
+      "name": "check_contains",
+      "kind": "shell_function",
+      "file_path": "scripts/check-trusted-publishing-setup.sh",
+      "line": 12,
+      "is_public": true
+    },
+    {
+      "name": "fail",
+      "kind": "shell_function",
+      "file_path": "scripts/check-packaging.sh",
+      "line": 6,
+      "is_public": true
+    },
+    {
+      "name": "inspect",
+      "kind": "function",
+      "file_path": "examples/integrations/mq_agent_consumer.py",
+      "line": 7,
+      "is_public": true
+    },
+    {
+      "name": "doctor",
+      "kind": "function",
+      "file_path": "examples/integrations/mq_agent_consumer.py",
+      "line": 27,
+      "is_public": true
+    },
+    {
+      "name": "repo_summary",
+      "kind": "function",
+      "file_path": "examples/integrations/mq_agent_consumer.py",
+      "line": 47,
+      "is_public": true
+    },
+    {
+      "name": "get_provider",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/ask.py",
+      "line": 10,
+      "is_public": true
+    },
+    {
+      "name": "run_ask_pipeline",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/ask.py",
+      "line": 16,
+      "is_public": true
+    },
+    {
+      "name": "AskPipelineResult",
+      "kind": "class",
+      "file_path": "repo_signal/pipeline/response.py",
+      "line": 8,
+      "is_public": true
+    },
+    {
+      "name": "referenced_files",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/response.py",
+      "line": 18,
+      "is_public": true
+    },
+    {
+      "name": "format_pipeline_output",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/response.py",
+      "line": 20,
+      "is_public": true
+    },
+    {
+      "name": "prompt_for_mode",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/prompts.py",
+      "line": 59,
+      "is_public": true
+    },
+    {
+      "name": "build_ask_prompt",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/prompts.py",
+      "line": 66,
+      "is_public": true
+    },
+    {
+      "name": "rank_files",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/context.py",
+      "line": 11,
+      "is_public": true
+    },
+    {
+      "name": "_format_git_status",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/context.py",
+      "line": 25,
+      "is_public": false
+    },
+    {
+      "name": "_signal_summary",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/context.py",
+      "line": 31,
+      "is_public": false
+    },
+    {
+      "name": "build_focused_context",
+      "kind": "function",
+      "file_path": "repo_signal/pipeline/context.py",
+      "line": 35,
+      "is_public": true
+    },
+    {
+      "name": "run",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 71,
+      "is_public": true
+    },
+    {
+      "name": "should_ignore",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 85,
+      "is_public": true
+    },
+    {
+      "name": "extract_keywords",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 89,
+      "is_public": true
+    },
+    {
+      "name": "build_git_context",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 94,
+      "is_public": true
+    },
+    {
+      "name": "detect_project_type",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 108,
+      "is_public": true
+    },
+    {
+      "name": "detect_tooling",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 126,
+      "is_public": true
+    },
+    {
+      "name": "is_entrypoint",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 136,
+      "is_public": true
+    },
+    {
+      "name": "suggest_focus_areas",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 159,
+      "is_public": true
+    },
+    {
+      "name": "scan_repository",
+      "kind": "function",
+      "file_path": "repo_signal/core/scanner.py",
+      "line": 183,
+      "is_public": true
+    },
+    {
+      "name": "GitContext",
+      "kind": "class",
+      "file_path": "repo_signal/core/models.py",
+      "line": 7,
+      "is_public": true
+    },
+    {
+      "name": "FileNode",
+      "kind": "class",
+      "file_path": "repo_signal/core/models.py",
+      "line": 22,
+      "is_public": true
+    },
+    {
+      "name": "Signal",
+      "kind": "class",
+      "file_path": "repo_signal/core/models.py",
+      "line": 30,
+      "is_public": true
+    },
+    {
+      "name": "Symbol",
+      "kind": "class",
+      "file_path": "repo_signal/core/models.py",
+      "line": 37,
+      "is_public": true
+    },
+    {
+      "name": "Edge",
+      "kind": "class",
+      "file_path": "repo_signal/core/models.py",
+      "line": 45,
+      "is_public": true
+    },
+    {
+      "name": "RepositoryGraph",
+      "kind": "class",
+      "file_path": "repo_signal/core/models.py",
+      "line": 52,
+      "is_public": true
+    },
+    {
+      "name": "Repository",
+      "kind": "class",
+      "file_path": "repo_signal/core/models.py",
+      "line": 63,
+      "is_public": true
+    },
+    {
+      "name": "status_lines",
+      "kind": "function",
+      "file_path": "repo_signal/core/models.py",
+      "line": 13,
+      "is_public": true
+    },
+    {
+      "name": "changed_files",
+      "kind": "function",
+      "file_path": "repo_signal/core/models.py",
+      "line": 17,
+      "is_public": true
+    },
+    {
+      "name": "outgoing",
+      "kind": "function",
+      "file_path": "repo_signal/core/models.py",
+      "line": 54,
+      "is_public": true
+    },
+    {
+      "name": "incoming",
+      "kind": "function",
+      "file_path": "repo_signal/core/models.py",
+      "line": 57,
+      "is_public": true
+    },
+    {
+      "name": "repo_size_files",
+      "kind": "function",
+      "file_path": "repo_signal/core/models.py",
+      "line": 83,
+      "is_public": true
+    },
+    {
+      "name": "repo_size_mb",
+      "kind": "function",
+      "file_path": "repo_signal/core/models.py",
+      "line": 87,
+      "is_public": true
+    },
+    {
+      "name": "load",
+      "kind": "function",
+      "file_path": "repo_signal/core/models.py",
+      "line": 91,
+      "is_public": true
+    },
+    {
+      "name": "SkillExportError",
+      "kind": "class",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 6,
+      "is_public": true
+    },
+    {
+      "name": "SkillExportResult",
+      "kind": "class",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 13,
+      "is_public": true
+    },
+    {
+      "name": "SkillCreateResult",
+      "kind": "class",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 21,
+      "is_public": true
+    },
+    {
+      "name": "repo_root_from_path",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 24,
+      "is_public": true
+    },
+    {
+      "name": "skills_root",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 28,
+      "is_public": true
+    },
+    {
+      "name": "available_skills",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 32,
+      "is_public": true
+    },
+    {
+      "name": "validate_skill_name",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 45,
+      "is_public": true
+    },
+    {
+      "name": "default_skill_description",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 55,
+      "is_public": true
+    },
+    {
+      "name": "skill_template",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 60,
+      "is_public": true
+    },
+    {
+      "name": "create_codex_skill",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 96,
+      "is_public": true
+    },
+    {
+      "name": "resolve_source",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 121,
+      "is_public": true
+    },
+    {
+      "name": "default_target_root",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 132,
+      "is_public": true
+    },
+    {
+      "name": "count_files",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 138,
+      "is_public": true
+    },
+    {
+      "name": "export_codex_skill",
+      "kind": "function",
+      "file_path": "repo_signal/codex/exporter.py",
+      "line": 142,
+      "is_public": true
+    },
+    {
+      "name": "read_text",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 12,
+      "is_public": true
+    },
+    {
+      "name": "file_index",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 19,
+      "is_public": true
+    },
+    {
+      "name": "module_index",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 23,
+      "is_public": true
+    },
+    {
+      "name": "resolve_python_module",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 42,
+      "is_public": true
+    },
+    {
+      "name": "clean_shell_target",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 56,
+      "is_public": true
+    },
+    {
+      "name": "resolve_repo_path",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 65,
+      "is_public": true
+    },
+    {
+      "name": "python_import_edges",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 98,
+      "is_public": true
+    },
+    {
+      "name": "shell_edges",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 116,
+      "is_public": true
+    },
+    {
+      "name": "dedupe_edges",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 132,
+      "is_public": true
+    },
+    {
+      "name": "build_repository_graph",
+      "kind": "function",
+      "file_path": "repo_signal/graph/graph_builder.py",
+      "line": 146,
+      "is_public": true
+    },
+    {
+      "name": "_read",
+      "kind": "function",
+      "file_path": "repo_signal/exports/repo_summary.py",
+      "line": 13,
+      "is_public": false
+    },
+    {
+      "name": "_version",
+      "kind": "function",
+      "file_path": "repo_signal/exports/repo_summary.py",
+      "line": 20,
+      "is_public": false
+    },
+    {
+      "name": "_description",
+      "kind": "function",
+      "file_path": "repo_signal/exports/repo_summary.py",
+      "line": 34,
+      "is_public": false
+    },
+    {
+      "name": "_test_summary",
+      "kind": "function",
+      "file_path": "repo_signal/exports/repo_summary.py",
+      "line": 47,
+      "is_public": false
+    },
+    {
+      "name": "_stable_contracts",
+      "kind": "function",
+      "file_path": "repo_signal/exports/repo_summary.py",
+      "line": 55,
+      "is_public": false
+    },
+    {
+      "name": "_top_public_symbols",
+      "kind": "function",
+      "file_path": "repo_signal/exports/repo_summary.py",
+      "line": 72,
+      "is_public": false
+    },
+    {
+      "name": "build_repo_summary",
+      "kind": "function",
+      "file_path": "repo_signal/exports/repo_summary.py",
+      "line": 87,
+      "is_public": true
+    },
+    {
+      "name": "build_callgraph",
+      "kind": "function",
+      "file_path": "repo_signal/exports/callgraph.py",
+      "line": 15,
+      "is_public": true
+    },
+    {
+      "name": "_read_lines",
+      "kind": "function",
+      "file_path": "repo_signal/exports/risk_map.py",
+      "line": 15,
+      "is_public": false
+    },
+    {
+      "name": "build_risk_map",
+      "kind": "function",
+      "file_path": "repo_signal/exports/risk_map.py",
+      "line": 22,
+      "is_public": true
+    },
+    {
+      "name": "_is_public",
+      "kind": "function",
+      "file_path": "repo_signal/exports/symbol_index.py",
+      "line": 12,
+      "is_public": false
+    },
+    {
+      "name": "build_symbol_index",
+      "kind": "function",
+      "file_path": "repo_signal/exports/symbol_index.py",
+      "line": 16,
+      "is_public": true
+    },
+    {
+      "name": "run",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 40,
+      "is_public": true
+    },
+    {
+      "name": "extract_keywords",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 54,
+      "is_public": true
+    },
+    {
+      "name": "build_repo_tree",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 58,
+      "is_public": true
+    },
+    {
+      "name": "build_git_context",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 76,
+      "is_public": true
+    },
+    {
+      "name": "read_file_snippet",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 90,
+      "is_public": true
+    },
+    {
+      "name": "validate_mode",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 100,
+      "is_public": true
+    },
+    {
+      "name": "validate_format",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 106,
+      "is_public": true
+    },
+    {
+      "name": "build_context_data",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 112,
+      "is_public": true
+    },
+    {
+      "name": "format_xml",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 134,
+      "is_public": true
+    },
+    {
+      "name": "format_markdown",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 212,
+      "is_public": true
+    },
+    {
+      "name": "format_claude",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 274,
+      "is_public": true
+    },
+    {
+      "name": "build_context",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/context_builder.py",
+      "line": 287,
+      "is_public": true
+    },
+    {
+      "name": "run",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 100,
+      "is_public": true
+    },
+    {
+      "name": "extract_keywords",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 114,
+      "is_public": true
+    },
+    {
+      "name": "should_skip",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 120,
+      "is_public": true
+    },
+    {
+      "name": "to_repo_relative",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 129,
+      "is_public": true
+    },
+    {
+      "name": "read_text",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 141,
+      "is_public": true
+    },
+    {
+      "name": "discover_all_files",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 148,
+      "is_public": true
+    },
+    {
+      "name": "find_candidate_files",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 165,
+      "is_public": true
+    },
+    {
+      "name": "modified_files",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 186,
+      "is_public": true
+    },
+    {
+      "name": "recently_committed_files",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 201,
+      "is_public": true
+    },
+    {
+      "name": "topic_priority_terms",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 209,
+      "is_public": true
+    },
+    {
+      "name": "count_keyword_hits",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 216,
+      "is_public": true
+    },
+    {
+      "name": "has_symbol_match",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 225,
+      "is_public": true
+    },
+    {
+      "name": "is_docs_path",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 235,
+      "is_public": true
+    },
+    {
+      "name": "is_shell_entrypoint",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 244,
+      "is_public": true
+    },
+    {
+      "name": "score_file",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 251,
+      "is_public": true
+    },
+    {
+      "name": "rank_relevant_files",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 368,
+      "is_public": true
+    },
+    {
+      "name": "summarize_file",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 394,
+      "is_public": true
+    },
+    {
+      "name": "line_score",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 423,
+      "is_public": true
+    },
+    {
+      "name": "merge_ranges",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 438,
+      "is_public": true
+    },
+    {
+      "name": "read_relevant_snippet",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/ranking.py",
+      "line": 452,
+      "is_public": true
+    },
+    {
+      "name": "copy_to_clipboard",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/__main__.py",
+      "line": 14,
+      "is_public": true
+    },
+    {
+      "name": "parse_args",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/__main__.py",
+      "line": 22,
+      "is_public": true
+    },
+    {
+      "name": "main",
+      "kind": "function",
+      "file_path": "repo_signal/repoaware/__main__.py",
+      "line": 48,
+      "is_public": true
+    },
+    {
+      "name": "read_text",
+      "kind": "function",
+      "file_path": "repo_signal/symbols/symbol_extractor.py",
+      "line": 14,
+      "is_public": true
+    },
+    {
+      "name": "line_number_at",
+      "kind": "function",
+      "file_path": "repo_signal/symbols/symbol_extractor.py",
+      "line": 21,
+      "is_public": true
+    },
+    {
+      "name": "extract_python_symbols",
+      "kind": "function",
+      "file_path": "repo_signal/symbols/symbol_extractor.py",
+      "line": 25,
+      "is_public": true
+    },
+    {
+      "name": "extract_shell_symbols",
+      "kind": "function",
+      "file_path": "repo_signal/symbols/symbol_extractor.py",
+      "line": 51,
+      "is_public": true
+    },
+    {
+      "name": "extract_symbols",
+      "kind": "function",
+      "file_path": "repo_signal/symbols/symbol_extractor.py",
+      "line": 67,
+      "is_public": true
+    },
+    {
+      "name": "humanize_name",
+      "kind": "function",
+      "file_path": "repo_signal/symbols/summarizer.py",
+      "line": 20,
+      "is_public": true
+    },
+    {
+      "name": "summarize_symbol",
+      "kind": "function",
+      "file_path": "repo_signal/symbols/summarizer.py",
+      "line": 24,
+      "is_public": true
+    },
+    {
+      "name": "OpenAIUploadResult",
+      "kind": "class",
+      "file_path": "repo_signal/vectorstore/openai_store.py",
+      "line": 18,
+      "is_public": true
+    },
+    {
+      "name": "load_shell_env_if_available",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/openai_store.py",
+      "line": 26,
+      "is_public": true
+    },
+    {
+      "name": "resolve_vector_store_id",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/openai_store.py",
+      "line": 46,
+      "is_public": true
+    },
+    {
+      "name": "openai_client",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/openai_store.py",
+      "line": 58,
+      "is_public": true
+    },
+    {
+      "name": "build_openai_memory_document",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/openai_store.py",
+      "line": 78,
+      "is_public": true
+    },
+    {
+      "name": "upload_repository_memory",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/openai_store.py",
+      "line": 120,
+      "is_public": true
+    },
+    {
+      "name": "ChromaUnavailableError",
+      "kind": "class",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 12,
+      "is_public": true
+    },
+    {
+      "name": "ChromaSymbolStore",
+      "kind": "class",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 32,
+      "is_public": true
+    },
+    {
+      "name": "tokenize",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 16,
+      "is_public": true
+    },
+    {
+      "name": "local_embedding",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 20,
+      "is_public": true
+    },
+    {
+      "name": "__init__",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 35,
+      "is_public": false
+    },
+    {
+      "name": "reset",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 51,
+      "is_public": true
+    },
+    {
+      "name": "upsert_chunks",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 58,
+      "is_public": true
+    },
+    {
+      "name": "query",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 70,
+      "is_public": true
+    },
+    {
+      "name": "safe_repo_store_name",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 95,
+      "is_public": true
+    },
+    {
+      "name": "default_vectorstore_root",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 100,
+      "is_public": true
+    },
+    {
+      "name": "default_repo_store_path",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 104,
+      "is_public": true
+    },
+    {
+      "name": "build_default_store",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chroma_store.py",
+      "line": 109,
+      "is_public": true
+    },
+    {
+      "name": "SymbolChunk",
+      "kind": "class",
+      "file_path": "repo_signal/vectorstore/chunks.py",
+      "line": 14,
+      "is_public": true
+    },
+    {
+      "name": "metadata",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chunks.py",
+      "line": 25,
+      "is_public": true
+    },
+    {
+      "name": "language_for_symbol",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chunks.py",
+      "line": 33,
+      "is_public": true
+    },
+    {
+      "name": "chunk_id",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chunks.py",
+      "line": 41,
+      "is_public": true
+    },
+    {
+      "name": "read_symbol_snippet",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chunks.py",
+      "line": 47,
+      "is_public": true
+    },
+    {
+      "name": "build_symbol_chunk",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chunks.py",
+      "line": 62,
+      "is_public": true
+    },
+    {
+      "name": "build_symbol_chunks",
+      "kind": "function",
+      "file_path": "repo_signal/vectorstore/chunks.py",
+      "line": 90,
+      "is_public": true
+    },
+    {
+      "name": "OpenAIProvider",
+      "kind": "class",
+      "file_path": "repo_signal/ai/providers/openai_provider.py",
+      "line": 38,
+      "is_public": true
+    },
+    {
+      "name": "load_dotenv_if_available",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/openai_provider.py",
+      "line": 9,
+      "is_public": true
+    },
+    {
+      "name": "load_shell_openai_key_if_available",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/openai_provider.py",
+      "line": 18,
+      "is_public": true
+    },
+    {
+      "name": "__init__",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/openai_provider.py",
+      "line": 41,
+      "is_public": false
+    },
+    {
+      "name": "generate",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/openai_provider.py",
+      "line": 62,
+      "is_public": true
+    },
+    {
+      "name": "embed",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/openai_provider.py",
+      "line": 69,
+      "is_public": true
+    },
+    {
+      "name": "AnthropicProvider",
+      "kind": "class",
+      "file_path": "repo_signal/ai/providers/anthropic_provider.py",
+      "line": 2,
+      "is_public": true
+    },
+    {
+      "name": "__init__",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/anthropic_provider.py",
+      "line": 5,
+      "is_public": false
+    },
+    {
+      "name": "BaseProvider",
+      "kind": "class",
+      "file_path": "repo_signal/ai/providers/base.py",
+      "line": 2,
+      "is_public": true
+    },
+    {
+      "name": "ProviderConfigurationError",
+      "kind": "class",
+      "file_path": "repo_signal/ai/providers/base.py",
+      "line": 10,
+      "is_public": true
+    },
+    {
+      "name": "generate",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/base.py",
+      "line": 5,
+      "is_public": true
+    },
+    {
+      "name": "embed",
+      "kind": "function",
+      "file_path": "repo_signal/ai/providers/base.py",
+      "line": 7,
+      "is_public": true
+    },
+    {
+      "name": "build_repo_question_prompt",
+      "kind": "function",
+      "file_path": "repo_signal/ai/prompts/repo_question.py",
+      "line": 1,
+      "is_public": true
+    }
+  ]
+}

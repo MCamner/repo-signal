@@ -1,0 +1,66 @@
+{
+  "schema": "repo_summary.v1",
+  "repo_name": "repo-signal",
+  "generated_at": "2026-05-28T20:27:46.196583+00:00",
+  "version": "1.0.0",
+  "description": "[![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml)",
+  "project_type": "Python CLI / repo intelligence toolkit",
+  "languages": {
+    "Markdown": 72,
+    "Python": 70,
+    "JSON": 12,
+    "Shell": 10,
+    "YAML": 7,
+    "TOML": 1,
+    "HTML": 1
+  },
+  "file_count": 206,
+  "test_summary": "9 test files",
+  "key_files": [
+    "CHANGELOG.md",
+    "pyproject.toml",
+    "README.md",
+    "ROADMAP.md",
+    "VERSION"
+  ],
+  "entrypoints": [
+    "bin/repo-signal",
+    "examples/integrations/inspect_safe.sh",
+    "examples/integrations/readiness_gate.sh",
+    "release.sh",
+    "repo_signal/cli.py",
+    "repo_signal/repoaware/__main__.py",
+    "scripts/check-docs-consistency.sh",
+    "scripts/check-generated-examples.sh",
+    "scripts/check-packaging.sh",
+    "scripts/check-pypi-readiness.sh"
+  ],
+  "stable_contracts": [
+    "doctor",
+    "inspect",
+    "report",
+    "suggest"
+  ],
+  "top_symbols": [
+    "detect_skill",
+    "load_skill",
+    "build_prompt",
+    "main",
+    "parse_commands",
+    "parse_usage",
+    "write_reference",
+    "TestInspectV1",
+    "TestDoctorV1",
+    "TestSafeConsumption",
+    "test_schema_field_is_inspect_v1",
+    "test_required_top_level_keys",
+    "test_repo_section_has_name_and_path",
+    "test_core_files_is_list",
+    "test_core_file_items_have_label_and_exists",
+    "test_json_roundtrip",
+    "test_schema_field_is_doctor_v1",
+    "test_scores_section_present",
+    "test_inspect_schema_check_pattern",
+    "test_doctor_schema_check_pattern"
+  ]
+}

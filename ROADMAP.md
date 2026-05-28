@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.0.0 — stable repo intelligence platform
+v1.1.0 — symbolic intelligence exports
 ```
 
 Current highest-priority gate:
@@ -94,7 +94,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.6.0  | Unified report and export                            | Done                 |
 | v0.7.0  | Safe patch suggestion planning                       | Done                 |
 | v0.7.1  | Contract proof and docs completeness                 | Done                 |
-| v1.0.0  | Stable repo intelligence platform                    | Current              |
+| v1.0.0  | Stable repo intelligence platform                    | Done                 |
+| v1.1.0  | Symbolic intelligence exports                        | Current              |
 
 ---
 
@@ -541,25 +542,23 @@ repo-signal demo
 
 ---
 
-## v1.1.0 — Symbolic intelligence exports
+## v1.1.0 — Symbolic intelligence exports — Done
 
 Goal:
 
 Make repo-signal the preprocessing and repository-intelligence layer for the mq
 ecosystem without becoming a review or cognition engine.
 
-### Planned scope
+- [x] `symbol_index.v1` — public symbols, file inventory, ownership hints
+- [x] `callgraph.v1` — import/source dependency graph, hub files, per-file maps
+- [x] `repo_summary.v1` — compact repo context for AI consumer injection
+- [x] `risk_map.v1` — structural risks (large files, no tests, high fan-in, missing docs)
+- [x] `repo-signal export` CLI command with selective pack flags
+- [x] `docs/EXPORT_SCHEMAS.md` — full field reference and mq-mcp integration pattern
+- [x] `examples/exports/` — generated output for all four schema contracts
+- [x] 31 tests in `tests/test_exports.py` (schema, fields, selective, CLI smoke)
 
-- [ ] Add `symbol_index.json` export for public symbols, files and ownership hints
-- [ ] Add `callgraph.json` export for imports and cross-file relationships
-- [ ] Add `repo_summary.json` export for stable, compact repository context
-- [ ] Add `risk_map.json` export for structural risk signals, not AI findings
-- [ ] Add semantic pack generation for mq-mcp and mq-agent consumers
-- [ ] Document export schemas and schema versions
-- [ ] Add generated examples for each export contract
-- [ ] Add integration tests proving mq-mcp can consume exports safely
-
-### Non-goals
+### Non-goals (unchanged)
 
 - No review generation
 - No architecture reasoning runtime
@@ -674,11 +673,11 @@ A release should only be created when:
 Work on:
 
 ```text
-v1.0.0 — stable repo intelligence platform
+v1.2.0 — mq-mcp pack merge integration
 ```
 
-Make repo-signal stable enough to be the default repo intelligence engine for
-local AI-assisted development workflows.
+Verify that mq-mcp's `callgraph_builder._try_merge_repo_signal_packs()` correctly
+merges the `.repo-signal/exports/` packs when they exist on disk.
 
 The most efficient path is:
 
@@ -686,5 +685,7 @@ The most efficient path is:
 1. Report/export artifacts         ← done
 2. Safe patch suggestion planning  ← done
 3. Contract proof and docs         ← done
-4. v1.0.0 stable platform          ← current
+4. v1.0.0 stable platform          ← done
+5. v1.1.0 symbolic exports         ← done
+6. v1.2.0 mq-mcp pack merge        ← next
 ```

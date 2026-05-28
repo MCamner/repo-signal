@@ -4,6 +4,30 @@
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-05-28
+
+### Added
+
+- `repo-signal export` command — generates four symbolic intelligence packs to
+  `.repo-signal/exports/` (or caller-specified `--output DIR`).
+- `symbol_index.v1` — public symbols, file inventory, ownership hints.
+  Covers Python classes/functions and shell functions.
+- `callgraph.v1` — import/source dependency graph with edges, hub files
+  (imported by ≥ 3 files), and per-file imports/importers maps.
+- `repo_summary.v1` — compact repository context (version, description,
+  languages, key files, stable contracts, top symbols) for AI consumer injection.
+- `risk_map.v1` — structural risk signals (large files, missing docs,
+  no tests, high fan-in) with level and kind fields. No AI findings.
+- `repo_signal/exports/` package: `symbol_index.py`, `callgraph.py`,
+  `repo_summary.py`, `risk_map.py`.
+- `repo_signal/export_packs.py` — orchestrator; selective export via
+  `--symbol-index`, `--callgraph`, `--repo-summary`, `--risk-map`, `--all`.
+- `docs/EXPORT_SCHEMAS.md` — full field reference for all four schemas
+  and mq-mcp integration pattern.
+- `examples/exports/` — generated output for all four schema contracts.
+- 31 new tests in `tests/test_exports.py` covering schema validation,
+  field contracts, selective export, CLI smoke tests.
+
 ## [1.0.0] - 2026-05-26
 
 ### Changed

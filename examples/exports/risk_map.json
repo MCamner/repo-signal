@@ -1,0 +1,72 @@
+{
+  "schema": "risk_map.v1",
+  "repo_name": "repo-signal",
+  "generated_at": "2026-05-28T20:27:46.307748+00:00",
+  "risk_count": 8,
+  "risks": [
+    {
+      "id": "RSK-001",
+      "level": "medium",
+      "kind": "large_file",
+      "file": "tests/test_cli.py",
+      "detail": "1382 lines \u2014 consider splitting into focused modules.",
+      "structural": true
+    },
+    {
+      "id": "RSK-002",
+      "level": "medium",
+      "kind": "large_file",
+      "file": "repo_signal/inspect.py",
+      "detail": "487 lines \u2014 consider splitting into focused modules.",
+      "structural": true
+    },
+    {
+      "id": "RSK-003",
+      "level": "medium",
+      "kind": "large_file",
+      "file": "repo_signal/cli.py",
+      "detail": "1789 lines \u2014 consider splitting into focused modules.",
+      "structural": true
+    },
+    {
+      "id": "RSK-004",
+      "level": "medium",
+      "kind": "large_file",
+      "file": "repo_signal/repoaware/ranking.py",
+      "detail": "492 lines \u2014 consider splitting into focused modules.",
+      "structural": true
+    },
+    {
+      "id": "RSK-005",
+      "level": "medium",
+      "kind": "high_fan_in",
+      "file": "repo_signal/core/models.py",
+      "detail": "Imported by 15 files \u2014 changes here have wide blast radius.",
+      "structural": true
+    },
+    {
+      "id": "RSK-006",
+      "level": "medium",
+      "kind": "high_fan_in",
+      "file": "repo_signal/core/scanner.py",
+      "detail": "Imported by 10 files \u2014 changes here have wide blast radius.",
+      "structural": true
+    },
+    {
+      "id": "RSK-007",
+      "level": "medium",
+      "kind": "high_fan_in",
+      "file": "repo_signal/ai/providers/base.py",
+      "detail": "Imported by 7 files \u2014 changes here have wide blast radius.",
+      "structural": true
+    },
+    {
+      "id": "RSK-008",
+      "level": "medium",
+      "kind": "high_fan_in",
+      "file": "repo_signal/publish_checklist.py",
+      "detail": "Imported by 6 files \u2014 changes here have wide blast radius.",
+      "structural": true
+    }
+  ]
+}

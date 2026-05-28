@@ -27,6 +27,7 @@ from repo_signal.skill import main as skill_main
 from repo_signal.wiki_export import export_wiki_pages
 from repo_signal.report import build_report, format_report
 from repo_signal.suggest import VALID_FORMATS as SUGGEST_FORMATS, build_suggestions, format_suggestions
+from repo_signal.export_packs import main as export_packs_main
 
 
 HELP_TEXT = """repo-signal
@@ -54,6 +55,7 @@ Usage:
   repo-signal wiki [path]
   repo-signal wiki plan [path]
   repo-signal wiki export [path] [--output path]
+  repo-signal export [path] [--output DIR] [--all | --symbol-index | --callgraph | --repo-summary | --risk-map]
   repo-signal report [path] [--format text|markdown|json]
   repo-signal suggest [path] [--format text|markdown|json]
   repo-signal roadmap
@@ -83,6 +85,7 @@ Commands:
              Upload symbol memory to a scoped OpenAI vector store
   export-codex
              Export repo-local skills into Codex skill storage
+  export     Generate symbolic intelligence packs (symbol_index, callgraph, repo_summary, risk_map)
   hygiene    Check junk files, .gitignore, large files, and Git status
   report     Unified report — inspect + publish-checklist in text, markdown or JSON
   suggest    Safe patch suggestions — what to improve, no mutations
@@ -1606,6 +1609,10 @@ def main() -> None:
 
     if command == "export-codex":
         export_codex_main(sys.argv[2:])
+        return
+
+    if command == "export":
+        export_packs_main(sys.argv[2:])
         return
 
     if command == "skill":

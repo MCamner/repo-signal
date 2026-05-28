@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "repo-signal"
-version = "1.0.0"
+version = "1.1.0"
 description = "AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects."
 readme = "README.md"
 requires-python = ">=3.11"

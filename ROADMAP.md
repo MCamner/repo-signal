@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.1.0 — symbolic intelligence exports
+v1.2.0 — mq-mcp pack merge integration
 ```
 
 Current highest-priority gate:
@@ -95,7 +95,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.7.0  | Safe patch suggestion planning                       | Done                 |
 | v0.7.1  | Contract proof and docs completeness                 | Done                 |
 | v1.0.0  | Stable repo intelligence platform                    | Done                 |
-| v1.1.0  | Symbolic intelligence exports                        | Current              |
+| v1.1.0  | Symbolic intelligence exports                        | Done                 |
+| v1.2.0  | mq-mcp pack merge integration                        | Planned              |
 
 ---
 
@@ -564,6 +565,65 @@ ecosystem without becoming a review or cognition engine.
 - No architecture reasoning runtime
 - No prompt framework
 - No repository mutation
+
+---
+
+## v1.2.0 — mq-mcp pack merge integration
+
+Goal:
+
+Verify and prove that mq-mcp correctly consumes the `.repo-signal/exports/`
+packs produced by `repo-signal export`, and that the full pipeline from
+repo-signal output to mq-mcp callgraph enrichment works end-to-end.
+
+The integration hook already exists in mq-mcp
+(`callgraph_builder._try_merge_repo_signal_packs`). This release closes the
+loop on the v1.1.0 symbolic exports by proving they are actually consumed
+downstream.
+
+### Integration flow
+
+```text
+repo-signal export .
+  ↓
+.repo-signal/exports/
+  ├── callgraph.json      (callgraph.v1)
+  ├── symbol_index.json   (symbol_index.v1)
+  ├── repo_summary.json   (repo_summary.v1)
+  └── risk_map.json       (risk_map.v1)
+  ↓
+mq-mcp callgraph_builder._try_merge_repo_signal_packs()
+  ↓
+enriched callgraph data for review and architecture tools
+```
+
+### Planned scope
+
+- [ ] End-to-end smoke test: `repo-signal export` → `.repo-signal/exports/` → mq-mcp merge reads all four packs
+- [ ] Verify schema fields consumed by mq-mcp match what repo-signal emits
+  - `callgraph.v1` edges `{source, target, relation}` and `hub_files`
+  - `symbol_index.v1` flat symbols `{name, kind, file_path, is_public}`
+  - `repo_summary.v1` compact context blob
+  - `risk_map.v1` structural risks list
+- [ ] `docs/MQ_MCP_INTEGRATION.md` — step-by-step guide with verified example output
+- [ ] Add `examples/integrations/mq_mcp_pack_merge.sh` — runnable smoke script
+- [ ] Add `repo_signal_status` field to `docs/EXPORT_SCHEMAS.md`
+- [ ] Confirm graceful degradation when `.repo-signal/exports/` is absent
+
+### Non-goals
+
+- No changes to stable v1.1.0 export schemas
+- No new export pack types in this release
+- No mq-mcp internal refactoring
+
+### Definition of done
+
+- [ ] All four v1 schema packs verified against mq-mcp consumer field expectations
+- [ ] End-to-end smoke script runs without error on at least one mq ecosystem repo
+- [ ] Integration guide exists in `docs/`
+- [ ] CHANGELOG has entry for v1.2.0
+- [ ] GitHub release `v1.2.0` exists
+- [ ] GitHub Actions pass
 
 ---
 

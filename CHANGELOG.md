@@ -4,6 +4,22 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-06-03
+
+### Added
+
+- `tests/test_mq_mcp_integration.py` — 15 tests proving repo-signal export
+  packs match mq-mcp consumer field expectations end-to-end. Covers
+  callgraph edge fields (`source`, `target`), symbol fields (`name`,
+  `file_path`), repo_summary schema check, risk_map list contract, and
+  graceful degradation when `.repo-signal/exports/` is absent.
+- `examples/integrations/mq_mcp_pack_merge.sh` — runnable smoke script that
+  generates all four packs and verifies schema fields against mq-mcp consumer
+  expectations. Exit 0 on pass, exit 1 on any failure.
+- `docs/MQ_MCP_INTEGRATION.md` — step-by-step integration guide covering the
+  full `repo-signal export` → `.repo-signal/exports/` → mq-mcp merge flow,
+  schema field contract per pack, graceful degradation behaviour, and CI usage.
+
 ## [1.1.0] - 2026-05-28
 
 ### Added

@@ -599,16 +599,16 @@ enriched callgraph data for review and architecture tools
 
 ### Planned scope
 
-- [ ] End-to-end smoke test: `repo-signal export` → `.repo-signal/exports/` → mq-mcp merge reads all four packs
-- [ ] Verify schema fields consumed by mq-mcp match what repo-signal emits
+- [x] End-to-end smoke test: `repo-signal export` → `.repo-signal/exports/` → mq-mcp merge reads all four packs
+- [x] Verify schema fields consumed by mq-mcp match what repo-signal emits
   - `callgraph.v1` edges `{source, target, relation}` and `hub_files`
   - `symbol_index.v1` flat symbols `{name, kind, file_path, is_public}`
   - `repo_summary.v1` compact context blob
   - `risk_map.v1` structural risks list
-- [ ] `docs/MQ_MCP_INTEGRATION.md` — step-by-step guide with verified example output
-- [ ] Add `examples/integrations/mq_mcp_pack_merge.sh` — runnable smoke script
+- [x] `docs/MQ_MCP_INTEGRATION.md` — step-by-step guide with verified example output
+- [x] Add `examples/integrations/mq_mcp_pack_merge.sh` — runnable smoke script
 - [ ] Add `repo_signal_status` field to `docs/EXPORT_SCHEMAS.md`
-- [ ] Confirm graceful degradation when `.repo-signal/exports/` is absent
+- [x] Confirm graceful degradation when `.repo-signal/exports/` is absent
 
 ### Non-goals
 
@@ -618,10 +618,10 @@ enriched callgraph data for review and architecture tools
 
 ### Definition of done
 
-- [ ] All four v1 schema packs verified against mq-mcp consumer field expectations
-- [ ] End-to-end smoke script runs without error on at least one mq ecosystem repo
-- [ ] Integration guide exists in `docs/`
-- [ ] CHANGELOG has entry for v1.2.0
+- [x] All four v1 schema packs verified against mq-mcp consumer field expectations
+- [x] End-to-end smoke script runs without error on at least one mq ecosystem repo
+- [x] Integration guide exists in `docs/`
+- [x] CHANGELOG has entry for v1.2.0
 - [ ] GitHub release `v1.2.0` exists
 - [ ] GitHub Actions pass
 

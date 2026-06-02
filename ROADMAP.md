@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.2.0 — mq-mcp pack merge integration
+v1.3.0 — repo-signal brief
 ```
 
 Current highest-priority gate:
@@ -96,7 +96,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v0.7.1  | Contract proof and docs completeness                 | Done                 |
 | v1.0.0  | Stable repo intelligence platform                    | Done                 |
 | v1.1.0  | Symbolic intelligence exports                        | Done                 |
-| v1.2.0  | mq-mcp pack merge integration                        | Planned              |
+| v1.2.0  | mq-mcp pack merge integration                        | Done                 |
+| v1.3.0  | repo-signal brief — daily health summary             | Current              |
 
 ---
 

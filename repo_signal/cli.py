@@ -1780,8 +1780,34 @@ def main() -> None:
             raise SystemExit(2)
         return
 
+    if command == "brief":
+        from repo_signal.brief import build_brief, format_brief
+        args = sys.argv[2:]
+        brief_path = "."
+        brief_format = "text"
+        i = 0
+        while i < len(args):
+            if args[i] == "--format" and i + 1 < len(args):
+                brief_format = args[i + 1]
+                i += 2
+            elif args[i].startswith("--format="):
+                brief_format = args[i].split("=", 1)[1]
+                i += 1
+            elif args[i] == "--json":
+                brief_format = "json"
+                i += 1
+            elif not args[i].startswith("--"):
+                brief_path = args[i]
+                i += 1
+            else:
+                print(f"Unknown brief option: {args[i]}")
+                raise SystemExit(2)
+        data = build_brief(brief_path)
+        print(format_brief(data, output_format=brief_format))
+        return
+
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, demo, doctor, inspect, positioning, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, brief, demo, doctor, inspect, positioning, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

@@ -622,7 +622,7 @@ enriched callgraph data for review and architecture tools
 - [x] End-to-end smoke script runs without error on at least one mq ecosystem repo
 - [x] Integration guide exists in `docs/`
 - [x] CHANGELOG has entry for v1.2.0
-- [ ] GitHub release `v1.2.0` exists
+- [x] GitHub release `v1.2.0` exists
 - [ ] GitHub Actions pass
 
 ---

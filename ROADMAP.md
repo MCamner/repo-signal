@@ -607,7 +607,7 @@ enriched callgraph data for review and architecture tools
   - `risk_map.v1` structural risks list
 - [x] `docs/MQ_MCP_INTEGRATION.md` — step-by-step guide with verified example output
 - [x] Add `examples/integrations/mq_mcp_pack_merge.sh` — runnable smoke script
-- [ ] Add `repo_signal_status` field to `docs/EXPORT_SCHEMAS.md`
+- [x] Add `repo_signal_status` field to `docs/EXPORT_SCHEMAS.md`
 - [x] Confirm graceful degradation when `.repo-signal/exports/` is absent
 
 ### Non-goals

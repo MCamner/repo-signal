@@ -196,12 +196,34 @@ When the packs exist on disk, mq-mcp's callgraph builder merges them
 automatically into `review_engine/context/callgraph.json`.
 
 Expected paths:
+
 ```
 .repo-signal/exports/symbol_index.json
 .repo-signal/exports/callgraph.json
 .repo-signal/exports/repo_summary.json
 .repo-signal/exports/risk_map.json
 ```
+
+### repo_signal_status
+
+After each build, `callgraph_builder` sets a `repo_signal_status` string
+on the result dict. Consumers can read it for diagnostics:
+
+| Status string | Meaning |
+| --- | --- |
+| `repo-signal packs merged: callgraph.v1, symbol_index.v1, …` | Merge succeeded — lists which schemas were found |
+| `repo-signal packs: not found (run 'repo-signal export' to generate)` | `.repo-signal/exports/` directory absent |
+| `repo-signal packs: exports directory present but no valid v1 schemas found` | Directory exists but no file carries a recognized schema field |
+
+The status string is also appended to the callgraph builder summary output:
+
+```
+callgraph_builder: 121 Python files  96 import edges
+  Hub files (3): __init__.py, core.py, scanner.py
+  repo-signal packs merged: callgraph.v1, symbol_index.v1, repo_summary.v1, risk_map.v1
+```
+
+For the full integration walkthrough see `docs/MQ_MCP_INTEGRATION.md`.
 
 ---
 

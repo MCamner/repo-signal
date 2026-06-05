@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.3.0 — repo-signal brief
+maintenance mode — define v1.4.0 only when there is a concrete scope
 ```
 
 Current highest-priority gate:
@@ -97,7 +97,43 @@ repo-signal should remain small, scriptable and contract-driven.
 | v1.0.0  | Stable repo intelligence platform                    | Done                 |
 | v1.1.0  | Symbolic intelligence exports                        | Done                 |
 | v1.2.0  | mq-mcp pack merge integration                        | Done                 |
-| v1.3.0  | repo-signal brief — daily health summary             | Current              |
+| v1.3.0  | repo-signal brief — daily health summary             | Done                 |
+| v1.4.0  | Release/readiness export compatibility               | Planned             |
+
+---
+
+## Planned: v1.4.0 — Release/readiness export compatibility
+
+Goal:
+
+Make repo-signal the dependable repository readiness input for mq-agent release
+status and mq-mcp Release Gate v2 without becoming the release gate engine.
+
+Planned scope:
+
+- [ ] Define a stable release/readiness export shape for MQ workflows
+- [ ] Include README, ROADMAP and CHANGELOG freshness signals
+- [ ] Include publish-readiness, docs hygiene and repo quality signals
+- [ ] Include version alignment and release metadata signals when available
+- [ ] Add fixture exports for a clean repo and a blocked repo
+- [ ] Make the export easy for mq-agent and mq-mcp to consume as JSON
+- [ ] Document how `repo-signal` feeds `mq-agent release status` and
+  `mq-mcp release-gate run --repo . --profile v2`
+
+Boundary:
+
+```text
+repo-signal provides repo intelligence and readiness signals.
+mq-mcp decides deterministic release gate status.
+mq-agent presents operator workflow and next actions.
+```
+
+Non-goals:
+
+- no release gate rule ownership
+- no perception analysis
+- no workflow orchestration
+- no repository mutation from readiness exports
 
 ---
 
@@ -731,20 +767,6 @@ A release should only be created when:
 
 ## Current recommended next step
 
-Work on:
-
 ```text
-v1.3.0 - repo-signal brief
-```
-
-Keep v1.3.0 focused on a daily health summary that reuses existing stable
-contracts instead of creating a new mutation workflow.
-
-Keep the v1.3.0 scope narrow:
-
-```text
-1. Reuse inspect/report/suggest contracts
-2. Summarize daily repo health
-3. Avoid new mutation behavior
-4. Document output and release gate expectations
+maintenance mode — define v1.4.0 only when there is a concrete scope
 ```

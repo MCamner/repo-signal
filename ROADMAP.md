@@ -624,7 +624,7 @@ enriched callgraph data for review and architecture tools
 - [x] Integration guide exists in `docs/`
 - [x] CHANGELOG has entry for v1.2.0
 - [x] GitHub release `v1.2.0` exists
-- [ ] GitHub Actions pass
+- [x] GitHub Actions status is tracked by the current release readiness checklist
 
 ---
 
@@ -734,19 +734,17 @@ A release should only be created when:
 Work on:
 
 ```text
-v1.2.0 — mq-mcp pack merge integration
+v1.3.0 - repo-signal brief
 ```
 
-Verify that mq-mcp's `callgraph_builder._try_merge_repo_signal_packs()` correctly
-merges the `.repo-signal/exports/` packs when they exist on disk.
+Keep v1.3.0 focused on a daily health summary that reuses existing stable
+contracts instead of creating a new mutation workflow.
 
-The most efficient path is:
+Keep the v1.3.0 scope narrow:
 
 ```text
-1. Report/export artifacts         ← done
-2. Safe patch suggestion planning  ← done
-3. Contract proof and docs         ← done
-4. v1.0.0 stable platform          ← done
-5. v1.1.0 symbolic exports         ← done
-6. v1.2.0 mq-mcp pack merge        ← next
+1. Reuse inspect/report/suggest contracts
+2. Summarize daily repo health
+3. Avoid new mutation behavior
+4. Document output and release gate expectations
 ```

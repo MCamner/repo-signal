@@ -22,6 +22,27 @@ Use this skill when the user asks to:
 - use `repo-signal` output as context for AI work
 - decide what Codex should inspect before acting
 
+## When not to use
+
+- When a narrower skill clearly owns the task — use `symbolic-intelligence-exporter` for JSON exports, `release-readiness` for release checks, `docs-maintainer` for docs, or `semantic-memory-maintainer` for vector store work
+- Scoring README quality — use `signal-assessment` or `repo-product-auditor`
+
+## Evals
+
+### Should trigger
+
+* "what does repo-signal do?"
+* "explain the repo-signal architecture and analysis flow"
+* "I'm about to change repo-signal — what should I know first?"
+* "what signals does repo-signal produce and how are they scored?"
+
+### Should not trigger
+
+* "update repo-signal docs" → use `docs-maintainer`
+* "export symbol intelligence or the JSON schema" → use `symbolic-intelligence-exporter`
+* "audit the product presentation" → use `repo-product-auditor`
+* "is repo-signal ready to release?" → use `release-readiness`
+
 ## Core rule
 
 Always let the repo teach you how to work.

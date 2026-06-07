@@ -18,6 +18,12 @@ Use this skill when the user asks to:
 - prepare docs for release, publishing, or GitHub Pages
 - explain what docs need to change after a feature or bug fix
 
+## When not to use
+
+- Code-only changes with no docs impact
+- README quality scoring or publish readiness — use `signal-assessment` or `repo-product-auditor`
+- Symbolic export or JSON schema changes — use `symbolic-intelligence-exporter`
+
 ## Core rule
 
 Document only behavior that exists or is intentionally being added in the same change.

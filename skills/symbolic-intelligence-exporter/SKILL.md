@@ -7,6 +7,18 @@ description: Use when adding or changing repo-signal symbolic exports such as sy
 
 Use this skill when repo-signal produces structured repository intelligence for other mq tools.
 
+## When to use
+
+- Adding or changing `symbol_index.json`, `callgraph.json`, `repo_summary.json`, or `risk_map.json`
+- Updating export schemas consumed by mq-mcp or mq-agent
+- Debugging why downstream tools receive incorrect or stale signal exports
+
+## When not to use
+
+- General repo analysis or docs — use `repo-aware` or `docs-maintainer`
+- Semantic memory uploads — use `semantic-memory-maintainer`
+- Review findings or architecture reasoning — those belong in mq-mcp
+
 ## Boundary
 
 repo-signal owns preprocessing, indexing, static repository signals, JSON contracts, semantic pack generation and release/publish intelligence.

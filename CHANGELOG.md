@@ -18,6 +18,9 @@
   markdown, and JSON output formats.
 - 19 tests in `tests/test_brief.py` covering schema, health labels, all three
   output formats, risk count consistency, and top-list bounds.
+- `examples/integrations/mq_agent_consumer.py` now prefers the current Python
+  environment's `repo_signal` module before falling back to a `repo-signal`
+  binary on `PATH`, avoiding stale global CLI versions during local tests.
 
 ## [1.2.0] - 2026-06-03
 

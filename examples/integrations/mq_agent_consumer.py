@@ -3,14 +3,24 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
+
+
+def _repo_signal_command() -> list[str]:
+    """Prefer the current Python environment, then fall back to PATH."""
+    try:
+        import repo_signal  # noqa: F401
+    except ImportError:
+        return ["repo-signal"]
+    return [sys.executable, "-m", "repo_signal.cli"]
 
 
 def inspect(repo_path: str | Path = ".") -> dict | None:
     """Return inspect.v1 dict or None if unavailable."""
     try:
         result = subprocess.run(
-            ["repo-signal", "inspect", "--json", str(repo_path)],
+            [*_repo_signal_command(), "inspect", "--json", str(repo_path)],
             capture_output=True, text=True, timeout=30,
         )
     except FileNotFoundError:
@@ -30,7 +40,7 @@ def doctor(repo_path: str | Path = ".") -> dict | None:
     """Return doctor.v1 dict or None if unavailable."""
     try:
         result = subprocess.run(
-            ["repo-signal", "doctor", "--json", str(repo_path)],
+            [*_repo_signal_command(), "doctor", "--json", str(repo_path)],
             capture_output=True, text=True, timeout=30,
         )
     except FileNotFoundError:

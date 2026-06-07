@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-maintenance mode — define v1.4.0 only when there is a concrete scope
+v1.4.0 — Release/readiness export compatibility
 ```
 
 Current highest-priority gate:
@@ -768,5 +768,5 @@ A release should only be created when:
 ## Current recommended next step
 
 ```text
-maintenance mode — define v1.4.0 only when there is a concrete scope
+v1.4.0 — Release/readiness export compatibility
 ```

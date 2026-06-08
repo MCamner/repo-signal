@@ -4,6 +4,24 @@
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-06-08
+
+### Added
+
+- `repo-signal readiness [path] [--format text|markdown|json]` — release/readiness
+  export combining version alignment, metadata freshness, publish-checklist quality,
+  and a deterministic release_gate block into a single JSON contract.
+- `readiness.v1` JSON schema: `schema`, `repo`, `path`, `generated_at`,
+  `version` (current/aligned/sources), `metadata` (changelog_has_current,
+  readme_has_version, roadmap_next_target), `quality` (publish_checklist_score,
+  publish_checklist_pass, test_file_count), `release_gate` (ready/blocked/blockers).
+- 25 tests in `tests/test_readiness.py` covering schema shape, version alignment,
+  metadata freshness, release gate logic, output formats, and edge cases.
+- `docs/READINESS_SCHEMA.md` — full field reference and mq-agent/mq-mcp
+  integration pattern.
+- `examples/readiness/` — generated `readiness.v1.json`, `readiness.txt`,
+  `readiness.md`.
+
 ## [1.3.0] - 2026-06-03
 
 ### Added

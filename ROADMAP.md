@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.4.0 — Release/readiness export compatibility
+v1.5.0 — TBD
 ```
 
 Current highest-priority gate:
@@ -98,27 +98,27 @@ repo-signal should remain small, scriptable and contract-driven.
 | v1.1.0  | Symbolic intelligence exports                        | Done                 |
 | v1.2.0  | mq-mcp pack merge integration                        | Done                 |
 | v1.3.0  | repo-signal brief — daily health summary             | Done                 |
-| v1.4.0  | Release/readiness export compatibility               | Planned             |
+| v1.4.0  | Release/readiness export compatibility               | Done                 |
 
 ---
 
-## Planned: v1.4.0 — Release/readiness export compatibility
+## Completed: v1.4.0 — Release/readiness export compatibility
 
 Goal:
 
 Make repo-signal the dependable repository readiness input for mq-agent release
 status and mq-mcp Release Gate v2 without becoming the release gate engine.
 
-Planned scope:
+Completed scope:
 
-- [ ] Define a stable release/readiness export shape for MQ workflows
-- [ ] Include README, ROADMAP and CHANGELOG freshness signals
-- [ ] Include publish-readiness, docs hygiene and repo quality signals
-- [ ] Include version alignment and release metadata signals when available
-- [ ] Add fixture exports for a clean repo and a blocked repo
-- [ ] Make the export easy for mq-agent and mq-mcp to consume as JSON
-- [ ] Document how `repo-signal` feeds `mq-agent release status` and
-  `mq-mcp release-gate run --repo . --profile v2`
+- [x] Define a stable `readiness.v1` export shape for MQ workflows
+- [x] Include README, ROADMAP and CHANGELOG freshness signals
+- [x] Include publish-readiness, docs hygiene and repo quality signals
+- [x] Include version alignment and release metadata signals
+- [x] Make the export easy for mq-agent and mq-mcp to consume as JSON
+- [x] `docs/READINESS_SCHEMA.md` — full field reference and integration pattern
+- [x] `examples/readiness/` — generated fixture outputs
+- [x] 25 tests covering schema shape, version alignment, release gate logic
 
 Boundary:
 
@@ -127,13 +127,6 @@ repo-signal provides repo intelligence and readiness signals.
 mq-mcp decides deterministic release gate status.
 mq-agent presents operator workflow and next actions.
 ```
-
-Non-goals:
-
-- no release gate rule ownership
-- no perception analysis
-- no workflow orchestration
-- no repository mutation from readiness exports
 
 ---
 

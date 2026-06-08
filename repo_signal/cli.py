@@ -1806,8 +1806,34 @@ def main() -> None:
         print(format_brief(data, output_format=brief_format))
         return
 
+    if command == "readiness":
+        from repo_signal.readiness import build_readiness, format_readiness
+        args = sys.argv[2:]
+        readiness_path = "."
+        readiness_format = "text"
+        i = 0
+        while i < len(args):
+            if args[i] == "--format" and i + 1 < len(args):
+                readiness_format = args[i + 1]
+                i += 2
+            elif args[i].startswith("--format="):
+                readiness_format = args[i].split("=", 1)[1]
+                i += 1
+            elif args[i] == "--json":
+                readiness_format = "json"
+                i += 1
+            elif not args[i].startswith("--"):
+                readiness_path = args[i]
+                i += 1
+            else:
+                print(f"Unknown readiness option: {args[i]}")
+                raise SystemExit(2)
+        data = build_readiness(readiness_path)
+        print(format_readiness(data, output_format=readiness_format))
+        return
+
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, brief, demo, doctor, inspect, positioning, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, brief, demo, doctor, inspect, positioning, readiness, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

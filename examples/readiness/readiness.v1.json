@@ -1,0 +1,32 @@
+{
+  "schema": "readiness.v1",
+  "repo": "repo-signal",
+  "path": "/Users/mansys/repo-signal",
+  "generated_at": "2026-06-08T19:32:15.319365+00:00",
+  "version": {
+    "current": "1.4.0",
+    "aligned": true,
+    "sources": {
+      "VERSION": "1.4.0",
+      "pyproject": "1.4.0",
+      "init": "1.4.0"
+    }
+  },
+  "metadata": {
+    "changelog_has_current": true,
+    "readme_has_version": false,
+    "roadmap_next_target": ""
+  },
+  "quality": {
+    "publish_checklist_score": 16,
+    "publish_checklist_total": 16,
+    "publish_checklist_pass": true,
+    "test_files_present": true,
+    "test_file_count": 12
+  },
+  "release_gate": {
+    "ready": true,
+    "blocked": false,
+    "blockers": []
+  }
+}

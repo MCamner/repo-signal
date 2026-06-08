@@ -164,7 +164,7 @@ Live docs: [mcamner.github.io/repo-signal](https://mcamner.github.io/repo-signal
 
 ---
 
-## v1.0.0 status
+## v1.x release baseline
 
 - [x] 4 stable JSON contracts: `inspect.v1`, `doctor.v1`, `report.v1`, `suggest.v1`
 - [x] Full test suite passes — `155 passed, 2 skipped`
@@ -174,6 +174,7 @@ Live docs: [mcamner.github.io/repo-signal](https://mcamner.github.io/repo-signal
 - [x] CLI surface frozen for v1.x
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
+
 - [x] GitHub Actions green (Tests, Packaging, Generated examples, Publish checklist)
 - [x] `.markdownlint.json` configured
 

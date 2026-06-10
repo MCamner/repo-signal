@@ -1,0 +1,11 @@
+{
+  "repo": "repo-signal",
+  "role": "repo-intelligence",
+  "version": "1.4.0",
+  "status": "active",
+  "contracts": [
+    "readiness_score.v1",
+    "publish_checklist.v1"
+  ],
+  "next_focus": ""
+}

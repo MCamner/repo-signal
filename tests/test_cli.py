@@ -924,6 +924,25 @@ class CoreScannerTests(unittest.TestCase):
         self.assertIn("main", symbol_names)
         self.assertIn("run_sample", symbol_names)
 
+    def test_scan_repository_ignores_backup_directories(self):
+        temp, root = make_sample_repo()
+        self.addCleanup(temp.cleanup)
+
+        backup_script = root / "backups" / "scripts" / "20260612" / "run.sh"
+        backup_script.parent.mkdir(parents=True)
+        backup_script.write_text(
+            "#!/usr/bin/env bash\n"
+            "echo stale\n",
+            encoding="utf-8",
+        )
+
+        repo = scan_repository(root)
+
+        self.assertNotIn("backups/scripts/20260612/run.sh", repo.entrypoints)
+        self.assertNotIn("backups/scripts/20260612/run.sh", [file.path for file in repo.files])
+        self.assertNotIn("backups", repo.top_directories)
+        self.assertNotIn("Shell", repo.languages)
+
     def test_repository_load_is_the_central_entrypoint(self):
         temp, root = make_sample_repo()
         self.addCleanup(temp.cleanup)

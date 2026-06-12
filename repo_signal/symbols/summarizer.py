@@ -37,6 +37,8 @@ def summarize_symbol(symbol: Symbol) -> str:
         description = f"groups behavior for {humanize_name(symbol.name)}"
     elif symbol.kind == "shell_function":
         description = f"shell workflow for {humanize_name(symbol.name)}"
+    elif symbol.kind == "powershell_function":
+        description = f"PowerShell workflow for {humanize_name(symbol.name)}"
     else:
         description = f"implements {humanize_name(symbol.name)}"
 

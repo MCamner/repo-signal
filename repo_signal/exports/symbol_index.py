@@ -24,7 +24,7 @@ def build_symbol_index(repo_path: str | Path = ".") -> dict[str, Any]:
     all_symbols: list[dict[str, Any]] = []
 
     for file in repo.files:
-        if file.extension not in {".py", ".sh", ".bash", ".zsh"}:
+        if file.extension not in {".py", ".sh", ".bash", ".zsh", ".ps1"}:
             continue
         raw = extract_symbols(root / file.path, repo_path=root)
         for sym in raw:

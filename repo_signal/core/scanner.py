@@ -27,6 +27,7 @@ LANGUAGE_MAP = {
     ".sh": "Shell",
     ".bash": "Shell",
     ".zsh": "Shell",
+    ".ps1": "PowerShell",
     ".js": "JavaScript",
     ".jsx": "JavaScript",
     ".ts": "TypeScript",

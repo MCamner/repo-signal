@@ -35,6 +35,8 @@ class SymbolChunk:
 def language_for_symbol(symbol: Symbol) -> str:
     if symbol.kind == "shell_function":
         return "shell"
+    if symbol.kind == "powershell_function" or symbol.file_path.endswith(".ps1"):
+        return "powershell"
     if symbol.file_path.endswith(".py"):
         return "python"
     return "unknown"

@@ -413,6 +413,8 @@ def summarize_file(file_path: str, keywords: list[str], reasons: list[str]) -> s
         role = "Python implementation"
     elif path_lower.endswith((".sh", ".zsh", ".bash")):
         role = "Shell workflow"
+    elif path_lower.endswith(".ps1"):
+        role = "PowerShell workflow"
     elif "readme" in path_lower or path_lower.endswith(".md"):
         role = "Documentation and project explanation"
     else:

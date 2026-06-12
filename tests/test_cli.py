@@ -918,6 +918,17 @@ class CoreScannerTests(unittest.TestCase):
         self.assertIn("repo_signal/cli.py", repo.entrypoints)
         self.assertIn("bin/sample", repo.entrypoints)
         self.assertIn("Python packaging", repo.detected_tooling)
+
+        (root / "scripts").mkdir(exist_ok=True)
+        (root / "scripts" / "Invoke-UmsCommand.ps1").write_text(
+            "function Invoke-UmsCommand {\n"
+            "  Write-Output ok\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        ps_repo = scan_repository(root)
+        self.assertEqual(ps_repo.languages["PowerShell"], 1)
+        self.assertIn("scripts/Invoke-UmsCommand.ps1", ps_repo.entrypoints)
         self.assertGreater(repo.repo_size_files, 0)
         symbol_names = {symbol.name for symbol in repo.symbols}
         self.assertIn("CommandRouter", symbol_names)
@@ -1003,6 +1014,16 @@ class GraphBuilderTests(unittest.TestCase):
             (root / "scripts").mkdir()
             (root / "scripts" / "env.sh").write_text("export DEMO=1\n", encoding="utf-8")
             (root / "scripts" / "tool.sh").write_text("echo tool\n", encoding="utf-8")
+            (root / "scripts" / "runner.ps1").write_text(
+                "$Runner = Join-Path $RepoRoot \"scripts/Invoke-UmsCommand.ps1\"\n"
+                ". ./env.ps1\n"
+                "pwsh ./task.ps1\n"
+                "& $Runner\n",
+                encoding="utf-8",
+            )
+            (root / "scripts" / "env.ps1").write_text("$Env:DEMO = 1\n", encoding="utf-8")
+            (root / "scripts" / "task.ps1").write_text("Write-Output task\n", encoding="utf-8")
+            (root / "scripts" / "Invoke-UmsCommand.ps1").write_text("Write-Output run\n", encoding="utf-8")
 
             repo = scan_repository(root)
             graph = build_repository_graph(repo)
@@ -1011,6 +1032,9 @@ class GraphBuilderTests(unittest.TestCase):
         self.assertIn(("pkg/ask.py", "pkg/scanner.py", "python_import"), edges)
         self.assertIn(("bin/run.sh", "scripts/env.sh", "shell_source"), edges)
         self.assertIn(("bin/run.sh", "scripts/tool.sh", "shell_exec"), edges)
+        self.assertIn(("scripts/runner.ps1", "scripts/env.ps1", "powershell_source"), edges)
+        self.assertIn(("scripts/runner.ps1", "scripts/task.ps1", "powershell_exec"), edges)
+        self.assertIn(("scripts/runner.ps1", "scripts/Invoke-UmsCommand.ps1", "powershell_exec"), edges)
 
 
 class SymbolExtractorTests(unittest.TestCase):
@@ -1038,11 +1062,22 @@ class SymbolExtractorTests(unittest.TestCase):
                 "}\n",
                 encoding="utf-8",
             )
+            ps_path = root / "tool.ps1"
+            ps_path.write_text(
+                "function Check($Label, [scriptblock] $Block) {\n"
+                "  & $Block\n"
+                "}\n\n"
+                "function Invoke-UmsCommand {\n"
+                "  Write-Output ok\n"
+                "}\n",
+                encoding="utf-8",
+            )
 
             py_symbols = extract_symbols(py_path, repo_path=root)
             sh_symbols = extract_symbols(sh_path, repo_path=root)
+            ps_symbols = extract_symbols(ps_path, repo_path=root)
 
-        by_name = {symbol.name: symbol for symbol in py_symbols + sh_symbols}
+        by_name = {symbol.name: symbol for symbol in py_symbols + sh_symbols + ps_symbols}
         self.assertEqual(by_name["Runner"].kind, "class")
         self.assertEqual(by_name["Runner"].file_path, "tool.py")
         self.assertEqual(by_name["run_async"].kind, "function")
@@ -1050,6 +1085,9 @@ class SymbolExtractorTests(unittest.TestCase):
         self.assertEqual(by_name["dispatch_cli_command"].kind, "shell_function")
         self.assertEqual(by_name["dispatch_cli_command"].file_path, "tool.sh")
         self.assertEqual(by_name["mq_repoaware"].kind, "shell_function")
+        self.assertEqual(by_name["Check"].kind, "powershell_function")
+        self.assertEqual(by_name["Check"].file_path, "tool.ps1")
+        self.assertEqual(by_name["Invoke-UmsCommand"].kind, "powershell_function")
 
 
 class SemanticMemoryTests(unittest.TestCase):
@@ -1082,6 +1120,25 @@ class SemanticMemoryTests(unittest.TestCase):
         self.assertIn("summary:", chunk.text)
         self.assertIn("snippet:", chunk.text)
         self.assertIn("dispatch_cli_command", chunk.text)
+
+    def test_symbol_chunks_classify_powershell_symbols(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "Invoke-UmsCommand.ps1").write_text(
+                "function Invoke-UmsCommand {\n"
+                "  Write-Output ok\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            repo = Repository.load(root)
+            chunks = build_symbol_chunks(repo)
+
+        self.assertEqual(len(chunks), 1)
+        chunk = chunks[0]
+        self.assertEqual(chunk.symbol, "Invoke-UmsCommand")
+        self.assertEqual(chunk.metadata["kind"], "powershell_function")
+        self.assertEqual(chunk.metadata["language"], "powershell")
 
     def test_symbol_summary_compresses_symbol_meaning(self):
         with tempfile.TemporaryDirectory() as tmp:

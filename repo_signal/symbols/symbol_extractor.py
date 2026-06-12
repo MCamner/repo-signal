@@ -11,6 +11,10 @@ SHELL_FUNCTION_RE = re.compile(
     r"^\s*(?:function\s+)?([a-zA-Z_][a-zA-Z0-9_-]*)\s*(?:\(\))?\s*\{",
     re.MULTILINE,
 )
+POWERSHELL_FUNCTION_RE = re.compile(
+    r"^\s*function\s+([a-zA-Z_][a-zA-Z0-9_-]*)\s*(?:\([^)]*\))?\s*\{",
+    re.IGNORECASE | re.MULTILINE,
+)
 
 
 def read_text(path: Path) -> str:
@@ -66,6 +70,22 @@ def extract_shell_symbols(file_path: str, content: str) -> List[Symbol]:
     return symbols
 
 
+def extract_powershell_symbols(file_path: str, content: str) -> List[Symbol]:
+    symbols = []
+
+    for match in POWERSHELL_FUNCTION_RE.finditer(content):
+        symbols.append(
+            Symbol(
+                name=match.group(1),
+                kind="powershell_function",
+                file_path=file_path,
+                line=line_number_at(content, match.start()),
+            )
+        )
+
+    return symbols
+
+
 def extract_symbols(path: Path, repo_path: Optional[Path] = None) -> List[Symbol]:
     content = read_text(path)
     if not content:
@@ -82,6 +102,8 @@ def extract_symbols(path: Path, repo_path: Optional[Path] = None) -> List[Symbol
     suffix = path.suffix.lower()
     if suffix == ".py":
         return extract_python_symbols(symbol_path, content)
+    if suffix == ".ps1":
+        return extract_powershell_symbols(symbol_path, content)
     first_line = content.splitlines()[0] if content.splitlines() else ""
     if suffix in {".sh", ".bash", ".zsh"} or "bash" in first_line or "zsh" in first_line or " sh" in first_line:
         return extract_shell_symbols(symbol_path, content)

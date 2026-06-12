@@ -9,6 +9,21 @@ PYTHON_FROM_IMPORT_RE = re.compile(r"^\s*from\s+([a-zA-Z0-9_.]+)\s+import\s+", r
 PYTHON_IMPORT_RE = re.compile(r"^\s*import\s+([a-zA-Z0-9_.,\t ]+)", re.MULTILINE)
 SHELL_SOURCE_RE = re.compile(r"^\s*(?:source|\.)\s+['\"]?([^'\"\s;]+)", re.MULTILINE)
 SHELL_EXEC_RE = re.compile(r"^\s*(?:bash|zsh|sh)\s+['\"]?([^'\"\s;]+)", re.MULTILINE)
+POWERSHELL_SOURCE_RE = re.compile(r"^\s*\.\s+['\"]?([^'\"\s;]+\.ps1)", re.IGNORECASE | re.MULTILINE)
+POWERSHELL_EXEC_RE = re.compile(
+    r"^\s*(?:&\s+|(?:pwsh|powershell)(?:\.exe)?(?:\s+-File)?\s+)?['\"]?([^'\"\s;]+\.ps1)",
+    re.IGNORECASE | re.MULTILINE,
+)
+POWERSHELL_PATH_ASSIGN_RE = re.compile(
+    r"^\s*\$([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*['\"]([^'\"]+\.ps1)['\"]",
+    re.IGNORECASE | re.MULTILINE,
+)
+POWERSHELL_JOIN_PATH_ASSIGN_RE = re.compile(
+    r"^\s*\$([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*Join-Path\s+\$[a-zA-Z_][a-zA-Z0-9_]*\s+['\"]([^'\"]+\.ps1)['\"]",
+    re.IGNORECASE | re.MULTILINE,
+)
+POWERSHELL_VAR_SOURCE_RE = re.compile(r"^\s*\.\s+\$([a-zA-Z_][a-zA-Z0-9_]*)", re.IGNORECASE | re.MULTILINE)
+POWERSHELL_VAR_EXEC_RE = re.compile(r"^\s*&\s+\$([a-zA-Z_][a-zA-Z0-9_]*)", re.IGNORECASE | re.MULTILINE)
 
 
 def read_text(path: Path) -> str:
@@ -131,6 +146,45 @@ def shell_edges(repo_path: Path, source: FileNode, text: str, known_files: Set[s
     return edges
 
 
+def powershell_path_variables(repo_path: Path, source: FileNode, text: str, known_files: Set[str]) -> Dict[str, str]:
+    variables = {}
+
+    for pattern in (POWERSHELL_PATH_ASSIGN_RE, POWERSHELL_JOIN_PATH_ASSIGN_RE):
+        for match in pattern.finditer(text):
+            target = resolve_repo_path(repo_path, source.path, match.group(2), known_files)
+            if target:
+                variables[match.group(1).lower()] = target
+
+    return variables
+
+
+def powershell_edges(repo_path: Path, source: FileNode, text: str, known_files: Set[str]) -> List[Edge]:
+    edges = []
+    variables = powershell_path_variables(repo_path, source, text, known_files)
+
+    for match in POWERSHELL_SOURCE_RE.finditer(text):
+        target = resolve_repo_path(repo_path, source.path, match.group(1), known_files)
+        if target and target != source.path:
+            edges.append(Edge(source=source.path, target=target, relation="powershell_source"))
+
+    for match in POWERSHELL_VAR_SOURCE_RE.finditer(text):
+        target = variables.get(match.group(1).lower())
+        if target and target != source.path:
+            edges.append(Edge(source=source.path, target=target, relation="powershell_source"))
+
+    for match in POWERSHELL_EXEC_RE.finditer(text):
+        target = resolve_repo_path(repo_path, source.path, match.group(1), known_files)
+        if target and target != source.path:
+            edges.append(Edge(source=source.path, target=target, relation="powershell_exec"))
+
+    for match in POWERSHELL_VAR_EXEC_RE.finditer(text):
+        target = variables.get(match.group(1).lower())
+        if target and target != source.path:
+            edges.append(Edge(source=source.path, target=target, relation="powershell_exec"))
+
+    return edges
+
+
 def dedupe_edges(edges: Iterable[Edge]) -> List[Edge]:
     seen = set()
     unique = []
@@ -151,7 +205,7 @@ def build_repository_graph(repo: Repository) -> RepositoryGraph:
     edges = []
 
     for file in repo.files:
-        if file.extension not in {".py", ".sh", ".bash", ".zsh"}:
+        if file.extension not in {".py", ".sh", ".bash", ".zsh", ".ps1"}:
             continue
 
         text = read_text(repo.path / file.path)
@@ -160,6 +214,8 @@ def build_repository_graph(repo: Repository) -> RepositoryGraph:
 
         if file.extension == ".py":
             edges.extend(python_import_edges(file, text, modules))
+        elif file.extension == ".ps1":
+            edges.extend(powershell_edges(repo.path, file, text, known_files))
         else:
             edges.extend(shell_edges(repo.path, file, text, known_files))
 

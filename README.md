@@ -42,6 +42,22 @@ See [PyPI publishing guide](docs/PYPI.md) for the release workflow.
 
 ---
 
+## Usage
+
+Use `repo-signal` from the root of any local Git repository. The normal loop is:
+
+```bash
+repo-signal analyze              # orient around repo type, stack and focus areas
+repo-signal inspect              # fast status and recommended next commit
+repo-signal doctor               # full repo health, docs, release and AI-readiness check
+repo-signal publish-checklist .  # public release-readiness gate
+```
+
+For automation, prefer JSON outputs such as `repo-signal inspect --json`,
+`repo-signal doctor --json`, and `repo-signal publish-checklist . --format json`.
+
+---
+
 ## Try this in 60 seconds
 
 ```bash
@@ -161,6 +177,36 @@ Live docs: [mcamner.github.io/repo-signal](https://mcamner.github.io/repo-signal
 - [**PyPI**](docs/PYPI.md) — Real PyPI publishing guide and Trusted Publisher values
 - [**Generated Examples**](docs/GENERATED_EXAMPLES.md) — How examples are generated and verified before release
 - [**Roadmap**](ROADMAP.md) — Release direction and stability checklist
+
+---
+
+## Roadmap
+
+Current focus is keeping the v1.x contracts stable while improving the quality
+of repo-aware context for AI tools. Near-term work:
+
+- keep `inspect.v1`, `doctor.v1`, `report.v1`, and `suggest.v1` stable
+- exclude generated noise such as backup folders from entrypoint detection
+- improve symbol extraction for non-Python repos, especially PowerShell-heavy tools
+- keep examples and generated reports current for downstream agents
+
+See [ROADMAP.md](ROADMAP.md) for the full roadmap.
+
+---
+
+## Contributing
+
+Contributions should preserve the stable JSON contracts and keep commands safe
+for automation. Before opening a PR, run:
+
+```bash
+pytest
+repo-signal doctor . --json
+repo-signal publish-checklist . --format json
+```
+
+When changing CLI output, update the matching docs and examples so agent
+integrations keep a reliable contract.
 
 ---
 

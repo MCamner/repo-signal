@@ -19,6 +19,22 @@ Use this skill when repo-signal produces structured repository intelligence for 
 - Semantic memory uploads — use `semantic-memory-maintainer`
 - Review findings or architecture reasoning — those belong in mq-mcp
 
+## Evals
+
+### Should trigger
+
+- "add a field to symbol_index.json"
+- "callgraph.json export is stale for mq-mcp"
+- "version the risk_map schema"
+- "downstream tools get the wrong repo_summary shape"
+
+### Should not trigger
+
+- "explain the repo structure" → use `repo-aware`
+- "sync the docs" → use `docs-maintainer`
+- "upload a semantic pack" → use `semantic-memory-maintainer`
+- "generate review findings" → belongs in mq-mcp
+
 ## Boundary
 
 repo-signal owns preprocessing, indexing, static repository signals, JSON contracts, semantic pack generation and release/publish intelligence.

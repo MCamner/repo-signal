@@ -25,3 +25,7 @@ jobs:
       - name: Check generated examples
         run: |
           scripts/check-generated-examples.sh
+
+      - name: Check skills consistency
+        run: |
+          scripts/check-skills.sh

@@ -19,6 +19,21 @@ Use this skill when the user asks to:
 - debug `file_search`, `mqlaunch ask`, `mqlaunch srm`, or repo-memory behavior
 - document vector store IDs, upload scripts, or memory policy
 
+## Evals
+
+### Should trigger
+
+- "refresh the vector store after the docs changed"
+- "what should go into the repo-signal knowledge pack?"
+- "clean stale files out of the vector store"
+- "file_search isn't returning the latest content"
+
+### Should not trigger
+
+- "sync the README" → use `docs-maintainer`
+- "change the symbol_index export" → use `symbolic-intelligence-exporter`
+- "score the README as a product" → use `repo-product-auditor`
+
 ## Core rule
 
 Semantic memory should be useful, current, and sparse.

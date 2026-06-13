@@ -16,7 +16,7 @@ Validate whether a repository is safe and complete enough for release.
 ## When not to use
 
 - Regular development or feature work
-- Checking repo health — use `repo-health-brief` or `repo-aware`
+- Checking repo health — run `repo-signal brief` or use `repo-aware`
 - Symbolic export or schema changes — use `symbolic-intelligence-exporter`
 
 ## Evals

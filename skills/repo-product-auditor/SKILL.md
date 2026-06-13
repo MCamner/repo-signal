@@ -32,8 +32,25 @@ Do not use this skill for:
 - Legal or compliance review
 - Package vulnerability scanning
 - Deep architecture review unless product presentation is also part of the task
+- Doc sync after a code change — use `docs-maintainer`
 
 If the task is only technical correctness, use a code review approach instead.
+
+## Evals
+
+### Should trigger
+
+- "review my repo as a product"
+- "improve this README's positioning and hero section"
+- "is this repo launch-ready for recruiters?"
+- "turn this technical repo into a case page"
+
+### Should not trigger
+
+- "sync the docs after a CLI change" → use `docs-maintainer`
+- "audit the symbolic export contracts" → use `symbolic-intelligence-exporter`
+- "review the code for bugs" → use a code review approach
+- "scan dependencies for vulnerabilities" → not a product audit
 
 ## Required inputs
 

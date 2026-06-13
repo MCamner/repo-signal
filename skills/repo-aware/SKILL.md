@@ -19,13 +19,13 @@ Use this skill when the user asks to:
 - implement a feature or fix
 - review repo quality or readiness
 - prepare release, docs, README, Wiki, or GitHub Pages updates
-- use `repo-signal` output as context for AI work
+- use repo-signal's own report output as context for AI work
 - decide what Codex should inspect before acting
 
 ## When not to use
 
 - When a narrower skill clearly owns the task — use `symbolic-intelligence-exporter` for JSON exports, `release-readiness` for release checks, `docs-maintainer` for docs, or `semantic-memory-maintainer` for vector store work
-- Scoring README quality — use `signal-assessment` or `repo-product-auditor`
+- Scoring README quality — use `repo-product-auditor`
 
 ## Evals
 

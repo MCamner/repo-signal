@@ -21,8 +21,24 @@ Use this skill when the user asks to:
 ## When not to use
 
 - Code-only changes with no docs impact
-- README quality scoring or publish readiness — use `signal-assessment` or `repo-product-auditor`
+- README quality scoring or publish readiness — use `repo-product-auditor`
 - Symbolic export or JSON schema changes — use `symbolic-intelligence-exporter`
+
+## Evals
+
+### Should trigger
+
+- "sync the README after the CLI flag change"
+- "do the documented commands still match the implementation?"
+- "update the changelog and roadmap for this release"
+- "the GitHub Pages docs are stale"
+
+### Should not trigger
+
+- "score this README's quality" → use `repo-product-auditor`
+- "change the symbol_index export schema" → use `symbolic-intelligence-exporter`
+- "refresh the vector store" → use `semantic-memory-maintainer`
+- "code-only change, no docs impact" → no skill needed
 
 ## Core rule
 

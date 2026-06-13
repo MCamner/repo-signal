@@ -39,6 +39,21 @@ Do not use this skill for:
 - Security review
 - Deep performance profiling unless terminal output clarity is part of the task
 
+## Evals
+
+### Should trigger
+
+- "the scoring table is hard to read"
+- "improve the repo-signal CLI output layout"
+- "the doctor/checkup output is noisy"
+- "clean up these error messages"
+
+### Should not trigger
+
+- "sync the docs" → use `docs-maintainer`
+- "score the README as a product" → use `repo-product-auditor`
+- "change the JSON export shape" → use `symbolic-intelligence-exporter`
+
 ## Core principles
 
 A good terminal UI should be:

@@ -19,6 +19,13 @@ actually ready. Works standalone or as a backend contract for AI agent workflows
 publish-readiness signals, and machine-readable JSON contracts for AI-assisted
 development workflows.
 
+## MQ stack architecture
+
+`repo-signal` is part of the MQ stack. It produces repo intelligence and
+observations; it does **not** own durable memory. Whole-stack architecture and
+the memory loop are documented in mqobsidian (source of truth):
+[docs/architecture/mq-stack.md](https://github.com/MCamner/mqobsidian/blob/main/docs/architecture/mq-stack.md).
+
 ---
 
 ## Install

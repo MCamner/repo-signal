@@ -19,6 +19,13 @@ actually ready. Works standalone or as a backend contract for AI agent workflows
 publish-readiness signals, and machine-readable JSON contracts for AI-assisted
 development workflows.
 
+## MQ stack architecture
+
+`repo-signal` is part of the MQ stack. It produces repo intelligence and
+observations; it does **not** own durable memory. Whole-stack architecture and
+the memory loop are documented in mqobsidian (source of truth):
+[docs/architecture/mq-stack.md](https://github.com/MCamner/mqobsidian/blob/main/docs/architecture/mq-stack.md).
+
 ---
 
 ## Install
@@ -50,6 +57,7 @@ Use `repo-signal` from the root of any local Git repository. The normal loop is:
 ```bash
 repo-signal analyze              # orient around repo type, stack and focus areas
 repo-signal inspect              # fast status and recommended next commit
+repo-signal review-export .      # write repo-review.v1 to mqobsidian/reviews
 repo-signal doctor               # full repo health, docs, release and AI-readiness check
 repo-signal publish-checklist .  # public release-readiness gate
 ```

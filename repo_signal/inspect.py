@@ -412,6 +412,13 @@ def inspect_repo_data(path: str | Path | None = None) -> dict[str, Any]:
 def inspect_repo(path: str | Path | None = None, output_format: str = "text") -> str:
     data = inspect_repo_data(path)
 
+    # Spak 2 (Phase 12): opt-in, failure-isolated emission of one real
+    # memory-observation.v1 on an actual inspect run. No-op unless
+    # REPO_SIGNAL_EMIT_MEMORY=1; never raises into inspect.
+    from repo_signal.memory_emit import maybe_emit_memory
+
+    maybe_emit_memory(data)
+
     if output_format == "json":
         return json.dumps(data, indent=2, sort_keys=True)
 

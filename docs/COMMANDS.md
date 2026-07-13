@@ -45,6 +45,25 @@ Good for:
 
 See also: [Inspect JSON schema](INSPECT_SCHEMA.md).
 
+## repo-signal review-export
+
+Purpose:
+Runs a fresh `inspect.v1` analysis and exports a compact `repo-review.v1`
+Markdown note to mqobsidian. The export preserves source-schema provenance and
+does not include the target repository's absolute path.
+
+Usage:
+
+```bash
+repo-signal review-export .
+repo-signal review-export ~/some-repo --vault "$MQ_OBSIDIAN_DIR"
+repo-signal review-export . --force
+```
+
+The default vault is `$MQ_OBSIDIAN_DIR`, falling back to `~/mqobsidian` when
+that directory exists. Reviews are written under `reviews/`. Existing same-day
+exports are not replaced unless `--force` is explicit.
+
 ## repo-signal demo
 
 Purpose:

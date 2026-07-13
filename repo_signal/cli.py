@@ -11,7 +11,7 @@ from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
 from repo_signal.doctor import doctor_repo
 from repo_signal.export_codex import main as export_codex_main
-from repo_signal.inspect import inspect_repo
+from repo_signal.inspect import inspect_repo, inspect_repo_data
 from repo_signal.positioning import build_positioning_report, format_positioning_report
 from repo_signal.publish_checklist import (
     VALID_FORMATS,
@@ -28,6 +28,7 @@ from repo_signal.wiki_export import export_wiki_pages
 from repo_signal.report import build_report, format_report
 from repo_signal.suggest import VALID_FORMATS as SUGGEST_FORMATS, build_suggestions, format_suggestions
 from repo_signal.export_packs import main as export_packs_main
+from repo_signal.review_export import export_repo_review, resolve_vault
 
 
 HELP_TEXT = """repo-signal
@@ -41,6 +42,7 @@ Usage:
   repo-signal demo [--generate] [path] [--output path] [--force]
   repo-signal doctor [path] [--format markdown|json] [--json]
   repo-signal inspect [path] [--json|--format text|json]
+  repo-signal review-export [path] [--vault PATH] [--force]
   repo-signal positioning [path] [--json|--format text|json]
   repo-signal scan
   repo-signal skill new <name> [--description text]
@@ -70,6 +72,8 @@ Commands:
   demo      Print or generate a short repo-signal demo flow
   doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
   inspect   Show fast repo status, detected signals, issues, next commit, or inspect.v1 JSON
+  review-export
+             Export a fresh inspect.v1 result to mqobsidian as repo-review.v1
   positioning
              Analyze README/project positioning and produce a positioning report
   scan       Scan repo structure and basic project signals
@@ -96,6 +100,7 @@ Examples:
   repo-signal actions init
   repo-signal analyze
   repo-signal inspect
+  repo-signal review-export .
   repo-signal positioning .
   repo-signal positioning . --json
   repo-signal doctor
@@ -1459,6 +1464,38 @@ def parse_inspect_args(args: list[str]) -> tuple[Path, str]:
     return repo, output_format
 
 
+def parse_review_export_args(args: list[str]) -> tuple[Path, Path, bool]:
+    repo = Path.cwd()
+    vault: Path | None = None
+    force = False
+    index = 0
+
+    while index < len(args):
+        arg = args[index]
+        if arg == "--force":
+            force = True
+            index += 1
+            continue
+        if arg == "--vault":
+            if index + 1 >= len(args):
+                print("Missing value for --vault")
+                raise SystemExit(2)
+            vault = Path(args[index + 1])
+            index += 2
+            continue
+        if arg.startswith("--vault="):
+            vault = Path(arg.split("=", 1)[1])
+            index += 1
+            continue
+        if arg.startswith("-"):
+            print(f"Unknown review-export option: {arg}")
+            raise SystemExit(2)
+        repo = Path(arg).expanduser().resolve()
+        index += 1
+
+    return repo, resolve_vault(vault), force
+
+
 def parse_demo_args(args: list[str]) -> tuple[bool, Path, Path, bool]:
     generate = False
     repo = Path.cwd()
@@ -1687,6 +1724,18 @@ def main() -> None:
         print(inspect_repo(inspect_path, output_format=inspect_format))
         return
 
+    if command == "review-export":
+        try:
+            inspect_path, vault, force = parse_review_export_args(sys.argv[2:])
+            output = export_repo_review(
+                inspect_repo_data(inspect_path), vault=vault, force=force
+            )
+        except (FileExistsError, FileNotFoundError, ValueError) as exc:
+            print(exc)
+            raise SystemExit(2)
+        print(output)
+        return
+
     repo = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else Path.cwd()
 
     if command == "scan":
@@ -1833,7 +1882,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, brief, demo, doctor, inspect, positioning, readiness, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
+    print("Available commands: actions, analyze, ask, brief, demo, doctor, inspect, review-export, positioning, readiness, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
     raise SystemExit(1)
 
 

@@ -57,6 +57,7 @@ Use `repo-signal` from the root of any local Git repository. The normal loop is:
 ```bash
 repo-signal analyze              # orient around repo type, stack and focus areas
 repo-signal inspect              # fast status and recommended next commit
+repo-signal review-export .      # write repo-review.v1 to mqobsidian/reviews
 repo-signal doctor               # full repo health, docs, release and AI-readiness check
 repo-signal publish-checklist .  # public release-readiness gate
 ```

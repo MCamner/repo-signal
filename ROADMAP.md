@@ -99,6 +99,7 @@ repo-signal should remain small, scriptable and contract-driven.
 | v1.2.0  | mq-mcp pack merge integration                        | Done                 |
 | v1.3.0  | repo-signal brief — daily health summary             | Done                 |
 | v1.4.0  | Release/readiness export compatibility               | Done                 |
+| v1.5.0  | Review and memory export contract hardening           | Planned              |
 
 ---
 
@@ -657,6 +658,78 @@ enriched callgraph data for review and architecture tools
 
 ---
 
+## v1.5.0 — Review and memory export contract hardening
+
+Goal:
+
+Make the existing mqobsidian exports dependable integration contracts without
+turning repo-signal into a durable memory store or review engine.
+
+### Verified starting point
+
+- [x] `repo-signal review-export` writes a fresh `inspect.v1` result as
+  `repo-review.v1` below mqobsidian `reviews/`
+- [x] Review export preserves `source_schema: inspect.v1`
+- [x] Review export refuses accidental overwrite unless `--force` is explicit
+- [x] Review export has focused unit and CLI tests
+- [x] `memory-observation.v1` emission is opt-in and failure-isolated
+
+### P0 — Lock the public contracts
+
+- [ ] Add `docs/REVIEW_EXPORT_SCHEMA.md` with fields, provenance, path rules and
+  overwrite behavior for `repo-review.v1`
+- [ ] Add a generated, public-safe `repo-review.v1` fixture under `examples/`
+- [ ] Add `repo-review.v1` to `release.sh` contract checks
+- [ ] Document `memory-observation.v1` producer fields and the explicit boundary:
+  observations are proposals, not promoted memory
+- [ ] Add focused tests for observation schema, no-issue behavior, opt-in gating
+  and write-failure isolation
+- [ ] Verify both exporters reject or redact machine-local paths and secret-like
+  values in generated artifacts
+
+### P1 — Keep CLI truth synchronized
+
+- [ ] Define the command list once and reuse it for help, dispatch validation and
+  command documentation checks
+- [ ] Ensure `--help` includes `brief`, `export`, `readiness`, `review-export` and
+  `suggest`
+- [ ] Add a test that every dispatched top-level command is discoverable in
+  `--help`
+- [ ] Add a docs consistency check covering README examples and
+  `docs/COMMANDS.md`
+- [ ] Verify source execution and the installed `repo-signal` entrypoint on
+  supported Python versions
+
+### P2 — Prove the mqobsidian boundary end to end
+
+- [ ] Add a temporary-vault smoke test for inspect → review export → schema read
+- [ ] Add a temporary-vault smoke test for inspect → observation append without
+  touching durable notes
+- [ ] Document ownership: repo-signal produces signals; mqobsidian stores them;
+  mq-agent owns scoring, promotion and workflow orchestration
+- [ ] Document failure behavior for a missing vault, unwritable output and an
+  unknown source schema
+- [ ] Add one integration example that uses `MQ_OBSIDIAN_DIR` and contains no
+  user-specific absolute path
+
+### Definition of done
+
+- [ ] Full test suite passes on supported Python versions
+- [ ] `repo-signal --help` matches the live command surface
+- [ ] Review and observation contracts have docs, tests and public-safe examples
+- [ ] Release checks validate both mqobsidian export paths
+- [ ] README, ROADMAP, CHANGELOG and VERSION agree on v1.5.0
+- [ ] GitHub Actions are green before release
+
+### Non-goals
+
+- No memory scoring or promotion in repo-signal
+- No review generation or architecture reasoning runtime
+- No automatic commit, push or remote vault mutation
+- No new export schema unless an existing contract cannot be extended safely
+
+---
+
 ## Long-term ideas
 
 These are intentionally not scheduled yet.
@@ -761,5 +834,5 @@ A release should only be created when:
 ## Current recommended next step
 
 ```text
-v1.4.0 — Release/readiness export compatibility
+v1.5.0 — Review and memory export contract hardening
 ```

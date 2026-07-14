@@ -9,9 +9,21 @@ fail() {
   exit 1
 }
 
-PYTHON_BIN="${PYTHON_BIN:-python3}"
+if [[ -z "${PYTHON_BIN:-}" ]]; then
+  for candidate in python3.12 python3.11 python3; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      PYTHON_BIN="$candidate"
+      break
+    fi
+  done
+fi
 
-command -v "$PYTHON_BIN" >/dev/null 2>&1 || fail "python3 not found"
+[[ -n "${PYTHON_BIN:-}" ]] || fail "Python 3.11 or newer not found"
+command -v "$PYTHON_BIN" >/dev/null 2>&1 || fail "$PYTHON_BIN not found"
+
+if ! "$PYTHON_BIN" -c 'import sys; raise SystemExit(sys.version_info < (3, 11))'; then
+  fail "$PYTHON_BIN must be Python 3.11 or newer"
+fi
 
 [[ -f pyproject.toml ]] || fail "pyproject.toml missing"
 [[ -f VERSION ]] || fail "VERSION missing"

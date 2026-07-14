@@ -219,10 +219,10 @@ integrations keep a reliable contract.
 
 ---
 
-## v1.x release baseline
+## v1.4.0 status
 
 - [x] 4 stable JSON contracts: `inspect.v1`, `doctor.v1`, `report.v1`, `suggest.v1`
-- [x] Full test suite passes — `155 passed, 2 skipped`
+- [x] Full test suite passes — `254 passed, 2 skipped`
 - [x] Schema checks in `release.sh` for all four stable contracts
 - [x] Contract docs: `INSPECT_SCHEMA.md`, `DOCTOR_SCHEMA.md`, `REPORT_SCHEMA.md`, `SUGGEST_SCHEMA.md`
 - [x] Generated examples: `examples/report/`, `examples/suggest/`, `examples/inspect/`, `examples/doctor/`

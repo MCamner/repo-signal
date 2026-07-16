@@ -2,7 +2,16 @@
 
 <!-- markdownlint-disable MD024 -->
 
-## [Unreleased]
+## [1.4.1] - 2026-07-16
+
+### Added
+
+- Release metadata refreshed for the current branch work.
+
+### Changed
+
+- Updated version metadata to reflect the latest repo-signal release state.
+
 
 ## [1.4.0] - 2026-06-08
 

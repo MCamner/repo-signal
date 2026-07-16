@@ -3,7 +3,7 @@
 [![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml)
 [![PyPI publish](https://github.com/MCamner/repo-signal/actions/workflows/pypi.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/pypi.yml)
 [![Release](https://img.shields.io/github/v/release/MCamner/repo-signal?label=release)](https://github.com/MCamner/repo-signal/releases)
-[![Version](https://img.shields.io/badge/version-1.4.0-blue)](VERSION)
+[![Version](https://img.shields.io/badge/version-1.4.1-blue)](VERSION)
 
 **What problem does this solve?**
 You have a local repo — maybe a prototype, a side project, or a tool in progress.

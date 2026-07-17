@@ -31,17 +31,17 @@ Use this skill when the user asks to:
 
 ### Should trigger
 
-* "what does repo-signal do?"
-* "explain the repo-signal architecture and analysis flow"
-* "I'm about to change repo-signal — what should I know first?"
-* "what signals does repo-signal produce and how are they scored?"
+- "what does repo-signal do?"
+- "explain the repo-signal architecture and analysis flow"
+- "I'm about to change repo-signal — what should I know first?"
+- "what signals does repo-signal produce and how are they scored?"
 
 ### Should not trigger
 
-* "update repo-signal docs" → use `docs-maintainer`
-* "export symbol intelligence or the JSON schema" → use `symbolic-intelligence-exporter`
-* "audit the product presentation" → use `repo-product-auditor`
-* "is repo-signal ready to release?" → use `release-readiness`
+- "update repo-signal docs" → use `docs-maintainer`
+- "export symbol intelligence or the JSON schema" → use `symbolic-intelligence-exporter`
+- "audit the product presentation" → use `repo-product-auditor`
+- "is repo-signal ready to release?" → use `release-readiness`
 
 ## Core rule
 

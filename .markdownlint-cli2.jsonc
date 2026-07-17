@@ -1,0 +1,12 @@
+{
+  // Rule config lives in .markdownlint.json (shared with the VS Code extension).
+  "globs": ["**/*.md"],
+  "ignores": [
+    ".venv/**", "node_modules/**", "build/**", "dist/**",
+    "**/*.egg-info/**", "backups/**", "outputs/**", "models/**",
+    ".github/ISSUE_TEMPLATE/**",
+    // Generated sample reports, screenshot checklists, and README templates —
+    // artifact dumps with intentional/embedded fences, not hand-written prose.
+    "examples/**", "docs/screenshots/**", "skills/**/assets/**"
+  ]
+}

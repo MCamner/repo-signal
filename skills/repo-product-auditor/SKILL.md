@@ -133,27 +133,35 @@ Then provide:
 Return the answer in this structure:
 
 ## Goal
+
 State what the audit is trying to improve.
 
 ## Current state
+
 Summarize what the repo currently communicates.
 
 ## Scorecard
+
 Use a compact table with the scoring model.
 
 ## Strongest parts
+
 List the strongest 2-4 parts.
 
 ## Weakest parts
+
 List the weakest 2-4 parts.
 
 ## Recommended fixes
+
 Give concrete fixes in priority order.
 
 ## Copy-paste improvements
+
 When useful, provide ready-to-paste README sections, hero copy, GitHub topics, or case-page text.
 
 ## Next step
+
 Give exactly one next action.
 
 ## Tone rules

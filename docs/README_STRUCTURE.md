@@ -26,8 +26,8 @@ repo-signal/
 
 ## Why this structure?
 
-1.  **Top-level clarity:** README and LICENSE are at the front door.
-2.  **Executable bin:** A dedicated `bin/` folder for the main entry point.
-3.  **Namespaced code:** All library code lives in a folder named after the project.
-4.  **Evidence:** `examples/` show what the tool actually does.
-5.  **Documentation:** `docs/` for deeper manuals or GitHub Pages.
+1. **Top-level clarity:** README and LICENSE are at the front door.
+2. **Executable bin:** A dedicated `bin/` folder for the main entry point.
+3. **Namespaced code:** All library code lives in a folder named after the project.
+4. **Evidence:** `examples/` show what the tool actually does.
+5. **Documentation:** `docs/` for deeper manuals or GitHub Pages.

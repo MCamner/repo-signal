@@ -23,17 +23,17 @@ Validate whether a repository is safe and complete enough for release.
 
 ### Should trigger
 
-* "is repo-signal ready to publish?"
-* "run the repo-signal release checklist"
-* "what checks need to pass before tagging the next repo-signal version?"
-* "verify version, changelog, and docs before a repo-signal release"
+- "is repo-signal ready to publish?"
+- "run the repo-signal release checklist"
+- "what checks need to pass before tagging the next repo-signal version?"
+- "verify version, changelog, and docs before a repo-signal release"
 
 ### Should not trigger
 
-* "update repo-signal docs" → use `docs-maintainer`
-* "export symbol intelligence or schema" → use `symbolic-intelligence-exporter`
-* "audit the product presentation" → use `repo-product-auditor`
-* "regular repo-signal development work" → only needed at release boundaries
+- "update repo-signal docs" → use `docs-maintainer`
+- "export symbol intelligence or schema" → use `symbolic-intelligence-exporter`
+- "audit the product presentation" → use `repo-product-auditor`
+- "regular repo-signal development work" → only needed at release boundaries
 
 Always inspect:
 

@@ -197,7 +197,7 @@ automatically into `review_engine/context/callgraph.json`.
 
 Expected paths:
 
-```
+```text
 .repo-signal/exports/symbol_index.json
 .repo-signal/exports/callgraph.json
 .repo-signal/exports/repo_summary.json
@@ -217,7 +217,7 @@ on the result dict. Consumers can read it for diagnostics:
 
 The status string is also appended to the callgraph builder summary output:
 
-```
+```text
 callgraph_builder: 121 Python files  96 import edges
   Hub files (3): __init__.py, core.py, scanner.py
   repo-signal packs merged: callgraph.v1, symbol_index.v1, repo_summary.v1, risk_map.v1

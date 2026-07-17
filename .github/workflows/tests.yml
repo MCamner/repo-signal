@@ -39,3 +39,28 @@ jobs:
       - name: Run tests
         run: |
           python -m pytest tests/ -v
+
+  # scripts/check-docs-consistency.sh existed but no workflow ran it, so every
+  # version surface it guards — pyproject, __version__, CHANGELOG — could drift
+  # with CI still green. It checks .mq/repo-contract.json too; unrun, that gap
+  # surfaced as a DRIFT verdict in mq-agent's stack gate instead of here.
+  docs-consistency:
+    name: Docs consistency
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Docs and version consistency
+        run: ./scripts/check-docs-consistency.sh

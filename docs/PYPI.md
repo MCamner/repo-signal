@@ -104,13 +104,14 @@ pipx install repo-signal
 
 to:
 
-```markdown
+````markdown
 ## Install
 
 ```bash
 pipx install repo-signal
 ```
-```
+
+````
 
 Then release the updated README as part of the next patch release.
 

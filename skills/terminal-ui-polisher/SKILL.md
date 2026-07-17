@@ -106,24 +106,31 @@ Always evaluate:
 Return the answer in this structure:
 
 ## Goal
+
 State what the terminal UI should become.
 
 ## Current state
+
 Summarize what the current interface communicates.
 
 ## Problems
+
 List the main issues in priority order.
 
 ## Recommended polish
+
 Give concrete improvements.
 
 ## Copy-paste changes
+
 When useful, provide ready-to-paste shell functions, output templates, menu layouts, or text blocks.
 
 ## Final UI direction
+
 Describe the target style in one short paragraph.
 
 ## Next step
+
 Give exactly one next action.
 
 ## Scoring model

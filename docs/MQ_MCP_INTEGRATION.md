@@ -39,7 +39,7 @@ repo-signal export .
 
 Output:
 
-```
+```text
 repo-signal export — repo-signal
 output: .repo-signal/exports
 
@@ -71,7 +71,7 @@ The merge is additive and non-destructive:
 
 The merge result is reported in the callgraph summary:
 
-```
+```text
 callgraph_builder: 121 Python files  96 import edges
   Hub files (3): __init__.py, core.py, scanner.py
   repo-signal packs merged: callgraph.v1, symbol_index.v1, repo_summary.v1, risk_map.v1
@@ -89,7 +89,7 @@ bash examples/integrations/mq_mcp_pack_merge.sh [repo-path]
 
 Expected output:
 
-```
+```text
 repo-signal → mq-mcp pack merge smoke
 repo: .
 ---
@@ -172,13 +172,13 @@ mq-mcp stores `pack["risks"]` as `data["repo_signal_risks"]`.
 If `.repo-signal/exports/` does not exist, mq-mcp continues without enrichment
 and reports:
 
-```
+```text
 repo-signal packs: not found (run `repo-signal export` to generate)
 ```
 
 If the directory exists but contains no valid v1 schemas:
 
-```
+```text
 repo-signal packs: exports directory present but no valid v1 schemas found
 ```
 

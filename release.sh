@@ -61,6 +61,24 @@ else
   fail "Version mismatch — update VERSION, pyproject.toml, and repo_signal/__init__.py"
 fi
 
+# The contract carries the version the rest of the MQ stack reads. release.sh
+# validated VERSION/pyproject/__version__ but not this, so a release could tag
+# with the contract behind — v1.4.1 shipped VERSION=1.4.1, contract=1.4.0, and
+# the drift failed the stack contract gate in mq-agent's CI instead of here.
+CONTRACT_VERSION="$("$PYTHON_BIN" -c "
+import json
+try:
+    print(json.load(open('.mq/repo-contract.json'))['version'])
+except Exception:
+    print('')
+")"
+echo "  .mq/repo-contract.json:  $CONTRACT_VERSION"
+if [[ "$VERSION_FILE" == "$CONTRACT_VERSION" ]]; then
+  ok ".mq/repo-contract.json matches VERSION: $VERSION_FILE"
+else
+  fail ".mq/repo-contract.json version '$CONTRACT_VERSION' != VERSION '$VERSION_FILE' — bump it before releasing"
+fi
+
 # ── CHANGELOG ────────────────────────────────────────────────────────────────
 
 section "CHANGELOG"

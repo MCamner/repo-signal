@@ -12,6 +12,7 @@ set -uo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT" || exit 1
 VERSION="$(cat VERSION)"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 DRY_RUN=0
 JSON=0
@@ -43,7 +44,7 @@ run() {
 say "=== repo-signal release-check v${VERSION} ==="
 
 say "--- Version surfaces ---"
-CONTRACT_VER="$(python3 -c "import json; print(json.load(open('.mq/repo-contract.json'))['version'])" 2>/dev/null)"
+CONTRACT_VER="$("$PYTHON_BIN" -c "import json; print(json.load(open('.mq/repo-contract.json'))['version'])" 2>/dev/null)"
 if [[ "$CONTRACT_VER" == "$VERSION" ]]; then
   ok ".mq/repo-contract.json matches VERSION ($VERSION)"
 else
@@ -64,12 +65,12 @@ say "--- Docs and version consistency ---"
 run "check-docs-consistency.sh" bash scripts/check-docs-consistency.sh
 
 say "--- Tests ---"
-run "pytest" python3 -m pytest -q
+run "pytest" "$PYTHON_BIN" -m pytest -q
 
 if [[ "$JSON" -eq 1 ]]; then
   status=READY
   [[ "${#BLOCKERS[@]}" -gt 0 ]] && status=BLOCKED
-  python3 - "$status" "$VERSION" ${BLOCKERS[@]+"${BLOCKERS[@]}"} <<'PY'
+  "$PYTHON_BIN" - "$status" "$VERSION" ${BLOCKERS[@]+"${BLOCKERS[@]}"} <<'PY'
 import json
 import sys
 

@@ -1,7 +1,7 @@
 {
   "repo": "repo-signal",
   "role": "repo-intelligence",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "status": "active",
   "contracts": [
     "readiness_score.v1",

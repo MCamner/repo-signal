@@ -2,7 +2,13 @@
 
 <!-- markdownlint-disable MD024 -->
 
-## [Unreleased]
+## [1.4.2] - 2026-07-18
+
+### Fixed
+
+- Fix-forward from known-bad `v1.4.1`, whose repo contract remained at `1.4.0`.
+- Added release checks that keep `.mq/repo-contract.json` aligned with all other
+  version surfaces and expose a machine-readable stack preflight verdict.
 
 ### Changed
 

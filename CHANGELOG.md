@@ -11,6 +11,8 @@
   version surfaces and expose a machine-readable stack preflight verdict.
 - Made release checks honor `PYTHON_BIN` so every step uses the supported,
   operator-selected Python interpreter.
+- Create annotated release tags with an explicit message, including when the
+  operator's Git configuration requires signed tags.
 
 ### Changed
 

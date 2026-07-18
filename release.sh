@@ -297,7 +297,7 @@ fi
 echo
 echo "Publishing v${VERSION_FILE}..."
 
-git tag "v${VERSION_FILE}"
+git tag -m "v${VERSION_FILE}" "v${VERSION_FILE}"
 git push
 git push origin "v${VERSION_FILE}"
 

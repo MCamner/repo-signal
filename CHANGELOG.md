@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Added a root `release-check.sh` conforming to the `repo_release_check.v1`
+  contract: `--json` emits the machine-readable verdict (`schema`, `repo`,
+  `status`, `blockers`, `warnings`, `evidence`) on clean stdout and exits 0;
+  human mode prints per-check ok/FAIL. Runs the read-only checks (contract/
+  CHANGELOG/README version surfaces, `check-docs-consistency.sh`, pytest). Lets
+  mq-agent's `stack release --all --preflight` read the release verdict.
+
 ## [1.4.0] - 2026-06-08
 
 ### Added

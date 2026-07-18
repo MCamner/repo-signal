@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 STRICT=0
 if [[ "${1:-}" == "--strict" ]]; then
@@ -10,7 +11,7 @@ if [[ "${1:-}" == "--strict" ]]; then
 fi
 
 run_cli() {
-  python3 -m repo_signal.cli "$@"
+  "$PYTHON_BIN" -m repo_signal.cli "$@"
 }
 
 fail() {
@@ -33,7 +34,7 @@ check_json_schema() {
   local file="$1"
   local expected_schema="$2"
 
-  python3 - "$file" "$expected_schema" <<'PY'
+  "$PYTHON_BIN" - "$file" "$expected_schema" <<'PY'
 import json
 import sys
 from pathlib import Path

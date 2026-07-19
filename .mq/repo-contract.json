@@ -7,5 +7,6 @@
     "readiness_score.v1",
     "publish_checklist.v1"
   ],
-  "next_focus": ""
+  "next_focus": "",
+  "release_mode": "direct"
 }

@@ -480,6 +480,7 @@ Issues and patches are welcome.
         (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
         (root / "VERSION").write_text("0.1.0\n", encoding="utf-8")
         (root / "docs" / "screenshots").mkdir()
+        (root / "docs" / "screenshots" / "demo.png").write_bytes(b"\x89PNG\r\n\x1a\n")
 
         result = run_repo_signal(
             ["publish-checklist", str(root), "--fail-under", "10"],
@@ -1410,6 +1411,7 @@ class InspectJsonContractTests(unittest.TestCase):
         self.addCleanup(temp.cleanup)
 
         (root / "docs" / "screenshots").mkdir(parents=True)
+        (root / "docs" / "screenshots" / "demo.png").write_bytes(b"\x89PNG\r\n\x1a\n")
         (root / ".github" / "ISSUE_TEMPLATE").mkdir(parents=True)
         (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
         (root / "VERSION").write_text("0.1.0\n", encoding="utf-8")

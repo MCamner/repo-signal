@@ -29,14 +29,18 @@ docs/wiki-export/
 
 ## Step 2 — Review
 
-Open each file and verify the content before publishing:
+Pages are generated from the target repo's tracked files, and a page whose
+source is missing says so rather than inventing content. Review anyway before
+publishing — a page can faithfully reproduce a document that is itself stale:
 
 ```bash
 cat docs/wiki-export/Home.md
 cat docs/wiki-export/Command-Reference.md
 ```
 
-Edit any file that needs corrections.
+Edit any file that needs corrections, or fix the source document and re-export.
+Prefer the second: pages are regenerated, so edits made here are lost on the
+next export.
 
 ## Step 3 — Clone the GitHub Wiki
 

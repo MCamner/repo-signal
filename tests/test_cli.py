@@ -631,7 +631,9 @@ Issues and patches are welcome.
 
         self.assertEqual(result.returncode, 0)
         self.assertIn("WIKI EXPORT", result.stdout)
-        self.assertIn(f"Repo: {root.name}", result.stdout)
+        # The project names itself in its README heading; the temp directory
+        # name is an artifact of the checkout, not the project.
+        self.assertIn("Repo: sample-repo", result.stdout)
         self.assertIn("docs/wiki-export/Home.md", result.stdout)
         self.assertTrue((output / "Home.md").exists())
         self.assertTrue((output / "Getting-Started.md").exists())
@@ -641,7 +643,13 @@ Issues and patches are welcome.
         self.assertTrue((output / "Release-Flow.md").exists())
         self.assertTrue((output / "Skills.md").exists())
         self.assertTrue((output / "Troubleshooting.md").exists())
-        self.assertIn("repo-signal wiki plan .", (output / "Command-Reference.md").read_text(encoding="utf-8"))
+        # Pages describe the target repo. The sample repo documents a quick
+        # start but no command reference, and both pages must say so honestly.
+        self.assertIn("echo hello", (output / "Getting-Started.md").read_text(encoding="utf-8"))
+        self.assertIn(
+            "No command reference found",
+            (output / "Command-Reference.md").read_text(encoding="utf-8"),
+        )
 
     def test_wiki_export_command_requires_output_value(self):
         temp, root = make_sample_repo()

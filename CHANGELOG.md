@@ -2,6 +2,22 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [Unreleased]
+
+### Fixed
+
+- `wiki export` wrote the same eight pages for every target repository. The
+  content described repo-signal itself, so following `docs/PUBLISH-FLOW.md` for
+  any other repo published false claims about that project. Pages are now built
+  from the target repo's own files — `README.md`, `VERSION`, `CHANGELOG.md`,
+  `ROADMAP.md`, `docs/architecture.md`, `docs/COMMANDS.md`, `skills/` — and a
+  page whose source is missing states that instead of inventing content.
+- `wiki export` now reads only files git tracks. Repos keep local-only material
+  in ordinary directories, and reading off the filesystem alone leaked
+  gitignored filenames into pages meant for a public wiki.
+- `repo-signal wiki export --help` printed `Unknown wiki export option: --help`
+  and exited 2, leaving `--output` undiscoverable from the CLI.
+
 ## [1.4.2] - 2026-07-18
 
 ### Fixed

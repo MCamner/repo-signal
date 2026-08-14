@@ -131,6 +131,27 @@ Run from any repository root.
 """
 
 
+WIKI_EXPORT_HELP = """repo-signal wiki export
+
+Generate wiki pages describing the target repository.
+
+Usage:
+  repo-signal wiki export [path] [--output path]
+
+Options:
+  -h, --help       Show this message
+  --output PATH    Where to write the pages, relative to the target repo
+                   (default: docs/wiki-export)
+
+Pages are built from the target repo's own files: README.md, VERSION,
+CHANGELOG.md, ROADMAP.md, docs/architecture.md, docs/COMMANDS.md, and skills/.
+A page whose source is missing says so rather than inventing content.
+
+Files are written locally and never pushed. Review them before copying into a
+GitHub Wiki; see docs/PUBLISH-FLOW.md.
+"""
+
+
 CHECKS = [
     ("README.md", "README exists"),
     ("LICENSE", "License exists"),
@@ -503,6 +524,10 @@ def parse_wiki_args(args: list[str]) -> tuple[str, Path, str]:
         index = 0
         while index < len(rest):
             arg = rest[index]
+
+            if arg in ("-h", "--help"):
+                print(WIKI_EXPORT_HELP)
+                raise SystemExit(0)
 
             if arg == "--output":
                 if index + 1 >= len(rest):

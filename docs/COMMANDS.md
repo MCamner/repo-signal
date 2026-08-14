@@ -337,7 +337,14 @@ Usage:
 repo-signal wiki
 repo-signal wiki plan .
 repo-signal wiki export . --output docs/wiki-export
+repo-signal wiki export --help
 ```
+
+`wiki export` builds each page from the target repository's own tracked files:
+`README.md`, `VERSION`, `CHANGELOG.md`, `ROADMAP.md`, `docs/architecture.md`,
+`docs/COMMANDS.md`, and `skills/`. A page whose source is missing says so
+instead of inventing content, and gitignored files are never read — exported
+pages are meant to be copied into a public wiki.
 
 ## repo-signal hygiene
 

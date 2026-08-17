@@ -9,6 +9,23 @@ def has_any(path: Path, names: list[str]) -> bool:
     return any((path / name).exists() for name in names)
 
 
+IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif"}
+
+
+def has_image(path: Path) -> bool:
+    """True when the folder holds at least one image.
+
+    Folder existence is not evidence of a gallery: `mkdir docs/screenshots`
+    used to score this point while the folder stayed empty.
+    """
+    if not path.is_dir():
+        return False
+    return any(
+        item.is_file() and item.suffix.lower() in IMAGE_SUFFIXES
+        for item in path.rglob("*")
+    )
+
+
 def read_text(path: Path) -> str:
     try:
         return path.read_text(encoding="utf-8")
@@ -149,8 +166,8 @@ def build_publish_checklist(repo_path: str = ".") -> dict:
                 ),
                 (
                     "docs screenshots folder exists",
-                    (docs / "screenshots").exists(),
-                    "add docs/screenshots/",
+                    has_image(docs / "screenshots"),
+                    "add at least one image to docs/screenshots/",
                 ),
             ],
         ),
@@ -310,7 +327,7 @@ def build_fix_plan(result: dict) -> list[str]:
         elif name == "GitHub Pages landing exists":
             commands.append("mkdir -p docs && touch docs/index.html")
         elif name == "docs screenshots folder exists":
-            commands.append("mkdir -p docs/screenshots")
+            commands.append("mkdir -p docs/screenshots  # then add a real screenshot")
         else:
             hint = str(check.get("hint") or "fix manually")
             commands.append(f"# {name}: {hint}")

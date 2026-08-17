@@ -17,6 +17,25 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
       - name: Run packaging readiness check
         run: |
           scripts/check-packaging.sh
+
+      - name: Smoke test uv tool installation
+        run: |
+          uv tool install .
+
+          TOOL_BIN="$(uv tool dir --bin)"
+
+          "$TOOL_BIN/repo-signal" --version
+          "$TOOL_BIN/repo-signal" --help >/dev/null
+          "$TOOL_BIN/repoaware" --help >/dev/null
+          "$TOOL_BIN/repo-signal" inspect . >/dev/null
+          "$TOOL_BIN/repo-signal" inspect --json . >/dev/null
+          "$TOOL_BIN/repo-signal" doctor >/dev/null
+          "$TOOL_BIN/repo-signal" publish-checklist . >/dev/null
+
+          uv tool list

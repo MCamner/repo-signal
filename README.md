@@ -172,6 +172,7 @@ Live docs: [mcamner.github.io/repo-signal](https://mcamner.github.io/repo-signal
 - [**Doctor Schema**](docs/DOCTOR_SCHEMA.md) — `doctor.v1` field reference
 - [**Report Schema**](docs/REPORT_SCHEMA.md) — `report.v1` field reference
 - [**Suggest Schema**](docs/SUGGEST_SCHEMA.md) — `suggest.v1` field reference, no-mutation guarantee
+- [**Review Export Schema**](docs/REVIEW_EXPORT_SCHEMA.md) — `repo-review.v1` Markdown contract
 
 **Usage:**
 

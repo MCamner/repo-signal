@@ -30,11 +30,25 @@ the memory loop are documented in mqobsidian (source of truth):
 
 ## Install
 
-From PyPI:
+Recommended for the MQ stack:
 
 ```bash
-pipx install repo-signal
+uv tool install repo-signal
 ```
+
+Verify the CLI is available:
+
+```bash
+repo-signal --version
+```
+
+If the uv tool bin directory is not on `PATH`, run:
+
+```bash
+uv tool update-shell
+```
+
+`pipx install repo-signal` remains a supported alternative.
 
 Current local development install:
 
@@ -152,7 +166,7 @@ All stable commands have JSON output that agent tools can consume safely:
 # Check schema before parsing
 repo-signal inspect --json . | python3 -c "
 import json, sys
-d = json.load(sys.stdin)
+d=json.load(sys.stdin)
 assert d['schema'] == 'inspect.v1'
 print(d['recommended_next_commit'])
 "
@@ -183,7 +197,7 @@ Live docs: [mcamner.github.io/repo-signal](https://mcamner.github.io/repo-signal
 
 **Publishing:**
 
-- [**Packaging**](docs/PACKAGING.md) — PyPI / pipx readiness plan and packaging smoke tests
+- [**Packaging**](docs/PACKAGING.md) — PyPI / CLI tool readiness plan and packaging smoke tests
 - [**PyPI**](docs/PYPI.md) — Real PyPI publishing guide and Trusted Publisher values
 - [**Generated Examples**](docs/GENERATED_EXAMPLES.md) — How examples are generated and verified before release
 - [**Roadmap**](ROADMAP.md) — Release direction and stability checklist

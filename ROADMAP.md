@@ -676,7 +676,7 @@ turning repo-signal into a durable memory store or review engine.
 
 ### P0 — Lock the public contracts
 
-- [ ] Add `docs/REVIEW_EXPORT_SCHEMA.md` with fields, provenance, path rules and
+- [x] Add `docs/REVIEW_EXPORT_SCHEMA.md` with fields, provenance, path rules and
   overwrite behavior for `repo-review.v1`
 - [ ] Add a generated, public-safe `repo-review.v1` fixture under `examples/`
 - [ ] Add `repo-review.v1` to `release.sh` contract checks

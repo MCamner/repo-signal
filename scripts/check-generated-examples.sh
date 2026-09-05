@@ -3,7 +3,13 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
-PYTHON_BIN="${PYTHON_BIN:-python3}"
+if [[ -n "${PYTHON_BIN:-}" ]]; then
+  PYTHON_CMD=("$PYTHON_BIN")
+elif command -v uv >/dev/null 2>&1; then
+  PYTHON_CMD=(uv run --frozen python)
+else
+  PYTHON_CMD=(python3)
+fi
 
 STRICT=0
 if [[ "${1:-}" == "--strict" ]]; then
@@ -11,7 +17,7 @@ if [[ "${1:-}" == "--strict" ]]; then
 fi
 
 run_cli() {
-  "$PYTHON_BIN" -m repo_signal.cli "$@"
+  "${PYTHON_CMD[@]}" -m repo_signal.cli "$@"
 }
 
 fail() {
@@ -34,7 +40,7 @@ check_json_schema() {
   local file="$1"
   local expected_schema="$2"
 
-  "$PYTHON_BIN" - "$file" "$expected_schema" <<'PY'
+  "${PYTHON_CMD[@]}" - "$file" "$expected_schema" <<'PY'
 import json
 import sys
 from pathlib import Path

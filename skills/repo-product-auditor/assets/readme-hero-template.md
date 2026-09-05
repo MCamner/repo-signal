@@ -2,7 +2,7 @@
 
 Use this when the repo needs a stronger opening section.
 
-```markdown
+````markdown
 # <Project Name>
 
 <One sentence: what it is, who it is for, and why it matters.>
@@ -39,4 +39,4 @@ Use this when the repo needs a stronger opening section.
 - <Use case 1>
 - <Use case 2>
 - <Use case 3>
-```
+````

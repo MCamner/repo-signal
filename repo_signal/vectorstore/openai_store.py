@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 import os
-import subprocess
 import tempfile
 from typing import List, Optional
 
@@ -25,29 +24,19 @@ class OpenAIUploadResult:
     file_id: str = ""
 
 
-def load_shell_env_if_available(name: str) -> None:
-    if os.getenv(name):
-        return
+def resolve_vector_store_id(
+    vector_store_id: Optional[str] = None,
+    *,
+    discover: bool = True,
+) -> str:
+    """Resolve the vector store id from the argument, then the environment.
 
-    try:
-        result = subprocess.run(
-            ["zsh", "-lic", f"print -r -- ${{{name}:-}}"],
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            check=False,
-        )
-    except Exception:
-        return
-
-    value = result.stdout.strip()
-    if value:
-        os.environ[name] = value
-
-
-def resolve_vector_store_id(vector_store_id: Optional[str] = None) -> str:
-    load_dotenv_if_available()
-    load_shell_env_if_available(VECTOR_STORE_ENV)
+    A login shell is never consulted: it is slow, can hang, and on macOS may
+    print restored-session text that looks like a value. Pass discover=False
+    to skip .env loading so resolution depends only on the process env.
+    """
+    if discover:
+        load_dotenv_if_available()
 
     resolved = vector_store_id or os.getenv(VECTOR_STORE_ENV, "")
     if not resolved:
@@ -57,9 +46,16 @@ def resolve_vector_store_id(vector_store_id: Optional[str] = None) -> str:
     return resolved
 
 
-def openai_client():
-    load_dotenv_if_available()
-    load_shell_env_if_available("OPENAI_API_KEY")
+def openai_client(*, discover: bool = True):
+    """Build an OpenAI client from process configuration.
+
+    The credential is read from the environment, optionally after loading
+    `.env`. The user's shell is never started to look for it: a credential
+    that only exists inside an interactive dotfile is invisible to every
+    other caller and untestable. Pass discover=False for a hermetic lookup.
+    """
+    if discover:
+        load_dotenv_if_available()
 
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
@@ -124,6 +120,7 @@ def upload_repository_memory(
     vector_store_id: Optional[str] = None,
     include_tests: bool = False,
     dry_run: bool = False,
+    discover: bool = True,
 ) -> OpenAIUploadResult:
     repo = Repository.load(repo_path)
     document = build_openai_memory_document(repo, include_tests=include_tests)
@@ -132,9 +129,8 @@ def upload_repository_memory(
 
     if dry_run:
         # Keep dry-runs deterministic for tests and CI.
-        # Do not query an interactive shell here; on macOS, zsh login shells may
-        # print restored-session text that can be mistaken for an env value.
-        load_dotenv_if_available()
+        if discover:
+            load_dotenv_if_available()
         display_store_id = vector_store_id or os.getenv(VECTOR_STORE_ENV, "(not set)")
         return OpenAIUploadResult(
             repo_name=repo.name,
@@ -145,9 +141,9 @@ def upload_repository_memory(
             status="dry_run",
         )
 
-    resolved_store_id = resolve_vector_store_id(vector_store_id)
+    resolved_store_id = resolve_vector_store_id(vector_store_id, discover=discover)
 
-    client = openai_client()
+    client = openai_client(discover=discover)
 
     with tempfile.NamedTemporaryFile("w+b", suffix=".md", delete=True) as file:
         file.write(encoded)

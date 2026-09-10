@@ -1248,9 +1248,12 @@ class SemanticMemoryTests(unittest.TestCase):
 
             prev = os.environ.pop("OPENAI_VECTOR_STORE_ID", None)
             try:
+                # discover=False: the result must depend on the process env,
+                # not on a developer's .env.
                 result = upload_repository_memory(
                     repo_path=root,
                     dry_run=True,
+                    discover=False,
                 )
             finally:
                 if prev is not None:

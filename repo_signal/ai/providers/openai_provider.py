@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 from repo_signal.ai.providers.base import ProviderConfigurationError
 
@@ -17,30 +16,16 @@ def load_dotenv_if_available() -> None:
     load_dotenv()
 
 
-def load_shell_openai_key_if_available() -> None:
-    if os.getenv("OPENAI_API_KEY"):
-        return
-
-    try:
-        result = subprocess.run(
-            ["zsh", "-lc", "print -r -- ${OPENAI_API_KEY:-}"],
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            check=False,
-        )
-    except Exception:
-        return
-
-    value = result.stdout.strip()
-    if value:
-        os.environ["OPENAI_API_KEY"] = value
-
-
 class OpenAIProvider:
-    def __init__(self, model: str = DEFAULT_MODEL, embedding_model: str = DEFAULT_EMBEDDING_MODEL):
-        load_dotenv_if_available()
-        load_shell_openai_key_if_available()
+    def __init__(
+        self,
+        model: str = DEFAULT_MODEL,
+        embedding_model: str = DEFAULT_EMBEDDING_MODEL,
+        *,
+        discover: bool = True,
+    ):
+        if discover:
+            load_dotenv_if_available()
 
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:

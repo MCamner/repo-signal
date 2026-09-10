@@ -64,36 +64,147 @@ class TestDryRun:
 
 
 class TestMissingVectorStore:
-    def test_upload_without_vector_store_exits_nonzero(self):
-        env = {k: v for k, v in os.environ.items() if k != "OPENAI_VECTOR_STORE_ID"}
-        env["OPENAI_API_KEY"] = "sk-test"
-        result = subprocess.run(
-            [sys.executable, "-m", "repo_signal.cli", "semantic-upload"],
-            cwd=str(REPO_ROOT),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
-        assert result.returncode != 0
+    """Missing-vector-store behavior must depend on test input only.
 
-    def test_upload_without_vector_store_prints_error(self):
-        env = {k: v for k, v in os.environ.items() if k != "OPENAI_VECTOR_STORE_ID"}
-        env["OPENAI_API_KEY"] = "sk-test"
-        result = subprocess.run(
-            [sys.executable, "-m", "repo_signal.cli", "semantic-upload"],
-            cwd=str(REPO_ROOT),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
-        assert "vector store" in result.stderr.lower() or "OPENAI_VECTOR_STORE_ID" in result.stderr
+    These tests must not see a vector store id from the developer's .env or
+    login shell, so they clear the process env and disable discovery.
+    """
+
+    @staticmethod
+    def _isolated_env():
+        """Process env with an API key but no vector store id."""
+        env = patch.dict(os.environ, {"OPENAI_API_KEY": "sk-test"})
+        env.start()
+        os.environ.pop("OPENAI_VECTOR_STORE_ID", None)
+        return env
+
+    def test_cli_without_vector_store_exits_nonzero(self):
+        from repo_signal.semantic_upload import main as semantic_upload_main
+
+        env = self._isolated_env()
+        try:
+            with patch(
+                "repo_signal.vectorstore.openai_store.load_dotenv_if_available",
+                lambda: None,
+            ):
+                with pytest.raises(SystemExit) as excinfo:
+                    semantic_upload_main([])
+            assert excinfo.value.code != 0
+        finally:
+            env.stop()
+
+    def test_cli_without_vector_store_prints_error(self, capsys):
+        from repo_signal.semantic_upload import main as semantic_upload_main
+
+        env = self._isolated_env()
+        try:
+            with patch(
+                "repo_signal.vectorstore.openai_store.load_dotenv_if_available",
+                lambda: None,
+            ):
+                with pytest.raises(SystemExit):
+                    semantic_upload_main([])
+            stderr = capsys.readouterr().err
+        finally:
+            env.stop()
+        assert "vector store" in stderr.lower() or "OPENAI_VECTOR_STORE_ID" in stderr
 
     def test_upload_function_raises_on_missing_store(self):
         from repo_signal.vectorstore.openai_store import resolve_vector_store_id
         from repo_signal.ai.providers.base import ProviderConfigurationError
+
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ProviderConfigurationError):
-                resolve_vector_store_id(None)
+                resolve_vector_store_id(None, discover=False)
+
+    def test_discover_false_ignores_dotenv(self):
+        """discover=False must not read .env, even when it holds an id."""
+        from repo_signal.vectorstore import openai_store
+        from repo_signal.ai.providers.base import ProviderConfigurationError
+
+        def poisoned_dotenv():
+            os.environ["OPENAI_VECTOR_STORE_ID"] = "vs_from_dotenv"
+
+        with patch.dict(os.environ, {}, clear=True):
+            with patch.object(openai_store, "load_dotenv_if_available", poisoned_dotenv):
+                with pytest.raises(ProviderConfigurationError):
+                    openai_store.resolve_vector_store_id(None, discover=False)
+
+    def test_resolution_does_not_spawn_a_login_shell(self):
+        """Vector store resolution must never shell out to the user's shell."""
+        from repo_signal.vectorstore import openai_store
+
+        from repo_signal.ai.providers.base import ProviderConfigurationError
+
+        with patch.dict(os.environ, {}, clear=True):
+            with patch.object(openai_store, "load_dotenv_if_available", lambda: None):
+                with patch("subprocess.run") as run:
+                    with pytest.raises(ProviderConfigurationError):
+                        openai_store.resolve_vector_store_id(None)
+        run.assert_not_called()
+
+
+class TestNoShellDiscovery:
+    """Configuration must be explicit and process-scoped.
+
+    repo-signal never interrogates the user's login or interactive shell to
+    manufacture configuration or credentials: it is slow, can hang, and hides
+    runtime behavior in machine-local dotfiles.
+    """
+
+    def test_openai_client_does_not_spawn_a_shell(self):
+        from repo_signal.vectorstore import openai_store
+        from repo_signal.ai.providers.base import ProviderConfigurationError
+
+        with patch.dict(os.environ, {}, clear=True):
+            with patch.object(openai_store, "load_dotenv_if_available", lambda: None):
+                with patch("subprocess.run") as run:
+                    with pytest.raises(ProviderConfigurationError):
+                        openai_store.openai_client()
+        run.assert_not_called()
+
+    def test_openai_client_discover_false_ignores_dotenv(self):
+        from repo_signal.vectorstore import openai_store
+        from repo_signal.ai.providers.base import ProviderConfigurationError
+
+        def poisoned_dotenv():
+            os.environ["OPENAI_API_KEY"] = "sk-from-dotenv"
+
+        with patch.dict(os.environ, {}, clear=True):
+            with patch.object(openai_store, "load_dotenv_if_available", poisoned_dotenv):
+                with pytest.raises(ProviderConfigurationError):
+                    openai_store.openai_client(discover=False)
+
+    def test_openai_provider_does_not_spawn_a_shell(self):
+        from repo_signal.ai.providers import openai_provider
+        from repo_signal.ai.providers.base import ProviderConfigurationError
+
+        with patch.dict(os.environ, {}, clear=True):
+            with patch.object(openai_provider, "load_dotenv_if_available", lambda: None):
+                with patch("subprocess.run") as run:
+                    with pytest.raises(ProviderConfigurationError):
+                        openai_provider.OpenAIProvider()
+        run.assert_not_called()
+
+    def test_openai_provider_discover_false_ignores_dotenv(self):
+        from repo_signal.ai.providers import openai_provider
+        from repo_signal.ai.providers.base import ProviderConfigurationError
+
+        def poisoned_dotenv():
+            os.environ["OPENAI_API_KEY"] = "sk-from-dotenv"
+
+        with patch.dict(os.environ, {}, clear=True):
+            with patch.object(openai_provider, "load_dotenv_if_available", poisoned_dotenv):
+                with pytest.raises(ProviderConfigurationError):
+                    openai_provider.OpenAIProvider(discover=False)
+
+    def test_shell_discovery_helpers_are_gone(self):
+        """The two near-duplicate zsh helpers must not come back."""
+        from repo_signal.vectorstore import openai_store
+        from repo_signal.ai.providers import openai_provider
+
+        assert not hasattr(openai_store, "load_shell_env_if_available")
+        assert not hasattr(openai_provider, "load_shell_openai_key_if_available")
 
 
 class TestNoSecretGuarantee:

@@ -6,49 +6,49 @@ Path: `/Users/mansys/repo-signal`
 ## Summary
 
 - Project type: `Python CLI / repo intelligence toolkit`
-- Files scanned: `157`
-- Approx size: `4.04 MB`
+- Files scanned: `245`
+- Approx size: `1.78 MB`
 - Git repo: `yes`
 - Git branch: `main`
-- Working tree changes: `8`
+- Working tree changes: `19`
 
 ## Languages
 
-- Markdown: `57` files
-- Python: `54` files
-- JSON: `7` files
-- YAML: `4` files
-- Shell: `3` files
+- Markdown: `89` files
+- Python: `89` files
+- Shell: `15` files
+- JSON: `15` files
+- YAML: `9` files
 - TOML: `1` files
 - HTML: `1` files
 
 ## Key Entry Points
 
+- .markdownlint-cli2.jsonc
 - bin/repo-signal
+- examples/integrations/inspect_safe.sh
+- examples/integrations/mq_mcp_pack_merge.sh
+- examples/integrations/mqobsidian_export.sh
+- examples/integrations/readiness_gate.sh
+- release-check.sh
 - release.sh
 - repo_signal/cli.py
 - repo_signal/repoaware/__main__.py
-- scripts/check-generated-examples.sh
-- scripts/generate-examples.sh
-- scripts/generate_screenshots.py
-- tools/build_prompt.py
-- tools/generate_wiki_command_ref.py
-- tools/skill_router.py
 
 ## Top Directories
 
-- `repo_signal`: `47` files
-- `docs`: `30` files
-- `examples`: `27` files
-- `skills`: `14` files
-- `.`: `11` files
-- `.repo-signal`: `9` files
-- `.github`: `7` files
+- `repo_signal`: `62` files
+- `examples`: `47` files
+- `docs`: `46` files
+- `tests`: `21` files
+- `skills`: `18` files
+- `.`: `17` files
+- `.github`: `12` files
+- `scripts`: `11` files
+- `.mq`: `6` files
 - `tools`: `3` files
-- `tests`: `3` files
-- `scripts`: `3` files
-- `.claude`: `2` files
 - `bin`: `1` files
+- `.claude`: `1` files
 
 ## Detected Tooling
 
@@ -60,15 +60,17 @@ Path: `/Users/mansys/repo-signal`
 
 ## Git Health
 
-- [MED] Working tree has changes: `8`
-  - `M CHANGELOG.md`
-  - ` M README.md`
-  - ` M ROADMAP.md`
-  - ` M examples/analyze/analyze.txt`
-  - `?? .github/workflows/examples.yml`
-  - `?? docs/GENERATED_EXAMPLES.md`
-  - `?? scripts/check-generated-examples.sh`
-  - `?? scripts/generate-examples.sh`
+- [MED] Working tree has changes: `19`
+  - `M examples/analyze/analyze.txt`
+  - ` M examples/demo/analyze.txt`
+  - ` M examples/demo/doctor.txt`
+  - ` M examples/demo/doctor.v1.json`
+  - ` M examples/demo/inspect.txt`
+  - ` M examples/demo/inspect.v1.json`
+  - ` M examples/doctor/doctor.txt`
+  - ` M examples/doctor/doctor.v1.json`
+  - ` M examples/exports/callgraph.json`
+  - ` M examples/exports/repo_summary.json`
 
 ## Suggested Focus Areas
 

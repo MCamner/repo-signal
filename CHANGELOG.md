@@ -14,6 +14,26 @@
 
 ### Fixed
 
+- A repository scan described the machine as much as the repository. It walked
+  the filesystem and filtered through a hand-maintained `IGNORE_DIRS` denylist
+  that could not keep up — this checkout carries 259 tracked files against 2,604
+  gitignored ones, and `.repo-signal/`, `.cursor/` and `.codegraph/` were all
+  missing from the list. The scan now asks git what belongs to the repository:
+  tracked files plus untracked files that are not ignored, so work in progress
+  still counts while local tool directories do not. Outside a git repo nothing
+  changes.
+- Two committed examples published gitignored paths.
+  `examples/inspect/inspect.txt` listed `.repo-signal (9)` among its top
+  directories, and `examples/exports/symbol_index.json` carried
+  `.repo-signal/chroma/chroma.sqlite3` nine times. Both are regenerated, and
+  `tests/test_scanner_hermeticity.py` now holds every generated example to the
+  invariant, asking git for the ignored set rather than hard-coding it.
+- `repoaware` had two more filesystem walks with their own denylists, found
+  while auditing the generators. `ranking.py` leaked `.cursor/mcp.json` into
+  `examples/repoaware/review.md`, and `context_builder.py` built its repo tree
+  from `find`, whose order is not stable across filesystems. Both now use the
+  same git-visible set, which makes the tree deterministic as well.
+
 - `publish-checklist` no longer treats an empty `docs/screenshots/` directory as
   a screenshot gallery; at least one image is required. The check tested only
   that the path existed, so `mkdir docs/screenshots` scored the point while the

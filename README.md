@@ -187,6 +187,8 @@ Live docs: [mcamner.github.io/repo-signal](https://mcamner.github.io/repo-signal
 - [**Report Schema**](docs/REPORT_SCHEMA.md) — `report.v1` field reference
 - [**Suggest Schema**](docs/SUGGEST_SCHEMA.md) — `suggest.v1` field reference, no-mutation guarantee
 - [**Review Export Schema**](docs/REVIEW_EXPORT_SCHEMA.md) — `repo-review.v1` Markdown contract
+- [**Memory Observation Schema**](docs/MEMORY_OBSERVATION_SCHEMA.md) — `memory-observation.v1` producer fields
+- [**mqobsidian Boundary**](docs/MQOBSIDIAN_BOUNDARY.md) — who owns what across both export paths, and how each fails
 
 **Usage:**
 

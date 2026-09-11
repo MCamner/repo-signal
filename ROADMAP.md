@@ -780,22 +780,22 @@ test suite, and neither gates the contract guarantees v1.5.0 makes.
 
 ### Deliverables
 
-- [ ] Add a temporary-vault smoke test for inspect → review export → schema read
+- [x] Add a temporary-vault smoke test for inspect → review export → schema read
   — `tests/test_mqobsidian_boundary.py::TestReviewExportSmoke`, covering the
   library round trip and the full CLI path
-- [ ] Add a temporary-vault smoke test for inspect → observation append without
+- [x] Add a temporary-vault smoke test for inspect → observation append without
   touching durable notes — `TestObservationSmoke` asserts the run creates
   *only* the observation surface and leaves a pre-existing note byte-identical
-- [ ] Document ownership: repo-signal produces signals; mqobsidian stores them;
+- [x] Document ownership: repo-signal produces signals; mqobsidian stores them;
   mq-agent owns scoring, promotion and workflow orchestration —
   `docs/MQOBSIDIAN_BOUNDARY.md`, with the rules asserted in tests rather than
   only stated
-- [ ] Document failure behavior for a missing vault, unwritable output and an
+- [x] Document failure behavior for a missing vault, unwritable output and an
   unknown source schema. Writing it down found a defect: `PermissionError` is
   neither `FileNotFoundError` nor `FileExistsError`, so an unwritable vault
   escaped the CLI handler and printed a traceback. It now reports like every
   other vault fault
-- [ ] Add one integration example that uses `MQ_OBSIDIAN_DIR` and contains no
+- [x] Add one integration example that uses `MQ_OBSIDIAN_DIR` and contains no
   user-specific absolute path — `examples/integrations/mqobsidian_export.sh`,
   driven through all five of its paths
 - [x] Remove the checkout-name dependency in the test suite. Three tests
@@ -809,11 +809,11 @@ test suite, and neither gates the contract guarantees v1.5.0 makes.
 
 ### Definition of done
 
-- [ ] Both smoke tests run without touching a durable vault — verified by
+- [x] Both smoke tests run without touching a durable vault — verified by
   snapshotting a real 8,977-file vault before and after a full suite run and
   diffing it; the tests redirect `HOME` as well as `MQ_OBSIDIAN_DIR`
 - [x] The full suite passes from a checkout directory with any basename
-- [ ] Ownership and failure behavior are documented, not implied
+- [x] Ownership and failure behavior are documented, not implied
 
 ---
 

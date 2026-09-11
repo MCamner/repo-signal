@@ -119,6 +119,22 @@ def _top_directories(repo_model: Any) -> Any:
     return _get(repo_model, "top_directories", [])
 
 
+# `core_files` is a presence inventory: exists = (repo / rel_path).exists().
+# "gallery" read as a claim about content, so an empty folder printed
+# "[OK] Screenshots/output gallery" beside a publish-checklist warning asking
+# for an image, and the two lines looked like a contradiction. Only the human
+# rendering is clarified: inspect.v1 is an integration contract, so its label,
+# its `exists` predicate and its issue strings are left exactly as they are.
+# Carrying "the gallery has content" in inspect itself belongs in inspect.v2 or
+# a new field, never in a changed meaning for `exists`.
+_TEXT_ONLY_LABELS = {"docs/screenshots": "Screenshots/output directory"}
+
+
+def _core_file_label(record: dict[str, Any]) -> str:
+    """The label for human output, which may differ from the contract label."""
+    return _TEXT_ONLY_LABELS.get(record["path"], record["label"])
+
+
 def _core_file_records(repo: Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for rel_path, label, importance in CORE_FILES:
@@ -463,7 +479,7 @@ def inspect_repo(path: str | Path | None = None, output_format: str = "text") ->
     lines.append("----------")
     for record in data["core_files"]:
         status = "OK" if record["exists"] else "MISSING"
-        lines.append(f"- [{status}] {record['label']}: {record['path']}")
+        lines.append(f"- [{status}] {_core_file_label(record)}: {record['path']}")
     lines.append("")
 
     lines.append("Possible issues")

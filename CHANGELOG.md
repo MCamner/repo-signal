@@ -20,6 +20,14 @@
   gallery stayed empty — and the fix plan handed the user exactly that command.
   A path that is a file, or a folder holding only a placeholder README, does not
   pass either, and both fix-plan hints now ask for a real screenshot.
+- `repo-signal inspect` labelled `docs/screenshots` "Screenshots/output
+  gallery" in its human output, which read as a claim about content. Beside the
+  checklist warning above, an empty folder printed `[OK] Screenshots/output
+  gallery` next to a request for an image and the two lines looked like a
+  contradiction. The text now says "Screenshots/output directory". This is a
+  rendering change only: `core_files` is a presence inventory, and the
+  `inspect.v1` payload — its label, its `exists` predicate and its issue
+  strings — is byte-identical.
 
 ## [1.6.0] - 2026-09-11
 

@@ -236,12 +236,12 @@ integrations keep a reliable contract.
 
 ---
 
-## v1.5.0 status
+## v1.6.0 status
 
 - [x] 4 stable JSON contracts: `inspect.v1`, `doctor.v1`, `report.v1`, `suggest.v1`
 - [x] 2 documented export contracts: `repo-review.v1`, `memory-observation.v1`
-- [x] Full test suite passes — `331 passed, 219 subtests` on Python 3.11, 3.12
-  and 3.14
+- [x] Full test suite passes — `359 passed, 219 subtests` on Python 3.11, 3.12
+  and 3.14, and from a checkout directory that is not named `repo-signal`
 - [x] Schema checks in `release.sh` for all four stable contracts, plus an
   `mqobsidian export contracts` section covering both export paths
 - [x] Contract docs: `INSPECT_SCHEMA.md`, `DOCTOR_SCHEMA.md`, `REPORT_SCHEMA.md`,
@@ -251,11 +251,14 @@ integrations keep a reliable contract.
   `examples/inspect/`, `examples/doctor/`, `examples/review-export/`
 - [x] No machine-local path reaches an exported artifact — a shape invariant in
   `repo_signal/redaction.py`, not a convention
+- [x] The mqobsidian boundary is proven end to end against a temporary vault:
+  ownership, both export paths, and what each does when the vault is missing,
+  unwritable or the wrong shape — `docs/MQOBSIDIAN_BOUNDARY.md`
 - [x] The 26 top-level commands are declared once in `repo_signal/commands.py`;
   help, the unknown-command fallback and `docs/COMMANDS.md` are held to it
 - [x] CLI surface frozen for v1.x
-- [x] GitHub Actions green (Tests, Packaging, Generated examples, Publish
-  checklist)
+- [x] GitHub Actions green (Tests on 3.11 and 3.12, the renamed-checkout run,
+  Docs consistency, Packaging, Generated examples, Publish checklist)
 - [x] `.markdownlint.json` configured
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.

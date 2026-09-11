@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD024 -->
 
-## [Unreleased]
+## [1.6.0] - 2026-09-11
 
 ### Added
 
@@ -36,6 +36,13 @@
   The expectations are now derived from the path each test passes in. Same
   class as the shell-discovery defect: the test read implicit machine context
   instead of its own input.
+
+### Changed
+
+- Version surfaces moved to 1.6.0: `VERSION`, `pyproject.toml`,
+  `repo_signal.__version__` and `.mq/repo-contract.json`. v1.5.0 was tagged on
+  its own release-closure commit rather than on a later `main`, so the v1.6.0
+  work above never sat under a tag whose metadata said 1.5.0.
 
 ## [1.5.0] - 2026-09-11
 

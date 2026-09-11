@@ -1,4 +1,17 @@
-# repo-signal 0.2.0 Roadmap
+# repo-signal 0.2.0 Roadmap (historical)
+
+> **Status: historical.** This roadmap was written for v0.2.0 and is kept for
+> provenance, not planning. The repo shipped past it long ago; see `VERSION`
+> for the current release. Canonical roadmap:
+> [../ROADMAP.md](../ROADMAP.md).
+>
+> Unchecked boxes below are **not** open work items. When this roadmap was
+> archived, two of them described defects that were still present: the
+> top-level `--help` command list was incomplete, and subcommand `--help` fell
+> through to the option parser instead of printing usage. Both were fixed by
+> the command-registry work tracked as P1 in the canonical roadmap. That they
+> survived from 0.2.0 until then is the reason this file is archived rather
+> than deleted.
 
 Goal: make repo-signal feel like a stable, reusable CLI for repository analysis,
 publish readiness, and AI-assisted repo context.

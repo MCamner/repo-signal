@@ -694,16 +694,27 @@ turning repo-signal into a durable memory store or review engine.
 
 ### P1 — Keep CLI truth synchronized
 
-- [ ] Define the command list once and reuse it for help, dispatch validation and
-  command documentation checks
-- [ ] Ensure `--help` includes `brief`, `export`, `readiness`, `review-export` and
-  `suggest`
-- [ ] Add a test that every dispatched top-level command is discoverable in
+- [x] Define the command list once and reuse it for help, dispatch validation and
+  command documentation checks — `repo_signal/commands.py` is the single
+  declaration; `--help` and the unknown-command fallback are generated from it,
+  and `tests/test_command_registry.py` holds dispatch and docs to the same list
+- [x] Ensure `--help` includes every dispatched command. The commands actually
+  missing were `brief`, `readiness` and `portfolio`; `export`, `review-export`
+  and `suggest` were already listed when this item was written
+- [x] Add a test that every dispatched top-level command is discoverable in
   `--help`
-- [ ] Add a docs consistency check covering README examples and
-  `docs/COMMANDS.md`
-- [ ] Verify source execution and the installed `repo-signal` entrypoint on
-  supported Python versions
+- [x] Add a docs consistency check covering README examples and
+  `docs/COMMANDS.md` — also added the five reference sections that were missing
+  (`brief`, `export`, `readiness`, `readme`, `scan`)
+- [x] Verify source execution and the installed `repo-signal` entrypoint on
+  supported Python versions — full suite green locally on 3.11 and 3.14, and
+  `.github/workflows/tests.yml` runs it on 3.11 and 3.12. The registry tests
+  also pass on 3.12 under `unittest`, which is how they were checked against a
+  local interpreter that has no pytest installed
+- [x] Make `<command> --help` print usage instead of falling through to the
+  option parsers. `brief`, `readiness` and `portfolio check` answered
+  `Unknown option` and exited 2; `wiki --help` was worse, treating `--help` as
+  a repository path and reporting on a repo by that name
 
 ### P2 — Prove the mqobsidian boundary end to end
 
@@ -716,6 +727,13 @@ turning repo-signal into a durable memory store or review engine.
   unknown source schema
 - [ ] Add one integration example that uses `MQ_OBSIDIAN_DIR` and contains no
   user-specific absolute path
+- [ ] Remove the checkout-name dependency in the test suite. Three tests
+  (`test_mq_ecosystem.py`, `test_review_export.py`, `test_semantic_upload.py`)
+  assume the checkout directory is named `repo-signal` and fail in any other
+  directory — found by verifying commits in a `git worktree`. Same class as the
+  shell-discovery defect: the test reads implicit machine context instead of
+  explicit input. Acceptance: the full suite MUST pass when the checkout
+  directory basename is not `repo-signal`
 
 ### Definition of done
 
@@ -724,6 +742,10 @@ turning repo-signal into a durable memory store or review engine.
 - [ ] Review and observation contracts have docs, tests and public-safe examples
 - [ ] Release checks validate both mqobsidian export paths
 - [ ] README, ROADMAP, CHANGELOG and VERSION agree on v1.5.0
+- [ ] Align the published support claim with the tested matrix: `pyproject.toml`
+  classifiers list Python 3.11 only, while `requires-python` is `>=3.11` and CI
+  runs the full suite on 3.11 and 3.12. The metadata under-claims what is
+  actually verified
 - [ ] GitHub Actions are green before release
 
 ### Non-goals

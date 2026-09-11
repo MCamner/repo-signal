@@ -19,6 +19,15 @@
   schema, no-issue behavior, opt-in gating, write-failure isolation, and the
   path invariant.
 
+- `repo_signal/commands.py` is now the single declaration of the command
+  surface. Top-level `--help` and the unknown-command fallback list are
+  generated from it, and `tests/test_command_registry.py` holds the dispatch
+  chain in `cli.main()`, `docs/COMMANDS.md`, and the README examples to the same
+  list, so a command can no longer be added in one place and forgotten in
+  another.
+- `docs/COMMANDS.md` gained the five sections it was missing: `brief`, `export`,
+  `readiness`, `readme`, and `scan`.
+
 ### Fixed
 
 - `memory-observation.v1` embedded an absolute machine-local path in
@@ -28,6 +37,16 @@
   repository-relative, and the repository root becomes the repository name. The
   observation surface is local-only and gitignored, so nothing had left the
   machine, but the records were machine-specific and worse to move or compare.
+
+- `brief`, `readiness`, and `portfolio` dispatched but were absent from
+  `repo-signal --help`; `portfolio` was missing from the unknown-command
+  fallback list as well. Four hand-maintained views of the command surface had
+  drifted apart and each gave a different answer.
+- `<command> --help` fell through to the option parsers. `brief --help`,
+  `readiness --help`, and `portfolio check --help` printed `Unknown option` and
+  exited 2. `wiki --help` treated `--help` as a repository path and printed a
+  wiki report for a repo of that name. Every command now prints usage and exits
+  0; `wiki export --help` keeps its detailed screen.
 
 ### Fixed
 

@@ -722,6 +722,13 @@ turning repo-signal into a durable memory store or review engine.
   unknown source schema
 - [ ] Add one integration example that uses `MQ_OBSIDIAN_DIR` and contains no
   user-specific absolute path
+- [ ] Remove the checkout-name dependency in the test suite. Three tests
+  (`test_mq_ecosystem.py`, `test_review_export.py`, `test_semantic_upload.py`)
+  assume the checkout directory is named `repo-signal` and fail in any other
+  directory — found by verifying commits in a `git worktree`. Same class as the
+  shell-discovery defect: the test reads implicit machine context instead of
+  explicit input. Acceptance: the full suite MUST pass when the checkout
+  directory basename is not `repo-signal`
 
 ### Definition of done
 

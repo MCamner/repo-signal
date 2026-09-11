@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.7.0 — TBD
+v1.7.0 — Hermetic generated examples
 ```
 
 Current highest-priority gate:
@@ -101,6 +101,7 @@ repo-signal should remain small, scriptable and contract-driven.
 | v1.4.0  | Release/readiness export compatibility               | Done                 |
 | v1.5.0  | Review and memory export contract hardening           | Done                 |
 | v1.6.0  | mqobsidian boundary verification                     | Done                 |
+| v1.7.0  | Hermetic generated examples                          | Planned              |
 
 ---
 
@@ -817,6 +818,83 @@ test suite, and neither gates the contract guarantees v1.5.0 makes.
 
 ---
 
+## v1.7.0 — Hermetic generated examples
+
+Goal:
+
+Make the committed examples a function of the repository, not of the machine
+that generated them.
+
+### The defect
+
+`scripts/generate-examples.sh` renders examples from a live `repo-signal`
+scan of the working tree, and the scanner counts what is on disk rather than
+what git tracks. Gitignored, machine-local directories therefore reach a
+committed, public artifact — by name.
+
+Reproduced on a clean clone, with identical tracked state and only two
+gitignored directories added:
+
+```text
+- Files: 244                                    + Files: 246
+- Top directories: . (17), .claude (1),         + Top directories: . (17), .claude (1),
+    .github (12), .mq (6), bin (1), docs (46)       .codegraph (1), .cursor (1), .github (12), ...
+```
+
+`.cursor/` and `.codegraph/` are untracked and ignored. They still appear.
+This was found while fixing the screenshot label: regenerating the examples on
+a developer machine would have published both directory names, so the one
+affected line was edited by hand instead.
+
+Same class as two defects already fixed:
+
+- `wiki export` read off the filesystem and leaked gitignored filenames into
+  pages meant for a public wiki. Fixed in v1.5.0 by reading only tracked
+  files — the precedent for this work.
+- The test suite read its checkout directory's name instead of its own input.
+  Fixed in v1.6.0.
+
+Each time, output depended on ambient machine state instead of explicit,
+tracked input.
+
+### Requirement
+
+```text
+Generated examples MUST be derived from tracked/public-safe repository state,
+not arbitrary files present in the developer's working tree.
+```
+
+### Deliverables
+
+- [ ] Decide the boundary: whether the scanner gains a tracked-files mode, or
+  the generator renders from a tracked-only view. `wiki_export.py` already
+  solved this once and is the reference
+- [ ] Make `scripts/generate-examples.sh` produce identical output regardless
+  of untracked or gitignored content in the working tree
+- [ ] Add a test that creates gitignored directories and asserts the generated
+  output is unchanged
+- [ ] Audit the other generators for the same exposure —
+  `scripts/generate-review-fixture.py` renders from fixed synthetic input and
+  is already hermetic; `scripts/generate_screenshots.py` is not yet checked
+
+### Definition of done
+
+- [ ] Acceptance: create `.cursor/`, `.codegraph/` and one other gitignored
+  directory, run the generator, and the output MUST be identical to the output
+  produced without them
+- [ ] No committed example names a file or directory that git does not track
+- [ ] The check runs in CI, so the guarantee is enforced rather than remembered
+
+### Non-goals
+
+- No `inspect.v2`. `inspect.v1` is byte-stable and its text layer now says
+  exactly what it measures. Separating `exists` from `has_content` is worth
+  doing only if a real consumer needs it, and then as a new field or a new
+  schema version — never as a changed meaning for `exists`
+- No further contract changes in v1.6.x
+
+---
+
 ## Long-term ideas
 
 These are intentionally not scheduled yet.
@@ -921,5 +999,5 @@ A release should only be created when:
 ## Current recommended next step
 
 ```text
-v1.7.0 — next release target, scope not yet scheduled
+v1.7.0 — Hermetic generated examples
 ```

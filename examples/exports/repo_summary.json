@@ -1,21 +1,21 @@
 {
   "schema": "repo_summary.v1",
   "repo_name": "repo-signal",
-  "generated_at": "2026-05-28T20:27:46.196583+00:00",
-  "version": "1.0.0",
+  "generated_at": "2026-09-11T11:19:22.455755+00:00",
+  "version": "1.6.0",
   "description": "[![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml)",
   "project_type": "Python CLI / repo intelligence toolkit",
   "languages": {
-    "Markdown": 72,
-    "Python": 70,
-    "JSON": 12,
-    "Shell": 10,
-    "YAML": 7,
+    "Markdown": 89,
+    "Python": 89,
+    "Shell": 15,
+    "JSON": 15,
+    "YAML": 9,
     "TOML": 1,
     "HTML": 1
   },
-  "file_count": 206,
-  "test_summary": "9 test files",
+  "file_count": 245,
+  "test_summary": "21 test files",
   "key_files": [
     "CHANGELOG.md",
     "pyproject.toml",
@@ -24,21 +24,24 @@
     "VERSION"
   ],
   "entrypoints": [
+    ".markdownlint-cli2.jsonc",
     "bin/repo-signal",
     "examples/integrations/inspect_safe.sh",
+    "examples/integrations/mq_mcp_pack_merge.sh",
+    "examples/integrations/mqobsidian_export.sh",
     "examples/integrations/readiness_gate.sh",
+    "release-check.sh",
     "release.sh",
     "repo_signal/cli.py",
-    "repo_signal/repoaware/__main__.py",
-    "scripts/check-docs-consistency.sh",
-    "scripts/check-generated-examples.sh",
-    "scripts/check-packaging.sh",
-    "scripts/check-pypi-readiness.sh"
+    "repo_signal/repoaware/__main__.py"
   ],
   "stable_contracts": [
     "doctor",
     "inspect",
+    "memory_observation",
+    "readiness.v1",
     "report",
+    "inspect.v1",
     "suggest"
   ],
   "top_symbols": [
@@ -46,8 +49,7 @@
     "load_skill",
     "build_prompt",
     "main",
-    "parse_commands",
-    "parse_usage",
+    "usage_lines",
     "write_reference",
     "TestInspectV1",
     "TestDoctorV1",
@@ -61,6 +63,7 @@
     "test_schema_field_is_doctor_v1",
     "test_scores_section_present",
     "test_inspect_schema_check_pattern",
-    "test_doctor_schema_check_pattern"
+    "test_doctor_schema_check_pattern",
+    "test_unknown_schema_is_detectable"
   ]
 }

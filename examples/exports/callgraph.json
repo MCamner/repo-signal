@@ -1,24 +1,38 @@
 {
   "schema": "callgraph.v1",
   "repo_name": "repo-signal",
-  "generated_at": "2026-05-28T20:27:46.075920+00:00",
-  "edge_count": 116,
+  "generated_at": "2026-09-11T11:19:22.335207+00:00",
+  "edge_count": 154,
   "hub_files": [
     "repo_signal/core/models.py",
     "repo_signal/core/scanner.py",
-    "repo_signal/ai/providers/base.py",
     "repo_signal/publish_checklist.py",
+    "repo_signal/ai/providers/base.py",
     "repo_signal/inspect.py",
+    "repo_signal/redaction.py",
+    "repo_signal/exports/risk_map.py",
+    "repo_signal/review_export.py",
     "repo_signal/graph/graph_builder.py",
     "repo_signal/symbols/symbol_extractor.py",
     "repo_signal/vectorstore/chunks.py",
+    "repo_signal/__init__.py",
+    "repo_signal/suggest.py",
+    "repo_signal/commands.py",
     "repo_signal/doctor.py",
+    "repo_signal/export_packs.py",
     "repo_signal/readme_score.py",
     "repo_signal/codex/exporter.py",
+    "repo_signal/exports/callgraph.py",
+    "repo_signal/exports/repo_summary.py",
+    "repo_signal/exports/symbol_index.py",
+    "repo_signal/memory_emit.py",
     "repo_signal/repoaware/ranking.py",
     "repo_signal/vectorstore/openai_store.py"
   ],
   "imports": {
+    "examples/integrations/mq_agent_consumer.py": [
+      "repo_signal/__init__.py"
+    ],
     "repo_signal/ai/providers/anthropic_provider.py": [
       "repo_signal/ai/providers/base.py"
     ],
@@ -34,11 +48,18 @@
       "repo_signal/pipeline/ask.py",
       "repo_signal/pipeline/response.py"
     ],
+    "repo_signal/brief.py": [
+      "repo_signal/exports/risk_map.py",
+      "repo_signal/publish_checklist.py",
+      "repo_signal/suggest.py"
+    ],
     "repo_signal/cli.py": [
       "repo_signal/__init__.py",
       "repo_signal/actions_init.py",
       "repo_signal/analyze.py",
       "repo_signal/ask.py",
+      "repo_signal/brief.py",
+      "repo_signal/commands.py",
       "repo_signal/doctor.py",
       "repo_signal/export_codex.py",
       "repo_signal/export_packs.py",
@@ -46,9 +67,11 @@
       "repo_signal/portfolio_check.py",
       "repo_signal/positioning.py",
       "repo_signal/publish_checklist.py",
+      "repo_signal/readiness.py",
       "repo_signal/readme_score.py",
       "repo_signal/repoaware/__main__.py",
       "repo_signal/report.py",
+      "repo_signal/review_export.py",
       "repo_signal/semantic.py",
       "repo_signal/semantic_upload.py",
       "repo_signal/skill.py",
@@ -98,7 +121,11 @@
     ],
     "repo_signal/inspect.py": [
       "repo_signal/core/models.py",
+      "repo_signal/memory_emit.py",
       "repo_signal/publish_checklist.py"
+    ],
+    "repo_signal/memory_emit.py": [
+      "repo_signal/redaction.py"
     ],
     "repo_signal/pipeline/ask.py": [
       "repo_signal/ai/providers/base.py",
@@ -122,11 +149,18 @@
       "repo_signal/core/models.py",
       "repo_signal/core/scanner.py"
     ],
+    "repo_signal/readiness.py": [
+      "repo_signal/publish_checklist.py"
+    ],
     "repo_signal/repoaware/__main__.py": [
       "repo_signal/repoaware/context_builder.py"
     ],
     "repo_signal/repoaware/context_builder.py": [
+      "repo_signal/core/scanner.py",
       "repo_signal/repoaware/ranking.py"
+    ],
+    "repo_signal/repoaware/ranking.py": [
+      "repo_signal/core/scanner.py"
     ],
     "repo_signal/report.py": [
       "repo_signal/inspect.py",
@@ -167,8 +201,14 @@
       "repo_signal/core/models.py",
       "repo_signal/vectorstore/chunks.py"
     ],
+    "scripts/generate-review-fixture.py": [
+      "repo_signal/review_export.py"
+    ],
     "tests/test_actions_init.py": [
       "repo_signal/actions_init.py"
+    ],
+    "tests/test_brief.py": [
+      "repo_signal/brief.py"
     ],
     "tests/test_cli.py": [
       "repo_signal/ask.py",
@@ -191,6 +231,10 @@
       "repo_signal/vectorstore/chunks.py",
       "repo_signal/vectorstore/openai_store.py"
     ],
+    "tests/test_command_registry.py": [
+      "repo_signal/__init__.py",
+      "repo_signal/commands.py"
+    ],
     "tests/test_contracts.py": [
       "repo_signal/doctor.py",
       "repo_signal/inspect.py"
@@ -202,31 +246,77 @@
       "repo_signal/exports/risk_map.py",
       "repo_signal/exports/symbol_index.py"
     ],
+    "tests/test_inspect_labels.py": [
+      "repo_signal/inspect.py"
+    ],
+    "tests/test_memory_emit.py": [
+      "repo_signal/memory_emit.py",
+      "repo_signal/redaction.py"
+    ],
+    "tests/test_mq_mcp_integration.py": [
+      "repo_signal/export_packs.py",
+      "repo_signal/exports/callgraph.py",
+      "repo_signal/exports/repo_summary.py",
+      "repo_signal/exports/risk_map.py",
+      "repo_signal/exports/symbol_index.py"
+    ],
+    "tests/test_mqobsidian_boundary.py": [
+      "repo_signal/memory_emit.py",
+      "repo_signal/redaction.py",
+      "repo_signal/review_export.py"
+    ],
     "tests/test_portfolio_check.py": [
       "repo_signal/portfolio_check.py"
+    ],
+    "tests/test_publish_checklist.py": [
+      "repo_signal/publish_checklist.py"
+    ],
+    "tests/test_readiness.py": [
+      "repo_signal/readiness.py"
+    ],
+    "tests/test_redaction.py": [
+      "repo_signal/redaction.py"
     ],
     "tests/test_report.py": [
       "repo_signal/report.py"
     ],
+    "tests/test_review_export.py": [
+      "repo_signal/redaction.py",
+      "repo_signal/review_export.py"
+    ],
+    "tests/test_scanner_hermeticity.py": [
+      "repo_signal/core/scanner.py"
+    ],
     "tests/test_semantic_upload.py": [
+      "repo_signal/ai/providers/__init__.py",
       "repo_signal/ai/providers/base.py",
       "repo_signal/core/scanner.py",
+      "repo_signal/semantic_upload.py",
+      "repo_signal/vectorstore/__init__.py",
       "repo_signal/vectorstore/openai_store.py"
     ],
     "tests/test_suggest.py": [
       "repo_signal/suggest.py"
     ],
+    "tests/test_wiki_export.py": [
+      "repo_signal/wiki_export.py"
+    ],
     "tools/generate_wiki_command_ref.py": [
-      "repo_signal/cli.py"
+      "repo_signal/commands.py"
     ]
   },
   "importers": {
     "repo_signal/__init__.py": [
-      "repo_signal/cli.py"
+      "examples/integrations/mq_agent_consumer.py",
+      "repo_signal/cli.py",
+      "tests/test_command_registry.py"
     ],
     "repo_signal/actions_init.py": [
       "repo_signal/cli.py",
       "tests/test_actions_init.py"
+    ],
+    "repo_signal/ai/providers/__init__.py": [
+      "tests/test_semantic_upload.py"
     ],
     "repo_signal/ai/providers/base.py": [
       "repo_signal/ai/providers/anthropic_provider.py",
@@ -248,13 +338,19 @@
       "repo_signal/cli.py",
       "tests/test_cli.py"
     ],
-    "repo_signal/cli.py": [
-      "tools/generate_wiki_command_ref.py"
+    "repo_signal/brief.py": [
+      "repo_signal/cli.py",
+      "tests/test_brief.py"
     ],
     "repo_signal/codex/exporter.py": [
       "repo_signal/export_codex.py",
       "repo_signal/skill.py",
       "tests/test_cli.py"
+    ],
+    "repo_signal/commands.py": [
+      "repo_signal/cli.py",
+      "tests/test_command_registry.py",
+      "tools/generate_wiki_command_ref.py"
     ],
     "repo_signal/core/models.py": [
       "repo_signal/analyze.py",
@@ -282,7 +378,10 @@
       "repo_signal/exports/risk_map.py",
       "repo_signal/exports/symbol_index.py",
       "repo_signal/positioning.py",
+      "repo_signal/repoaware/context_builder.py",
+      "repo_signal/repoaware/ranking.py",
       "tests/test_cli.py",
+      "tests/test_scanner_hermeticity.py",
       "tests/test_semantic_upload.py"
     ],
     "repo_signal/doctor.py": [
@@ -295,23 +394,29 @@
     ],
     "repo_signal/export_packs.py": [
       "repo_signal/cli.py",
-      "tests/test_exports.py"
+      "tests/test_exports.py",
+      "tests/test_mq_mcp_integration.py"
     ],
     "repo_signal/exports/callgraph.py": [
       "repo_signal/export_packs.py",
-      "tests/test_exports.py"
+      "tests/test_exports.py",
+      "tests/test_mq_mcp_integration.py"
     ],
     "repo_signal/exports/repo_summary.py": [
       "repo_signal/export_packs.py",
-      "tests/test_exports.py"
+      "tests/test_exports.py",
+      "tests/test_mq_mcp_integration.py"
     ],
     "repo_signal/exports/risk_map.py": [
+      "repo_signal/brief.py",
       "repo_signal/export_packs.py",
-      "tests/test_exports.py"
+      "tests/test_exports.py",
+      "tests/test_mq_mcp_integration.py"
     ],
     "repo_signal/exports/symbol_index.py": [
       "repo_signal/export_packs.py",
-      "tests/test_exports.py"
+      "tests/test_exports.py",
+      "tests/test_mq_mcp_integration.py"
     ],
     "repo_signal/graph/graph_builder.py": [
       "repo_signal/core/scanner.py",
@@ -323,7 +428,13 @@
       "repo_signal/cli.py",
       "repo_signal/report.py",
       "repo_signal/suggest.py",
-      "tests/test_contracts.py"
+      "tests/test_contracts.py",
+      "tests/test_inspect_labels.py"
+    ],
+    "repo_signal/memory_emit.py": [
+      "repo_signal/inspect.py",
+      "tests/test_memory_emit.py",
+      "tests/test_mqobsidian_boundary.py"
     ],
     "repo_signal/pipeline/ask.py": [
       "repo_signal/ask.py",
@@ -349,17 +460,31 @@
       "tests/test_cli.py"
     ],
     "repo_signal/publish_checklist.py": [
+      "repo_signal/brief.py",
       "repo_signal/cli.py",
       "repo_signal/inspect.py",
       "repo_signal/portfolio_check.py",
+      "repo_signal/readiness.py",
       "repo_signal/report.py",
       "repo_signal/suggest.py",
-      "tests/test_cli.py"
+      "tests/test_cli.py",
+      "tests/test_publish_checklist.py"
+    ],
+    "repo_signal/readiness.py": [
+      "repo_signal/cli.py",
+      "tests/test_readiness.py"
     ],
     "repo_signal/readme_score.py": [
       "repo_signal/cli.py",
       "repo_signal/doctor.py",
       "tests/test_cli.py"
+    ],
+    "repo_signal/redaction.py": [
+      "repo_signal/memory_emit.py",
+      "tests/test_memory_emit.py",
+      "tests/test_mqobsidian_boundary.py",
+      "tests/test_redaction.py",
+      "tests/test_review_export.py"
     ],
     "repo_signal/repoaware/__main__.py": [
       "repo_signal/cli.py"
@@ -377,17 +502,25 @@
       "repo_signal/cli.py",
       "tests/test_report.py"
     ],
+    "repo_signal/review_export.py": [
+      "repo_signal/cli.py",
+      "scripts/generate-review-fixture.py",
+      "tests/test_mqobsidian_boundary.py",
+      "tests/test_review_export.py"
+    ],
     "repo_signal/semantic.py": [
       "repo_signal/cli.py",
       "tests/test_cli.py"
     ],
     "repo_signal/semantic_upload.py": [
-      "repo_signal/cli.py"
+      "repo_signal/cli.py",
+      "tests/test_semantic_upload.py"
     ],
     "repo_signal/skill.py": [
       "repo_signal/cli.py"
     ],
     "repo_signal/suggest.py": [
+      "repo_signal/brief.py",
       "repo_signal/cli.py",
       "tests/test_suggest.py"
     ],
@@ -400,6 +533,9 @@
       "repo_signal/exports/repo_summary.py",
       "repo_signal/exports/symbol_index.py",
       "tests/test_cli.py"
+    ],
+    "repo_signal/vectorstore/__init__.py": [
+      "tests/test_semantic_upload.py"
     ],
     "repo_signal/vectorstore/chroma_store.py": [
       "repo_signal/semantic.py",
@@ -417,10 +553,16 @@
       "tests/test_semantic_upload.py"
     ],
     "repo_signal/wiki_export.py": [
-      "repo_signal/cli.py"
+      "repo_signal/cli.py",
+      "tests/test_wiki_export.py"
     ]
   },
   "edges": [
+    {
+      "source": "examples/integrations/mq_agent_consumer.py",
+      "target": "repo_signal/__init__.py",
+      "relation": "python_import"
+    },
     {
       "source": "repo_signal/ai/providers/anthropic_provider.py",
       "target": "repo_signal/ai/providers/base.py",
@@ -457,6 +599,21 @@
       "relation": "python_import"
     },
     {
+      "source": "repo_signal/brief.py",
+      "target": "repo_signal/exports/risk_map.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/brief.py",
+      "target": "repo_signal/publish_checklist.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/brief.py",
+      "target": "repo_signal/suggest.py",
+      "relation": "python_import"
+    },
+    {
       "source": "repo_signal/cli.py",
       "target": "repo_signal/__init__.py",
       "relation": "python_import"
@@ -474,6 +631,16 @@
     {
       "source": "repo_signal/cli.py",
       "target": "repo_signal/ask.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/cli.py",
+      "target": "repo_signal/brief.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/cli.py",
+      "target": "repo_signal/commands.py",
       "relation": "python_import"
     },
     {
@@ -513,6 +680,11 @@
     },
     {
       "source": "repo_signal/cli.py",
+      "target": "repo_signal/readiness.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/cli.py",
       "target": "repo_signal/readme_score.py",
       "relation": "python_import"
     },
@@ -524,6 +696,11 @@
     {
       "source": "repo_signal/cli.py",
       "target": "repo_signal/report.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/cli.py",
+      "target": "repo_signal/review_export.py",
       "relation": "python_import"
     },
     {
@@ -663,7 +840,17 @@
     },
     {
       "source": "repo_signal/inspect.py",
+      "target": "repo_signal/memory_emit.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/inspect.py",
       "target": "repo_signal/publish_checklist.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/memory_emit.py",
+      "target": "repo_signal/redaction.py",
       "relation": "python_import"
     },
     {
@@ -727,13 +914,28 @@
       "relation": "python_import"
     },
     {
+      "source": "repo_signal/readiness.py",
+      "target": "repo_signal/publish_checklist.py",
+      "relation": "python_import"
+    },
+    {
       "source": "repo_signal/repoaware/__main__.py",
       "target": "repo_signal/repoaware/context_builder.py",
       "relation": "python_import"
     },
     {
       "source": "repo_signal/repoaware/context_builder.py",
+      "target": "repo_signal/core/scanner.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/repoaware/context_builder.py",
       "target": "repo_signal/repoaware/ranking.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "repo_signal/repoaware/ranking.py",
+      "target": "repo_signal/core/scanner.py",
       "relation": "python_import"
     },
     {
@@ -832,8 +1034,18 @@
       "relation": "python_import"
     },
     {
+      "source": "scripts/generate-review-fixture.py",
+      "target": "repo_signal/review_export.py",
+      "relation": "python_import"
+    },
+    {
       "source": "tests/test_actions_init.py",
       "target": "repo_signal/actions_init.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_brief.py",
+      "target": "repo_signal/brief.py",
       "relation": "python_import"
     },
     {
@@ -932,6 +1144,16 @@
       "relation": "python_import"
     },
     {
+      "source": "tests/test_command_registry.py",
+      "target": "repo_signal/__init__.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_command_registry.py",
+      "target": "repo_signal/commands.py",
+      "relation": "python_import"
+    },
+    {
       "source": "tests/test_contracts.py",
       "target": "repo_signal/doctor.py",
       "relation": "python_import"
@@ -967,13 +1189,103 @@
       "relation": "python_import"
     },
     {
+      "source": "tests/test_inspect_labels.py",
+      "target": "repo_signal/inspect.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_memory_emit.py",
+      "target": "repo_signal/memory_emit.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_memory_emit.py",
+      "target": "repo_signal/redaction.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mq_mcp_integration.py",
+      "target": "repo_signal/export_packs.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mq_mcp_integration.py",
+      "target": "repo_signal/exports/callgraph.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mq_mcp_integration.py",
+      "target": "repo_signal/exports/repo_summary.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mq_mcp_integration.py",
+      "target": "repo_signal/exports/risk_map.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mq_mcp_integration.py",
+      "target": "repo_signal/exports/symbol_index.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mqobsidian_boundary.py",
+      "target": "repo_signal/memory_emit.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mqobsidian_boundary.py",
+      "target": "repo_signal/redaction.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_mqobsidian_boundary.py",
+      "target": "repo_signal/review_export.py",
+      "relation": "python_import"
+    },
+    {
       "source": "tests/test_portfolio_check.py",
       "target": "repo_signal/portfolio_check.py",
       "relation": "python_import"
     },
     {
+      "source": "tests/test_publish_checklist.py",
+      "target": "repo_signal/publish_checklist.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_readiness.py",
+      "target": "repo_signal/readiness.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_redaction.py",
+      "target": "repo_signal/redaction.py",
+      "relation": "python_import"
+    },
+    {
       "source": "tests/test_report.py",
       "target": "repo_signal/report.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_review_export.py",
+      "target": "repo_signal/redaction.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_review_export.py",
+      "target": "repo_signal/review_export.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_scanner_hermeticity.py",
+      "target": "repo_signal/core/scanner.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_semantic_upload.py",
+      "target": "repo_signal/ai/providers/__init__.py",
       "relation": "python_import"
     },
     {
@@ -988,6 +1300,16 @@
     },
     {
       "source": "tests/test_semantic_upload.py",
+      "target": "repo_signal/semantic_upload.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_semantic_upload.py",
+      "target": "repo_signal/vectorstore/__init__.py",
+      "relation": "python_import"
+    },
+    {
+      "source": "tests/test_semantic_upload.py",
       "target": "repo_signal/vectorstore/openai_store.py",
       "relation": "python_import"
     },
@@ -997,8 +1319,13 @@
       "relation": "python_import"
     },
     {
+      "source": "tests/test_wiki_export.py",
+      "target": "repo_signal/wiki_export.py",
+      "relation": "python_import"
+    },
+    {
       "source": "tools/generate_wiki_command_ref.py",
-      "target": "repo_signal/cli.py",
+      "target": "repo_signal/commands.py",
       "relation": "python_import"
     }
   ]

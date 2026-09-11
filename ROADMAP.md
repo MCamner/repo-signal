@@ -866,24 +866,42 @@ not arbitrary files present in the developer's working tree.
 
 ### Deliverables
 
-- [ ] Decide the boundary: whether the scanner gains a tracked-files mode, or
-  the generator renders from a tracked-only view. `wiki_export.py` already
-  solved this once and is the reference
-- [ ] Make `scripts/generate-examples.sh` produce identical output regardless
-  of untracked or gitignored content in the working tree
-- [ ] Add a test that creates gitignored directories and asserts the generated
-  output is unchanged
-- [ ] Audit the other generators for the same exposure —
-  `scripts/generate-review-fixture.py` renders from fixed synthetic input and
-  is already hermetic; `scripts/generate_screenshots.py` is not yet checked
+- [x] Decide the boundary — **the scan asks git what belongs to the repository**,
+  rather than the generator rendering from a separate view. Allowed is tracked
+  plus untracked-not-ignored: work in progress is part of the repo, it just is
+  not committed yet; anything the repo told git to ignore is not. This replaces
+  a hand-maintained `IGNORE_DIRS` denylist that could never keep up — 259
+  tracked files here against 2,604 ignored ones, with `.repo-signal/`,
+  `.cursor/` and `.codegraph/` all missing from the list
+- [x] Make `scripts/generate-examples.sh` produce identical output regardless
+  of untracked or gitignored content in the working tree — fixed at the scan,
+  so all six generated surfaces inherit it at once
+- [x] Add a test that creates gitignored directories and asserts the generated
+  output is unchanged — `tests/test_scanner_hermeticity.py`, which also holds
+  the committed examples to the invariant
+- [x] Audit the other generators. `generate-review-fixture.py` renders from
+  fixed synthetic input and was already hermetic; `generate_screenshots.py`
+  renders CLI output, so it inherits the fix. The audit found **two more
+  filesystem walks** instead: `repoaware/ranking.py` and
+  `repoaware/context_builder.py`, each with its own denylist. Both now ask git
+  the same question — the tree walk was also non-deterministic, since it used
+  `find`, whose order is not stable across filesystems
 
 ### Definition of done
 
-- [ ] Acceptance: create `.cursor/`, `.codegraph/` and one other gitignored
+- [x] Acceptance: create `.cursor/`, `.codegraph/` and one other gitignored
   directory, run the generator, and the output MUST be identical to the output
-  produced without them
-- [ ] No committed example names a file or directory that git does not track
-- [ ] The check runs in CI, so the guarantee is enforced rather than remembered
+  produced without them — verified in this checkout, byte-identical
+- [x] No committed example names a file or directory git **ignores**. Refined
+  deliberately from "does not track": an untracked file that is not ignored is
+  work in progress and belongs in a scan, so excluding it would make the tool
+  wrong to be hermetic. Two real leaks were closed —
+  `examples/inspect/inspect.txt` published `.repo-signal (9)` among its top
+  directories, and `examples/exports/symbol_index.json` carried
+  `.repo-signal/chroma/chroma.sqlite3` nine times
+- [x] The check runs in CI, so the guarantee is enforced rather than
+  remembered. The ignored set is asked of git, not hard-coded, so a new local
+  tool directory is covered the day it appears
 
 ### Non-goals
 

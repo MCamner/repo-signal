@@ -2,60 +2,70 @@
   "core_files": [
     {
       "exists": true,
+      "importance": "required",
       "label": "README",
       "path": "README.md",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "required",
       "label": "License",
       "path": "LICENSE",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "required",
       "label": "Git ignore rules",
       "path": ".gitignore",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "required",
       "label": "Changelog",
       "path": "CHANGELOG.md",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "required",
       "label": "Version file",
       "path": "VERSION",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "required",
       "label": "Docs folder",
       "path": "docs",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "required",
       "label": "GitHub Pages landing",
       "path": "docs/index.html",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "optional",
       "label": "Screenshots/output gallery",
       "path": "docs/screenshots",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "optional",
       "label": "Examples folder",
       "path": "examples",
       "status": "ok"
     },
     {
       "exists": true,
+      "importance": "required",
       "label": "Tests folder",
       "path": "tests",
       "status": "ok"
@@ -63,25 +73,25 @@
   ],
   "detected": {
     "entrypoints": [
+      ".markdownlint-cli2.jsonc",
       "bin/repo-signal",
+      "examples/integrations/inspect_safe.sh",
+      "examples/integrations/mq_mcp_pack_merge.sh",
+      "examples/integrations/mqobsidian_export.sh",
+      "examples/integrations/readiness_gate.sh",
+      "release-check.sh",
       "release.sh",
       "repo_signal/cli.py",
-      "repo_signal/repoaware/__main__.py",
-      "scripts/check-generated-examples.sh",
-      "scripts/check-packaging.sh",
-      "scripts/check-pypi-readiness.sh",
-      "scripts/check-testpypi-readiness.sh",
-      "scripts/check-trusted-publishing-setup.sh",
-      "scripts/generate-examples.sh"
+      "repo_signal/repoaware/__main__.py"
     ],
     "languages": {
       "HTML": 1,
-      "JSON": 7,
-      "Markdown": 64,
-      "Python": 54,
-      "Shell": 7,
+      "JSON": 15,
+      "Markdown": 89,
+      "Python": 89,
+      "Shell": 15,
       "TOML": 1,
-      "YAML": 7
+      "YAML": 9
     },
     "tooling": [
       "Python packaging",
@@ -91,26 +101,26 @@
       "License"
     ],
     "top_directories": {
-      ".": 11,
-      ".claude": 2,
-      ".github": 10,
-      ".repo-signal": 9,
+      ".": 17,
+      ".claude": 1,
+      ".github": 12,
+      ".mq": 6,
       "bin": 1,
-      "docs": 35,
-      "examples": 27,
-      "repo_signal": 47,
-      "scripts": 7,
-      "skills": 16,
-      "tests": 3,
+      "docs": 46,
+      "examples": 47,
+      "repo_signal": 62,
+      "scripts": 11,
+      "skills": 18,
+      "tests": 21,
       "tools": 3
     }
   },
   "git": {
-    "branch": "chore/v0.3.0-readiness",
-    "change_count": 3,
+    "branch": "main",
+    "change_count": 19,
     "clean": false,
     "is_repo": true,
-    "summary": "git repo, branch chore/v0.3.0-readiness, 3 working tree change(s)"
+    "summary": "git repo, branch main, 19 working tree change(s)"
   },
   "issues": [],
   "public_readiness": {
@@ -122,10 +132,10 @@
     "summary": "16/16 OK",
     "total": 16
   },
-  "recommended_next_commit": "Keep docs, examples, and command reference synced with the CLI",
+  "recommended_next_commit": "None \u2014 repo is publish-ready. Optional polish only.",
   "repo": {
     "exists": true,
-    "files": 171,
+    "files": 245,
     "name": "repo-signal",
     "path": "/Users/mansys/repo-signal",
     "type": "Python CLI / repo intelligence toolkit"

@@ -58,19 +58,38 @@ def extract_keywords(question: str) -> list[str]:
 
 
 def build_repo_tree(repo_path: Path) -> str:
-    output = run(
-        ["find", ".", "-maxdepth", "2"],
-        cwd=repo_path,
-    )
+    """The repository's top two levels, as git understands the repository.
 
-    lines = []
-    for line in output.splitlines():
-        clean = line.strip()
-        if not clean:
-            continue
-        if should_skip(Path(clean)):
-            continue
-        lines.append(clean)
+    The third filesystem walk in the codebase, and the last one to leak: it
+    shelled out to `find . -maxdepth 2` and filtered through the same denylist
+    the other two used, so `./.cursor` and `./.cursor/mcp.json` reached
+    `examples/repoaware/review.md`. Building from the git-visible set fixes that
+    and makes the order deterministic as well — `find` returns directory order,
+    which is not stable across filesystems.
+    """
+    from repo_signal.core.scanner import git_visible_files
+
+    visible = git_visible_files(repo_path)
+
+    if visible is None:
+        # No git, no ignore information: the original walk is all there is.
+        entries = [
+            line.strip()
+            for line in run(["find", ".", "-maxdepth", "2"], cwd=repo_path).splitlines()
+            if line.strip()
+        ]
+    else:
+        # `find -maxdepth 2` lists entries one and two levels down, so a file
+        # deeper than that contributes its ancestors and nothing else.
+        seen = set()
+        for relative in visible:
+            parts = Path(relative).parts
+            for depth in (1, 2):
+                if len(parts) >= depth:
+                    seen.add("./" + "/".join(parts[:depth]))
+        entries = ["."] + sorted(seen)
+
+    lines = [entry for entry in entries if not should_skip(Path(entry))]
 
     return "\n".join(lines[:80])
 

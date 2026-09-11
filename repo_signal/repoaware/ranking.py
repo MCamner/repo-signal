@@ -148,6 +148,18 @@ def read_text(path: Path) -> str:
 
 
 def discover_all_files(repo_path: Path) -> list[str]:
+    """Every file in the repository, as git understands the repository.
+
+    This is the second filesystem walk in the codebase, with its own SKIP_DIRS
+    denylist, and it leaked the same way the scanner did: `.cursor/mcp.json`
+    reached `examples/repoaware/review.md`. Both walks now ask git the same
+    question, so a new local tool directory cannot appear in one surface
+    because only the other list was updated.
+    """
+    from repo_signal.core.scanner import git_visible_files
+
+    # None outside a git repo, where there is no ignore information to use.
+    visible = git_visible_files(repo_path)
     files = []
 
     for path in repo_path.rglob("*"):
@@ -157,6 +169,9 @@ def discover_all_files(repo_path: Path) -> list[str]:
             continue
 
         if should_skip(relative) or not path.is_file():
+            continue
+
+        if visible is not None and relative.as_posix() not in visible:
             continue
 
         files.append(relative.as_posix())

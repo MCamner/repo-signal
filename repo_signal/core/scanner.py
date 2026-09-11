@@ -90,6 +90,32 @@ def should_ignore(path: Path) -> bool:
     return any(part in IGNORE_DIRS or part.endswith(".egg-info") for part in path.parts)
 
 
+def git_visible_files(repo_path: Path) -> Union[set, None]:
+    """Paths git considers part of the repository, or None outside a git repo.
+
+    Tracked files plus untracked files that are not ignored. Work in progress
+    counts — it is part of the repository, it just is not committed yet — while
+    anything the repository told git to ignore does not.
+
+    IGNORE_DIRS is a second opinion that cannot keep up: this checkout carries
+    259 tracked files against 2,604 gitignored ones, and `.repo-signal/`,
+    `.cursor/` and `.codegraph/` were all missing from it. That gap reached a
+    public artifact — `examples/inspect/inspect.txt` published a gitignored
+    directory, by name and with a file count. Git already knows the answer, so
+    the scan asks it rather than maintaining a list that grows with every new
+    local tool.
+    """
+    if run(["git", "rev-parse", "--is-inside-work-tree"], cwd=repo_path) != "true":
+        return None
+
+    visible = set()
+    for args in (["git", "ls-files"], ["git", "ls-files", "--others", "--exclude-standard"]):
+        output = run(args, cwd=repo_path)
+        if output:
+            visible.update(output.splitlines())
+    return visible
+
+
 def extract_keywords(path: Path) -> list[str]:
     words = re.findall(r"[a-zA-Z0-9_-]+", path.stem.lower())
     return list(dict.fromkeys(word for word in words if len(word) > 1))
@@ -195,6 +221,9 @@ def scan_repository(path: Union[str, Path] = ".") -> Repository:
     language_counter = Counter()
     top_directory_counter = Counter()
 
+    # None outside a git repo, where there is no ignore information to use.
+    visible = git_visible_files(repo_path)
+
     for full_path in repo_path.rglob("*"):
         if not full_path.is_file():
             continue
@@ -205,6 +234,9 @@ def scan_repository(path: Union[str, Path] = ".") -> Repository:
             continue
 
         if should_ignore(relative):
+            continue
+
+        if visible is not None and relative.as_posix() not in visible:
             continue
 
         try:

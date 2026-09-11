@@ -1,15 +1,15 @@
 {
   "schema": "risk_map.v1",
   "repo_name": "repo-signal",
-  "generated_at": "2026-05-28T20:27:46.307748+00:00",
-  "risk_count": 8,
+  "generated_at": "2026-09-11T11:19:22.591455+00:00",
+  "risk_count": 10,
   "risks": [
     {
       "id": "RSK-001",
       "level": "medium",
       "kind": "large_file",
       "file": "tests/test_cli.py",
-      "detail": "1382 lines \u2014 consider splitting into focused modules.",
+      "detail": "1473 lines \u2014 consider splitting into focused modules.",
       "structural": true
     },
     {
@@ -17,7 +17,7 @@
       "level": "medium",
       "kind": "large_file",
       "file": "repo_signal/inspect.py",
-      "detail": "487 lines \u2014 consider splitting into focused modules.",
+      "detail": "510 lines \u2014 consider splitting into focused modules.",
       "structural": true
     },
     {
@@ -25,7 +25,7 @@
       "level": "medium",
       "kind": "large_file",
       "file": "repo_signal/cli.py",
-      "detail": "1789 lines \u2014 consider splitting into focused modules.",
+      "detail": "1813 lines \u2014 consider splitting into focused modules.",
       "structural": true
     },
     {
@@ -33,7 +33,7 @@
       "level": "medium",
       "kind": "large_file",
       "file": "repo_signal/repoaware/ranking.py",
-      "detail": "492 lines \u2014 consider splitting into focused modules.",
+      "detail": "509 lines \u2014 consider splitting into focused modules.",
       "structural": true
     },
     {
@@ -49,11 +49,19 @@
       "level": "medium",
       "kind": "high_fan_in",
       "file": "repo_signal/core/scanner.py",
-      "detail": "Imported by 10 files \u2014 changes here have wide blast radius.",
+      "detail": "Imported by 13 files \u2014 changes here have wide blast radius.",
       "structural": true
     },
     {
       "id": "RSK-007",
+      "level": "medium",
+      "kind": "high_fan_in",
+      "file": "repo_signal/publish_checklist.py",
+      "detail": "Imported by 9 files \u2014 changes here have wide blast radius.",
+      "structural": true
+    },
+    {
+      "id": "RSK-008",
       "level": "medium",
       "kind": "high_fan_in",
       "file": "repo_signal/ai/providers/base.py",
@@ -61,11 +69,19 @@
       "structural": true
     },
     {
-      "id": "RSK-008",
+      "id": "RSK-009",
       "level": "medium",
       "kind": "high_fan_in",
-      "file": "repo_signal/publish_checklist.py",
-      "detail": "Imported by 6 files \u2014 changes here have wide blast radius.",
+      "file": "repo_signal/inspect.py",
+      "detail": "Imported by 5 files \u2014 changes here have wide blast radius.",
+      "structural": true
+    },
+    {
+      "id": "RSK-010",
+      "level": "medium",
+      "kind": "high_fan_in",
+      "file": "repo_signal/redaction.py",
+      "detail": "Imported by 5 files \u2014 changes here have wide blast radius.",
       "structural": true
     }
   ]

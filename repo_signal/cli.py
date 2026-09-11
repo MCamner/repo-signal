@@ -6,6 +6,14 @@ import sys
 
 from repo_signal import __version__
 from repo_signal.actions_init import init_actions_workflow
+from repo_signal.commands import (
+    COMMAND_INDEX,
+    WIKI_EXPORT_HELP,
+    build_command_help,
+    build_help_text,
+    fallback_command_list,
+    wants_help,
+)
 from repo_signal.portfolio_check import check_portfolio
 from repo_signal.analyze import analyze_repo
 from repo_signal.ask import main as ask_main
@@ -29,127 +37,6 @@ from repo_signal.report import build_report, format_report
 from repo_signal.suggest import VALID_FORMATS as SUGGEST_FORMATS, build_suggestions, format_suggestions
 from repo_signal.export_packs import main as export_packs_main
 from repo_signal.review_export import export_repo_review, resolve_vault
-
-
-HELP_TEXT = """repo-signal
-
-AI-assisted repo analysis for turning rough prototypes into clear, documented, publishable GitHub projects.
-
-Usage:
-  repo-signal actions init [path] [--fail-under score] [--force]
-  repo-signal analyze [path]
-  repo-signal ask [--mode mode] "question"
-  repo-signal demo [--generate] [path] [--output path] [--force]
-  repo-signal doctor [path] [--format markdown|json] [--json]
-  repo-signal inspect [path] [--json|--format text|json]
-  repo-signal review-export [path] [--vault PATH] [--force]
-  repo-signal positioning [path] [--json|--format text|json]
-  repo-signal scan
-  repo-signal skill new <name> [--description text]
-  repo-signal readme
-  repo-signal readme-score [path]
-  repo-signal publish-checklist [path] [--format text|markdown|json] [--fail-under score] [--fix-plan]
-  repo-signal repoaware [--mode mode] [--format format] "question"
-  repo-signal semantic [--limit n] [--use-chroma] "query"
-  repo-signal semantic-upload [--dry-run] [--vector-store-id id]
-  repo-signal export-codex [--local] <skill>
-  repo-signal hygiene
-  repo-signal wiki [path]
-  repo-signal wiki plan [path]
-  repo-signal wiki export [path] [--output path]
-  repo-signal export [path] [--output DIR] [--all | --symbol-index | --callgraph | --repo-summary | --risk-map]
-  repo-signal report [path] [--format text|markdown|json]
-  repo-signal suggest [path] [--format text|markdown|json]
-  repo-signal roadmap
-  repo-signal --help
-  repo-signal --version
-
-Commands:
-  actions init
-             Create a GitHub Actions publish-checklist workflow
-  analyze   Summarize repo type, stack, health, structure, tooling, and focus areas
-  ask       Ask an AI provider using ranked RepoAware context
-  demo      Print or generate a short repo-signal demo flow
-  doctor    Diagnose repo health, release maturity, docs quality, AI readiness, and skills
-  inspect   Show fast repo status, detected signals, issues, next commit, or inspect.v1 JSON
-  review-export
-             Export a fresh inspect.v1 result to mqobsidian as repo-review.v1
-  positioning
-             Analyze README/project positioning and produce a positioning report
-  scan       Scan repo structure and basic project signals
-  skill      Create repo-local Codex skills
-  readme     Analyze README clarity and missing sections
-  readme-score
-             Score README quality with a 100-point checklist
-  publish-checklist
-             Check public-facing docs, demo, release, and GitHub Pages signals
-  repoaware  Build high-signal repo context for AI-assisted code questions
-  semantic   Search smart symbol chunks for semantic repository recall
-  semantic-upload
-             Upload symbol memory to a scoped OpenAI vector store
-  export-codex
-             Export repo-local skills into Codex skill storage
-  export     Generate symbolic intelligence packs (symbol_index, callgraph, repo_summary, risk_map)
-  hygiene    Check junk files, .gitignore, large files, and Git status
-  report     Unified report — inspect + publish-checklist in text, markdown or JSON
-  suggest    Safe patch suggestions — what to improve, no mutations
-  wiki       Generate suggested GitHub Wiki structure, Home draft, or plan
-  roadmap    Generate a practical roadmap based on repo state
-
-Examples:
-  repo-signal actions init
-  repo-signal analyze
-  repo-signal inspect
-  repo-signal review-export .
-  repo-signal positioning .
-  repo-signal positioning . --json
-  repo-signal doctor
-  repo-signal demo
-  repo-signal demo --generate
-  repo-signal ask --dry-run "how does routing work"
-  repo-signal scan
-  repo-signal skill new repo-aware
-  repo-signal readme
-  repo-signal readme-score .
-  repo-signal publish-checklist .
-  repo-signal publish-checklist . --format json
-  repo-signal publish-checklist . --fail-under 14
-  repo-signal repoaware --mode debug "how does routing work"
-  repo-signal semantic "routing system"
-  repo-signal semantic-upload --dry-run
-  repo-signal export-codex repo-product-auditor
-  repo-signal hygiene
-  repo-signal wiki
-  repo-signal wiki plan .
-  repo-signal wiki export . --output docs/wiki-export
-  repo-signal suggest .
-  repo-signal suggest . --format markdown
-  repo-signal suggest . --format json
-  repo-signal roadmap
-
-Run from any repository root.
-"""
-
-
-WIKI_EXPORT_HELP = """repo-signal wiki export
-
-Generate wiki pages describing the target repository.
-
-Usage:
-  repo-signal wiki export [path] [--output path]
-
-Options:
-  -h, --help       Show this message
-  --output PATH    Where to write the pages, relative to the target repo
-                   (default: docs/wiki-export)
-
-Pages are built from the target repo's own files: README.md, VERSION,
-CHANGELOG.md, ROADMAP.md, docs/architecture.md, docs/COMMANDS.md, and skills/.
-A page whose source is missing says so rather than inventing content.
-
-Files are written locally and never pushed. Review them before copying into a
-GitHub Wiki; see docs/PUBLISH-FLOW.md.
-"""
 
 
 CHECKS = [
@@ -1638,11 +1525,18 @@ def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "scan"
 
     if command in {"--help", "-h", "help"}:
-        print(HELP_TEXT)
+        print(build_help_text())
         return
 
     if command in {"--version", "-v", "version"}:
         print(f"repo-signal {__version__}")
+        return
+
+    # `<command> --help` prints usage instead of falling through to the
+    # option parsers, which used to answer `Unknown option` or, for `wiki`,
+    # treat `--help` as a repository path.
+    if command in COMMAND_INDEX and wants_help(sys.argv[2:]):
+        print(build_command_help(command, sys.argv[2:]))
         return
 
     if command == "demo":
@@ -1907,7 +1801,7 @@ def main() -> None:
         return
 
     print(f"Unknown command: {command}")
-    print("Available commands: actions, analyze, ask, brief, demo, doctor, inspect, review-export, positioning, readiness, scan, skill, readme, readme-score, publish-checklist, repoaware, semantic, semantic-upload, export-codex, hygiene, suggest, wiki, roadmap, --help, --version")
+    print(f"Available commands: {fallback_command_list()}")
     raise SystemExit(1)
 
 

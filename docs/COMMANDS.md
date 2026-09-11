@@ -4,6 +4,24 @@
 
 Run commands from the repository you want to inspect unless a command accepts an explicit path.
 
+## repo-signal scan
+
+Purpose:
+Fast structural scan of a repository — directory layout, entrypoints, and basic
+project signals. The cheapest command; useful as a first look before `analyze`
+or `inspect`.
+
+Usage:
+
+```bash
+repo-signal scan
+```
+
+Good for:
+
+- a first look at an unfamiliar repository
+- confirming repo-signal resolves the repo root you expect
+
 ## repo-signal analyze
 
 Purpose:
@@ -171,6 +189,23 @@ JSON output uses schema `positioning.v1`.
 
 See [POSITIONING_REPORT.md](POSITIONING_REPORT.md).
 
+## repo-signal readme
+
+Purpose:
+Analyze README clarity and report missing sections. Unlike `readme-score`, this
+is a prose review rather than a 100-point score.
+
+Usage:
+
+```bash
+repo-signal readme
+```
+
+Good for:
+
+- deciding what a thin README is actually missing
+- a quick pass before `readme-score` or `publish-checklist`
+
 ## repo-signal readme-score
 
 Purpose:
@@ -314,6 +349,29 @@ Writes:
 skills/<name>/SKILL.md
 ```
 
+## repo-signal export
+
+Purpose:
+Generate symbolic intelligence packs and write them to disk as JSON. Four packs
+are produced by default: `symbol_index`, `callgraph`, `repo_summary`, and
+`risk_map`. Output goes to `.repo-signal/exports/` unless `--output` says
+otherwise. Returns `export-packs.v1`.
+
+Usage:
+
+```bash
+repo-signal export . --all
+repo-signal export . --symbol-index
+repo-signal export . --callgraph --output build/packs
+```
+
+Good for:
+
+- giving an AI agent structural context without shipping the whole repo
+- downstream consumers in the MQ stack that read the pack JSON
+
+See also: [Export schemas](EXPORT_SCHEMAS.md).
+
 ## repo-signal export-codex
 
 Purpose:
@@ -391,6 +449,47 @@ Good for:
 - integration with mqlaunch, mq-agent, and mq-mcp via `report.v1` JSON
 
 See also: [Report JSON schema](REPORT_SCHEMA.md).
+
+## repo-signal brief
+
+Purpose:
+Compact daily health summary. Combines publish-checklist signals, the risk map,
+and suggestions into one fast scan, plus the last commit subject. Requires no
+API keys. Returns `brief.v1` in JSON mode.
+
+Usage:
+
+```bash
+repo-signal brief .
+repo-signal brief . --json
+```
+
+Good for:
+
+- a morning glance at where a repo stands
+- a low-cost status block for an agent or dashboard
+
+## repo-signal readiness
+
+Purpose:
+Release readiness export for mq-agent and mq-mcp consumers. Combines version
+alignment across version surfaces, metadata freshness, publish-checklist
+quality, and a deterministic `release_gate` verdict. Returns `readiness.v1` in
+JSON mode.
+
+Usage:
+
+```bash
+repo-signal readiness .
+repo-signal readiness . --json
+```
+
+Good for:
+
+- gating a release on a machine-readable verdict
+- checking that VERSION, CHANGELOG, and tags agree before tagging
+
+See also: [Readiness JSON schema](READINESS_SCHEMA.md).
 
 ## repo-signal suggest
 

@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.6.0 — TBD
+v1.7.0 — TBD
 ```
 
 Current highest-priority gate:
@@ -100,7 +100,7 @@ repo-signal should remain small, scriptable and contract-driven.
 | v1.3.0  | repo-signal brief — daily health summary             | Done                 |
 | v1.4.0  | Release/readiness export compatibility               | Done                 |
 | v1.5.0  | Review and memory export contract hardening           | Done                 |
-| v1.6.0  | mqobsidian boundary verification                     | Planned              |
+| v1.6.0  | mqobsidian boundary verification                     | Done                 |
 
 ---
 
@@ -921,5 +921,5 @@ A release should only be created when:
 ## Current recommended next step
 
 ```text
-v1.6.0 — mqobsidian boundary verification
+v1.7.0 — next release target, scope not yet scheduled
 ```

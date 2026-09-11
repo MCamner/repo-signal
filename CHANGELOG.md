@@ -18,6 +18,14 @@
 - `tests/test_memory_emit.py` and `tests/test_redaction.py` cover observation
   schema, no-issue behavior, opt-in gating, write-failure isolation, and the
   path invariant.
+- `examples/review-export/repo-review.v1.md` is a public-safe fixture of the
+  review export contract, rendered from fixed synthetic input by
+  `scripts/generate-review-fixture.py`. `--check` detects drift, and
+  `release.sh` runs it.
+- `release.sh` gained an `mqobsidian export contracts` section covering both
+  export paths: the fixture is current, declares `schema: repo-review.v1`,
+  preserves `source_schema: inspect.v1`, and neither exporter emits a
+  machine-local path.
 
 - `repo_signal/commands.py` is now the single declaration of the command
   surface. Top-level `--help` and the unknown-command fallback list are

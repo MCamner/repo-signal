@@ -184,6 +184,80 @@ else
   fail "doctor --json returned unexpected schema: '$DOCTOR_SCHEMA'"
 fi
 
+# ── mqobsidian export contracts ──────────────────────────────────────────────
+
+section "mqobsidian export contracts"
+
+# repo-review.v1: the committed fixture is the published shape of the contract.
+if "$PYTHON_BIN" scripts/generate-review-fixture.py --check > /tmp/repo-signal-review-fixture.txt 2>&1; then
+  ok "repo-review.v1 fixture is current"
+else
+  fail "repo-review.v1 fixture check failed"
+  cat /tmp/repo-signal-review-fixture.txt
+fi
+
+REVIEW_FIXTURE="examples/review-export/repo-review.v1.md"
+
+if grep -q "^schema: repo-review.v1$" "$REVIEW_FIXTURE" 2>/dev/null; then
+  ok "repo-review.v1 fixture declares schema: repo-review.v1"
+else
+  fail "$REVIEW_FIXTURE does not declare schema: repo-review.v1"
+fi
+
+if grep -q "^source_schema: inspect.v1$" "$REVIEW_FIXTURE" 2>/dev/null; then
+  ok "repo-review.v1 fixture preserves source_schema: inspect.v1"
+else
+  fail "$REVIEW_FIXTURE does not preserve source_schema: inspect.v1"
+fi
+
+# Both exporters must keep machine-local paths out of what they publish.
+if "$PYTHON_BIN" - <<'CONTRACT' > /tmp/repo-signal-redaction.txt 2>&1
+import sys
+sys.path.insert(0, ".")
+from pathlib import Path
+from repo_signal.redaction import is_machine_local_path
+from repo_signal.memory_emit import observation_from_inspect
+
+failures = []
+
+fixture = Path("examples/review-export/repo-review.v1.md").read_text(encoding="utf-8")
+for token in fixture.split():
+    if is_machine_local_path(token):
+        failures.append(f"repo-review.v1 fixture leaks {token!r}")
+
+sample = {
+    "schema": "inspect.v1",
+    "repo": {"exists": True, "name": "example-repo", "path": "/Users/someone/example-repo"},
+    "issues": [{"level": "fail", "message": "CHANGELOG.md is missing"}],
+    "recommended_next_commit": "docs: add CHANGELOG.md",
+}
+record = observation_from_inspect(sample)
+
+def walk(value, trail="record"):
+    if isinstance(value, dict):
+        for key, item in value.items():
+            walk(item, f"{trail}.{key}")
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            walk(item, f"{trail}[{index}]")
+    elif is_machine_local_path(value):
+        failures.append(f"memory-observation.v1 leaks {trail}={value!r}")
+
+walk(record)
+
+if failures:
+    for line in failures:
+        print(line)
+    raise SystemExit(1)
+print("no machine-local paths in either export")
+CONTRACT
+then
+  ok "exports carry no machine-local filesystem paths"
+else
+  fail "export redaction contract violated"
+  cat /tmp/repo-signal-redaction.txt
+fi
+
 # ── report --format json schema ───────────────────────────────────────────────
 
 section "report --format json schema"

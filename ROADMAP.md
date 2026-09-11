@@ -678,8 +678,14 @@ turning repo-signal into a durable memory store or review engine.
 
 - [x] Add `docs/REVIEW_EXPORT_SCHEMA.md` with fields, provenance, path rules and
   overwrite behavior for `repo-review.v1`
-- [ ] Add a generated, public-safe `repo-review.v1` fixture under `examples/`
-- [ ] Add `repo-review.v1` to `release.sh` contract checks
+- [x] Add a generated, public-safe `repo-review.v1` fixture under `examples/` —
+  `examples/review-export/repo-review.v1.md`, rendered from fixed synthetic
+  input by `scripts/generate-review-fixture.py` so it cannot churn on every
+  commit; `--check` detects drift
+- [x] Add `repo-review.v1` to `release.sh` contract checks — new
+  `mqobsidian export contracts` section verifies the fixture is current,
+  declares `schema: repo-review.v1`, preserves `source_schema: inspect.v1`, and
+  that neither exporter emits a machine-local path
 - [x] Document `memory-observation.v1` producer fields and the explicit boundary:
   observations are proposals, not promoted memory —
   `docs/MEMORY_OBSERVATION_SCHEMA.md`, with every field verified against a real

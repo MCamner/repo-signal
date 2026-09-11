@@ -23,6 +23,9 @@ run_cli inspect . > examples/inspect/inspect.txt
 run_cli inspect --json . > examples/inspect/inspect.v1.json
 python3 -m json.tool examples/inspect/inspect.v1.json >/tmp/repo-signal-inspect-json-check.json
 
+echo "Generating repo-review.v1 fixture..."
+python3 scripts/generate-review-fixture.py
+
 echo "Generating doctor text example..."
 run_cli doctor > examples/doctor/doctor.txt
 

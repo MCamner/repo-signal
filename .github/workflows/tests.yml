@@ -40,6 +40,39 @@ jobs:
         run: |
           python -m pytest tests/ -v
 
+  # Three tests asserted the literal string "repo-signal" against output that
+  # actually carries the checkout directory's name, so the suite passed only in
+  # a directory that happened to be called that and failed in a git worktree.
+  # Same class as the shell-discovery defect: the test read implicit machine
+  # context instead of its own input. Checking out under a different name keeps
+  # the acceptance criterion enforced rather than remembered.
+  renamed-checkout:
+    name: Suite from a renamed checkout
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository under a different directory name
+        uses: actions/checkout@v4
+        with:
+          path: zeta-checkout
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        working-directory: zeta-checkout
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install pytest
+
+      - name: Run tests
+        working-directory: zeta-checkout
+        run: |
+          python -m pytest tests/ -v
+
   # scripts/check-docs-consistency.sh existed but no workflow ran it, so every
   # version surface it guards — pyproject, __version__, CHANGELOG — could drift
   # with CI still green. It checks .mq/repo-contract.json too; unrun, that gap

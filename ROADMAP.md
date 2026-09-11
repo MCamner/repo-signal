@@ -680,12 +680,17 @@ turning repo-signal into a durable memory store or review engine.
   overwrite behavior for `repo-review.v1`
 - [ ] Add a generated, public-safe `repo-review.v1` fixture under `examples/`
 - [ ] Add `repo-review.v1` to `release.sh` contract checks
-- [ ] Document `memory-observation.v1` producer fields and the explicit boundary:
-  observations are proposals, not promoted memory
-- [ ] Add focused tests for observation schema, no-issue behavior, opt-in gating
-  and write-failure isolation
-- [ ] Verify both exporters reject or redact machine-local paths and secret-like
-  values in generated artifacts
+- [x] Document `memory-observation.v1` producer fields and the explicit boundary:
+  observations are proposals, not promoted memory —
+  `docs/MEMORY_OBSERVATION_SCHEMA.md`, with every field verified against a real
+  emitted record
+- [x] Add focused tests for observation schema, no-issue behavior, opt-in gating
+  and write-failure isolation — `tests/test_memory_emit.py` (21 tests)
+- [x] Verify both exporters reject or redact machine-local paths and secret-like
+  values in generated artifacts — `evidence.reference` embedded an absolute
+  local path; now a shape invariant in `repo_signal/redaction.py` covering POSIX,
+  Windows drive, UNC and `~` forms. `repo-review.v1` already satisfied it by
+  construction and is now guarded by tests
 
 ### P1 — Keep CLI truth synchronized
 

@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.7.0 — Hermetic generated examples
+v1.8.0 — TBD
 ```
 
 Current highest-priority gate:
@@ -101,7 +101,7 @@ repo-signal should remain small, scriptable and contract-driven.
 | v1.4.0  | Release/readiness export compatibility               | Done                 |
 | v1.5.0  | Review and memory export contract hardening           | Done                 |
 | v1.6.0  | mqobsidian boundary verification                     | Done                 |
-| v1.7.0  | Hermetic generated examples                          | Planned              |
+| v1.7.0  | Hermetic generated examples                          | Done                 |
 
 ---
 
@@ -1017,5 +1017,5 @@ A release should only be created when:
 ## Current recommended next step
 
 ```text
-v1.7.0 — Hermetic generated examples
+v1.8.0 — next release target, scope not yet scheduled
 ```

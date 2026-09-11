@@ -105,3 +105,35 @@ def test_cli_review_export_reports_missing_vault_without_traceback(tmp_path: Pat
     assert result.returncode == 2
     assert "mqobsidian vault not found" in result.stdout
     assert "Traceback" not in result.stderr
+
+
+class TestPublicSafety:
+    """`repo-review.v1` is a public-safe artifact.
+
+    The same invariant that governs `memory-observation.v1` evidence applies
+    here: a machine-local path must never reach the exported document. This
+    exporter satisfies it by construction — it projects only repo name,
+    findings, readiness and recommendation — so these tests are the guard that
+    keeps it that way.
+    """
+
+    def test_export_contains_no_machine_local_path(self, sample_inspect):
+        from repo_signal.redaction import is_machine_local_path
+
+        content = build_repo_review(sample_inspect, created_at="2026-09-10T00:00:00Z")
+        for line in content.splitlines():
+            for token in line.split():
+                assert not is_machine_local_path(token), (
+                    f"repo-review.v1 leaked a machine-local path: {token!r}"
+                )
+
+    def test_source_path_is_not_projected_into_the_document(self, sample_inspect):
+        sample_inspect["repo"]["path"] = "/Users/someone/private/demo-repo"
+        content = build_repo_review(sample_inspect, created_at="2026-09-10T00:00:00Z")
+        assert "/Users/someone" not in content
+        assert "demo-repo" in content
+
+    def test_windows_source_path_is_not_projected(self, sample_inspect):
+        sample_inspect["repo"]["path"] = "C:\\Users\\someone\\demo-repo"
+        content = build_repo_review(sample_inspect, created_at="2026-09-10T00:00:00Z")
+        assert "C:\\Users" not in content

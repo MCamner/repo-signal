@@ -14,6 +14,7 @@ This file maps local repo-signal skills to OpenAI Platform skill IDs.
 | `docs-maintainer` | `skill_6a104c72bee88191a275e63a127d0c9b04e338a066601b78` | 1 | 1 | Uploaded |
 | `semantic-memory-maintainer` | `skill_6a104c73c9648193b04757ebedc52cff08edfe02efa6e539` | 1 | 1 | Uploaded |
 | `symbolic-intelligence-exporter` | `TBD` | TBD | TBD | Not uploaded / verify |
+| `openai-vector-store-refresh` | `TBD` | TBD | TBD | Not uploaded / verify |
 <!-- markdownlint-enable MD013 -->
 
 ## Local Skill Folders
@@ -27,6 +28,7 @@ Expected local folders:
 - `skills/docs-maintainer/`
 - `skills/semantic-memory-maintainer/`
 - `skills/symbolic-intelligence-exporter/`
+- `skills/openai-vector-store-refresh/`
 
 ## Verify Platform Skills
 

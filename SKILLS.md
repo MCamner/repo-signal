@@ -16,6 +16,7 @@ IDs; it is not a skill itself.
 | Skill | Description |
 | ----- | ----------- |
 | [docs-maintainer](skills/docs-maintainer/SKILL.md) | Use when keeping repository documentation consistent after code, CLI, release, workflow, README, wiki, or GitHub Pages changes. Helps update docs surfaces without inventing behavior. |
+| [openai-vector-store-refresh](skills/openai-vector-store-refresh/SKILL.md) | Check, refresh, and verify OpenAI vector stores for MQ repos, especially macos-scripts semantic repository memory; use for Codex or Claude sessions that need safe vector-store updates. |
 | [release-readiness](skills/release-readiness/SKILL.md) | Use when preparing a repo release, checking tests, docs, versioning, changelog, Git status, and publish readiness. |
 | [repo-aware](skills/repo-aware/SKILL.md) | Use when working inside a repo and needing repo-specific context from docs, tooling, tests, git state, repo-signal reports, and local conventions before acting. |
 | [repo-product-auditor](skills/repo-product-auditor/SKILL.md) | Review GitHub repositories as products. Use when asked to improve a repo, README, GitHub profile, pinned repo strategy, discovery, case page, product positioning, or launch readiness. |

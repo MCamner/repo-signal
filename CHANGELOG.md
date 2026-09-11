@@ -2,6 +2,48 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [1.6.0] - 2026-09-11
+
+### Added
+
+- `docs/MQOBSIDIAN_BOUNDARY.md` states who owns what across the repo-signal →
+  mqobsidian boundary — repo-signal produces signals, mqobsidian stores them,
+  mq-agent owns scoring and promotion — and documents the failure behavior of
+  both export paths. `review-export` reports and exits 2; observation emission
+  stays silent, because a broken vault must not change what `inspect` returns.
+- `tests/test_mqobsidian_boundary.py` proves both export paths end to end
+  against a temporary vault, including that a run creates only the expected
+  file and leaves pre-existing notes byte-identical. The fixture redirects
+  `HOME` as well as `MQ_OBSIDIAN_DIR`, so a test that forgot the environment
+  variable cannot fall through to `~/mqobsidian` and append to a real vault.
+- `examples/integrations/mqobsidian_export.sh` exports one review into the
+  vault named by `MQ_OBSIDIAN_DIR`, with no user-specific absolute path, and
+  refuses to run rather than falling back to a developer's real notes.
+- A `renamed-checkout` CI job runs the full suite from a checkout directory
+  that is not named `repo-signal`, so the acceptance criterion is enforced
+  instead of remembered.
+
+### Fixed
+
+- `repo-signal review-export` printed a Python traceback when the vault was not
+  writable. The handler caught `FileExistsError` and `FileNotFoundError` but
+  not `PermissionError`, so the one failure most likely to involve someone
+  else's vault was the one that dumped a stack trace. Every I/O fault now
+  reports a single readable line and exits 2.
+- Three tests asserted the literal string `repo-signal` against output that
+  carries the checkout directory's name, so the suite passed only in a
+  directory that happened to be called that and failed in a `git worktree`.
+  The expectations are now derived from the path each test passes in. Same
+  class as the shell-discovery defect: the test read implicit machine context
+  instead of its own input.
+
+### Changed
+
+- Version surfaces moved to 1.6.0: `VERSION`, `pyproject.toml`,
+  `repo_signal.__version__` and `.mq/repo-contract.json`. v1.5.0 was tagged on
+  its own release-closure commit rather than on a later `main`, so the v1.6.0
+  work above never sat under a tag whose metadata said 1.5.0.
+
 ## [1.5.0] - 2026-09-11
 
 ### Added

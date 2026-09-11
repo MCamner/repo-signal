@@ -1649,7 +1649,11 @@ def main() -> None:
             output = export_repo_review(
                 inspect_repo_data(inspect_path), vault=vault, force=force
             )
-        except (FileExistsError, FileNotFoundError, ValueError) as exc:
+        # OSError, not its two named subclasses: an unwritable vault raises
+        # PermissionError, which escaped this handler and printed a traceback
+        # at the one moment a user most needs a readable message. Every I/O
+        # failure against someone else's vault reports the same way.
+        except (OSError, ValueError) as exc:
             print(exc)
             raise SystemExit(2)
         print(output)

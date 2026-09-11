@@ -1,7 +1,8 @@
 """The command registry is the single declaration of the CLI surface.
 
 Every other view of that surface — top-level `--help`, the unknown-command
-fallback list, subcommand `--help`, and `docs/COMMANDS.md` — must agree with it.
+fallback list, subcommand `--help`, `docs/COMMANDS.md`, and the wiki
+Command-Reference generator — must agree with it.
 Before the registry existed those four views were maintained by hand and had
 drifted apart: `brief` and `readiness` dispatched but were absent from `--help`,
 `portfolio` was absent from both `--help` and the fallback list, and
@@ -176,6 +177,40 @@ class TestDocsConsistency(unittest.TestCase):
             set(),
             f"docs/COMMANDS.md invokes commands that do not exist: {sorted(unknown)}",
         )
+
+
+class TestWikiGenerator(unittest.TestCase):
+    """`tools/generate_wiki_command_ref.py` is a release-gate surface.
+
+    It imported `cli.HELP_TEXT` and regex-parsed the rendered help screen. When
+    the registry replaced that constant the import failed, and because
+    `release.sh` downgrades the failure to a skipped step, the release check
+    stayed green while the wiki reference silently stopped being generated.
+    """
+
+    @staticmethod
+    def _load():
+        import importlib.util
+
+        path = REPO_ROOT / "tools" / "generate_wiki_command_ref.py"
+        spec = importlib.util.spec_from_file_location("wiki_command_ref", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    def test_generator_imports(self):
+        self._load()
+
+    def test_generator_reads_the_registry(self):
+        module = self._load()
+        self.assertEqual({c.name for c in module.COMMANDS}, command_names())
+
+    def test_usage_covers_every_command(self):
+        module = self._load()
+        usage = "\n".join(module.usage_lines())
+        for command in COMMANDS:
+            with self.subTest(command=command.name):
+                self.assertIn(f"repo-signal {command.name}", usage)
 
 
 if __name__ == "__main__":

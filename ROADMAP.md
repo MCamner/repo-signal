@@ -36,7 +36,7 @@ repo-signal should become the dependable repo-status engine for:
 Current `main` target:
 
 ```text
-v1.5.0 — TBD
+v1.6.0 — TBD
 ```
 
 Current highest-priority gate:
@@ -99,7 +99,8 @@ repo-signal should remain small, scriptable and contract-driven.
 | v1.2.0  | mq-mcp pack merge integration                        | Done                 |
 | v1.3.0  | repo-signal brief — daily health summary             | Done                 |
 | v1.4.0  | Release/readiness export compatibility               | Done                 |
-| v1.5.0  | Review and memory export contract hardening           | Planned              |
+| v1.5.0  | Review and memory export contract hardening           | Done                 |
+| v1.6.0  | mqobsidian boundary verification                     | Planned              |
 
 ---
 
@@ -675,8 +676,8 @@ them.
 |---|---|---|---|
 | **A** | Public contract integrity | `repo-review.v1` and `memory-observation.v1`: fixtures, release checks, redaction, failure isolation | P0 — **done** |
 | **B** | CLI truth and discoverability | Command registry, help/dispatch/docs parity, installed entrypoint | P1 — **done** |
-| **C** | mqobsidian boundary verification | Temp-vault smoke tests, observation append, ownership and failure behavior | P2 — open |
-| **D** | Release readiness / v1.5.0 closure | README/ROADMAP/CHANGELOG/VERSION parity, verification on supported Python versions | Open |
+| **C** | mqobsidian boundary verification | Temp-vault smoke tests, observation append, ownership and failure behavior | Deferred to v1.6.0 |
+| **D** | Release readiness / v1.5.0 closure | README/ROADMAP/CHANGELOG/VERSION parity, verification on supported Python versions | **Done** |
 
 ### Verified starting point
 
@@ -735,7 +736,47 @@ them.
   `Unknown option` and exited 2; `wiki --help` was worse, treating `--help` as
   a repository path and reporting on a repo by that name
 
-### P2 — Prove the mqobsidian boundary end to end (deliverable C)
+### Definition of done (deliverable D)
+
+- [x] Full test suite passes on supported Python versions — `331 passed, 219
+  subtests` on 3.11, 3.12 and 3.14, each from a clean venv holding only the
+  package and pytest, which is what CI installs
+- [x] `repo-signal --help` matches the live command surface — all 26 top-level
+  commands are generated from `repo_signal/commands.py`, and
+  `tests/test_command_registry.py` holds dispatch, docs and README to the same
+  list
+- [x] Review and observation contracts have docs, tests and public-safe examples
+- [x] Release checks validate both mqobsidian export paths
+- [x] README, ROADMAP, CHANGELOG and VERSION agree on v1.5.0 —
+  `scripts/check-docs-consistency.sh` also covers `.mq/repo-contract.json`
+- [x] Align the published support claim with the tested matrix: `pyproject.toml`
+  classifiers listed Python 3.11 only, while `requires-python` is `>=3.11` and
+  CI runs the full suite on 3.11 and 3.12. The metadata under-claimed what is
+  actually verified; the 3.12 classifier is now declared
+- [ ] GitHub Actions are green before release
+
+### Non-goals
+
+- No memory scoring or promotion in repo-signal
+- No review generation or architecture reasoning runtime
+- No automatic commit, push or remote vault mutation
+- No new export schema unless an existing contract cannot be extended safely
+
+---
+
+## v1.6.0 — mqobsidian boundary verification
+
+Goal:
+
+Prove the repo-signal → mqobsidian boundary end to end, and remove the last
+place where a test reads implicit machine context instead of explicit input.
+
+Carried over as deliverable C of v1.5.0, which shipped the contracts
+themselves. Deferring it was deliberate: the contracts are verified by fixtures
+and unit tests, while the items below need a temporary vault and a rename-proof
+test suite, and neither gates the contract guarantees v1.5.0 makes.
+
+### Deliverables
 
 - [ ] Add a temporary-vault smoke test for inspect → review export → schema read
 - [ ] Add a temporary-vault smoke test for inspect → observation append without
@@ -754,25 +795,11 @@ them.
   explicit input. Acceptance: the full suite MUST pass when the checkout
   directory basename is not `repo-signal`
 
-### Definition of done (deliverable D)
+### Definition of done
 
-- [ ] Full test suite passes on supported Python versions
-- [ ] `repo-signal --help` matches the live command surface
-- [ ] Review and observation contracts have docs, tests and public-safe examples
-- [ ] Release checks validate both mqobsidian export paths
-- [ ] README, ROADMAP, CHANGELOG and VERSION agree on v1.5.0
-- [ ] Align the published support claim with the tested matrix: `pyproject.toml`
-  classifiers list Python 3.11 only, while `requires-python` is `>=3.11` and CI
-  runs the full suite on 3.11 and 3.12. The metadata under-claims what is
-  actually verified
-- [ ] GitHub Actions are green before release
-
-### Non-goals
-
-- No memory scoring or promotion in repo-signal
-- No review generation or architecture reasoning runtime
-- No automatic commit, push or remote vault mutation
-- No new export schema unless an existing contract cannot be extended safely
+- [ ] Both smoke tests run without touching a durable vault
+- [ ] The full suite passes from a checkout directory with any basename
+- [ ] Ownership and failure behavior are documented, not implied
 
 ---
 
@@ -880,5 +907,5 @@ A release should only be created when:
 ## Current recommended next step
 
 ```text
-v1.5.0 — Review and memory export contract hardening
+v1.6.0 — mqobsidian boundary verification
 ```

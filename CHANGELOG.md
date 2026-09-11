@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD024 -->
 
-## [Unreleased]
+## [1.5.0] - 2026-09-11
 
 ### Added
 
@@ -56,8 +56,6 @@
   wiki report for a repo of that name. Every command now prints usage and exits
   0; `wiki export --help` keeps its detailed screen.
 
-### Fixed
-
 - `wiki export` wrote the same eight pages for every target repository. The
   content described repo-signal itself, so following `docs/PUBLISH-FLOW.md` for
   any other repo published false claims about that project. Pages are now built
@@ -69,6 +67,20 @@
   gitignored filenames into pages meant for a public wiki.
 - `repo-signal wiki export --help` printed `Unknown wiki export option: --help`
   and exited 2, leaving `--output` undiscoverable from the CLI.
+
+- `tools/generate_wiki_command_ref.py` imported `cli.HELP_TEXT` and regex-parsed
+  the rendered help screen. The command registry replaced that constant, so the
+  import failed and the wiki Command-Reference silently stopped being generated
+  — `release.sh` reports it only as a skipped step, so the release check stayed
+  green. It now reads `repo_signal/commands.py` directly, which also fixes rows
+  dropped for commands whose name wraps onto its own line in the help output.
+
+### Changed
+
+- `pyproject.toml` now declares the Python 3.12 classifier. `requires-python`
+  was already `>=3.11` and CI has been running the full suite on 3.11 and 3.12,
+  so the published metadata under-claimed the tested matrix. Verified for this
+  release on 3.11, 3.12 and 3.14: `331 passed, 219 subtests`.
 
 ## [1.4.2] - 2026-07-18
 

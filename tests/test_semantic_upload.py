@@ -30,7 +30,11 @@ class TestDryRun:
             text=True,
         )
         assert result.returncode == 0
-        assert "repo-signal" in result.stdout
+        # The dry-run header names the repo it scanned, and that name is the
+        # checkout directory's. Deriving it from the path this test ran against
+        # keeps the assertion about the output rather than about where the
+        # checkout happens to live.
+        assert REPO_ROOT.name in result.stdout
 
     def test_dry_run_shows_symbols_count(self):
         result = subprocess.run(

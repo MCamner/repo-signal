@@ -2,6 +2,23 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [Unreleased]
+
+### Added
+
+- A `renamed-checkout` CI job runs the full suite from a checkout directory
+  that is not named `repo-signal`, so the acceptance criterion is enforced
+  instead of remembered.
+
+### Fixed
+
+- Three tests asserted the literal string `repo-signal` against output that
+  carries the checkout directory's name, so the suite passed only in a
+  directory that happened to be called that and failed in a `git worktree`.
+  The expectations are now derived from the path each test passes in. Same
+  class as the shell-discovery defect: the test read implicit machine context
+  instead of its own input.
+
 ## [1.5.0] - 2026-09-11
 
 ### Added

@@ -781,26 +781,38 @@ test suite, and neither gates the contract guarantees v1.5.0 makes.
 ### Deliverables
 
 - [ ] Add a temporary-vault smoke test for inspect → review export → schema read
+  — `tests/test_mqobsidian_boundary.py::TestReviewExportSmoke`, covering the
+  library round trip and the full CLI path
 - [ ] Add a temporary-vault smoke test for inspect → observation append without
-  touching durable notes
+  touching durable notes — `TestObservationSmoke` asserts the run creates
+  *only* the observation surface and leaves a pre-existing note byte-identical
 - [ ] Document ownership: repo-signal produces signals; mqobsidian stores them;
-  mq-agent owns scoring, promotion and workflow orchestration
+  mq-agent owns scoring, promotion and workflow orchestration —
+  `docs/MQOBSIDIAN_BOUNDARY.md`, with the rules asserted in tests rather than
+  only stated
 - [ ] Document failure behavior for a missing vault, unwritable output and an
-  unknown source schema
+  unknown source schema. Writing it down found a defect: `PermissionError` is
+  neither `FileNotFoundError` nor `FileExistsError`, so an unwritable vault
+  escaped the CLI handler and printed a traceback. It now reports like every
+  other vault fault
 - [ ] Add one integration example that uses `MQ_OBSIDIAN_DIR` and contains no
-  user-specific absolute path
-- [ ] Remove the checkout-name dependency in the test suite. Three tests
+  user-specific absolute path — `examples/integrations/mqobsidian_export.sh`,
+  driven through all five of its paths
+- [x] Remove the checkout-name dependency in the test suite. Three tests
   (`test_mq_ecosystem.py`, `test_review_export.py`, `test_semantic_upload.py`)
   assume the checkout directory is named `repo-signal` and fail in any other
   directory — found by verifying commits in a `git worktree`. Same class as the
   shell-discovery defect: the test reads implicit machine context instead of
   explicit input. Acceptance: the full suite MUST pass when the checkout
-  directory basename is not `repo-signal`
+  directory basename is not `repo-signal` — met, and enforced by the
+  `renamed-checkout` CI job rather than left to memory
 
 ### Definition of done
 
-- [ ] Both smoke tests run without touching a durable vault
-- [ ] The full suite passes from a checkout directory with any basename
+- [ ] Both smoke tests run without touching a durable vault — verified by
+  snapshotting a real 8,977-file vault before and after a full suite run and
+  diffing it; the tests redirect `HOME` as well as `MQ_OBSIDIAN_DIR`
+- [x] The full suite passes from a checkout directory with any basename
 - [ ] Ownership and failure behavior are documented, not implied
 
 ---

@@ -78,10 +78,18 @@ def test_cli_review_export_writes_mqobsidian_review(tmp_path: Path):
     )
 
     assert result.returncode == 0, result.stderr
-    written_files = list((vault / "reviews").glob("*-repo-signal-repo-signal.md"))
+    # The export is named <date>-repo-signal-<repo>.md, where the leading
+    # `repo-signal` is the producer and the trailing segment is the inspected
+    # repo. That repo name comes from the checkout's directory, so the expected
+    # value is derived from the path this test passed in — asserting a literal
+    # `repo-signal` made the test pass only in a checkout that happened to be
+    # named that.
+    written_files = list((vault / "reviews").glob("*.md"))
     assert len(written_files) == 1
     written = written_files[0]
     assert written.is_file()
+    assert "-repo-signal-" in written.name
+    assert f"repo: {REPO_ROOT.name}" in written.read_text(encoding="utf-8")
     assert str(written) in result.stdout
 
 

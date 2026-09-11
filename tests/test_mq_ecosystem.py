@@ -90,5 +90,8 @@ class TestMqAgentConsumer:
         mod = _load_consumer()
         summary = mod.repo_summary(REPO_ROOT)
         assert isinstance(summary, str)
-        assert "repo-signal" in summary
+        # The summary names the repo it was given. That name is the checkout
+        # directory's, so it is derived from the argument rather than assumed
+        # to be `repo-signal`.
+        assert REPO_ROOT.name in summary
         assert "score=" in summary

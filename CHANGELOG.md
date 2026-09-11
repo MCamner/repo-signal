@@ -2,6 +2,25 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [Unreleased]
+
+### Added
+
+- Added the `openai-vector-store-refresh` skill for safe preview, refresh, and
+  verification of MQ OpenAI vector stores. Credentials must come from the
+  process environment or the supported project configuration — the skill never
+  starts a login shell or sources a dotfile to find one — and commands name the
+  target repository through `REPO_PATH` rather than a hard-coded checkout path.
+
+### Fixed
+
+- `publish-checklist` no longer treats an empty `docs/screenshots/` directory as
+  a screenshot gallery; at least one image is required. The check tested only
+  that the path existed, so `mkdir docs/screenshots` scored the point while the
+  gallery stayed empty — and the fix plan handed the user exactly that command.
+  A path that is a file, or a folder holding only a placeholder README, does not
+  pass either, and both fix-plan hints now ask for a real screenshot.
+
 ## [1.6.0] - 2026-09-11
 
 ### Added

@@ -24,7 +24,7 @@ Core files
 - [OK] Version file: VERSION
 - [OK] Docs folder: docs
 - [OK] GitHub Pages landing: docs/index.html
-- [OK] Screenshots/output gallery: docs/screenshots
+- [OK] Screenshots/output directory: docs/screenshots
 - [OK] Examples folder: examples
 - [OK] Tests folder: tests
 

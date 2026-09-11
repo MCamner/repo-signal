@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD024 -->
 
-## [Unreleased]
+## [1.7.0] - 2026-09-11
 
 ### Added
 
@@ -48,6 +48,11 @@
   rendering change only: `core_files` is a presence inventory, and the
   `inspect.v1` payload — its label, its `exists` predicate and its issue
   strings — is byte-identical.
+
+### Changed
+
+- Version surfaces moved to 1.7.0: `VERSION`, `pyproject.toml`,
+  `repo_signal.__version__` and `.mq/repo-contract.json`.
 
 ## [1.6.0] - 2026-09-11
 

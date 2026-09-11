@@ -665,6 +665,19 @@ Goal:
 Make the existing mqobsidian exports dependable integration contracts without
 turning repo-signal into a durable memory store or review engine.
 
+### Deliverables
+
+Release status at deliverable level. The checkbox sections below are the
+executable work; nothing here adds a requirement that is not already one of
+them.
+
+| | Deliverable | Covers | Status |
+|---|---|---|---|
+| **A** | Public contract integrity | `repo-review.v1` and `memory-observation.v1`: fixtures, release checks, redaction, failure isolation | P0 — **done** |
+| **B** | CLI truth and discoverability | Command registry, help/dispatch/docs parity, installed entrypoint | P1 — **done** |
+| **C** | mqobsidian boundary verification | Temp-vault smoke tests, observation append, ownership and failure behavior | P2 — open |
+| **D** | Release readiness / v1.5.0 closure | README/ROADMAP/CHANGELOG/VERSION parity, verification on supported Python versions | Open |
+
 ### Verified starting point
 
 - [x] `repo-signal review-export` writes a fresh `inspect.v1` result as
@@ -674,7 +687,7 @@ turning repo-signal into a durable memory store or review engine.
 - [x] Review export has focused unit and CLI tests
 - [x] `memory-observation.v1` emission is opt-in and failure-isolated
 
-### P0 — Lock the public contracts
+### P0 — Lock the public contracts (deliverable A — done)
 
 - [x] Add `docs/REVIEW_EXPORT_SCHEMA.md` with fields, provenance, path rules and
   overwrite behavior for `repo-review.v1`
@@ -698,7 +711,7 @@ turning repo-signal into a durable memory store or review engine.
   Windows drive, UNC and `~` forms. `repo-review.v1` already satisfied it by
   construction and is now guarded by tests
 
-### P1 — Keep CLI truth synchronized
+### P1 — Keep CLI truth synchronized (deliverable B — done)
 
 - [x] Define the command list once and reuse it for help, dispatch validation and
   command documentation checks — `repo_signal/commands.py` is the single
@@ -722,7 +735,7 @@ turning repo-signal into a durable memory store or review engine.
   `Unknown option` and exited 2; `wiki --help` was worse, treating `--help` as
   a repository path and reporting on a repo by that name
 
-### P2 — Prove the mqobsidian boundary end to end
+### P2 — Prove the mqobsidian boundary end to end (deliverable C)
 
 - [ ] Add a temporary-vault smoke test for inspect → review export → schema read
 - [ ] Add a temporary-vault smoke test for inspect → observation append without
@@ -741,7 +754,7 @@ turning repo-signal into a durable memory store or review engine.
   explicit input. Acceptance: the full suite MUST pass when the checkout
   directory basename is not `repo-signal`
 
-### Definition of done
+### Definition of done (deliverable D)
 
 - [ ] Full test suite passes on supported Python versions
 - [ ] `repo-signal --help` matches the live command surface

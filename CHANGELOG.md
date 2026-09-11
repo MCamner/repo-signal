@@ -4,6 +4,31 @@
 
 ## [Unreleased]
 
+### Added
+
+- `repo_signal/redaction.py` makes "no machine-local paths in exported
+  artifacts" a contract invariant rather than a convention. It is a shape rule
+  over POSIX absolute paths, Windows drive paths, UNC shares and `~` expansions,
+  so the same defect cannot return in another platform's syntax.
+- `docs/MEMORY_OBSERVATION_SCHEMA.md` documents the `memory-observation.v1`
+  producer fields, the opt-in gate, the failure-isolation guarantee, and the
+  ownership boundary: repo-signal produces signals, mqobsidian stores them,
+  mq-agent owns scoring and promotion. An observation is a proposal, not a
+  memory.
+- `tests/test_memory_emit.py` and `tests/test_redaction.py` cover observation
+  schema, no-issue behavior, opt-in gating, write-failure isolation, and the
+  path invariant.
+
+### Fixed
+
+- `memory-observation.v1` embedded an absolute machine-local path in
+  `evidence.reference` — the emitting machine's checkout location, such as
+  `/Users/<name>/repo-signal`. A reference identifies the evidence, not the
+  machine it was produced on: a path inside the repository is now rewritten
+  repository-relative, and the repository root becomes the repository name. The
+  observation surface is local-only and gitignored, so nothing had left the
+  machine, but the records were machine-specific and worse to move or compare.
+
 ### Fixed
 
 - `wiki export` wrote the same eight pages for every target repository. The

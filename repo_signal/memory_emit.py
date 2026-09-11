@@ -28,6 +28,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from repo_signal.redaction import redact_reference
+
 PRODUCER = "repo-signal"
 SCHEMA = "memory-observation.v1"
 
@@ -88,6 +90,13 @@ def observation_from_inspect(data: dict[str, Any]) -> dict[str, Any] | None:
     ts = datetime.now(timezone.utc)
     ts_compact = ts.strftime("%Y%m%d%H%M%S")
 
+    # `evidence.reference` identifies the evidence, not the machine it was
+    # produced on: a repo identity or repo-relative path, never an absolute
+    # local path. See docs/MEMORY_OBSERVATION_SCHEMA.md.
+    reference = redact_reference(
+        repo.get("path"), repo_root=repo.get("path"), repo_name=str(name)
+    )
+
     record: dict[str, Any] = {
         "schema": SCHEMA,
         "id": f"obs_rs_{_slug(name)}_{ts_compact}_{_slug(message)}",
@@ -103,7 +112,7 @@ def observation_from_inspect(data: dict[str, Any]) -> dict[str, Any] | None:
         "evidence": [
             {
                 "source": "repo-signal inspect.v1",
-                "reference": str(repo.get("path", name)),
+                "reference": reference,
                 "excerpt": raw,
             }
         ],

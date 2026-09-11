@@ -61,7 +61,7 @@ Prepare v0.1.7 as a publish checklist CI threshold release.
 
 ### Documentation
 
-- [ ] Document `publish-checklist` in README.
+- [x] Document `publish-checklist` in README.
 - [x] Add example output for `design-prototyp`.
 - [x] Add example output for `macos-scripts`.
 - [x] Add command reference page.

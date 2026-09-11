@@ -5,10 +5,16 @@ Run from anywhere:
   python3 tools/generate_wiki_command_ref.py
 
 Output: ~/repo-signal.wiki/Command-Reference.md
+
+The command surface is read from `repo_signal.commands`, the single
+declaration that `--help`, the unknown-command fallback and the docs checks
+all use. This script used to regex-parse the rendered help screen instead,
+which made it a fifth hand-maintained view of the same list: it broke silently
+when `cli.HELP_TEXT` was replaced by the registry, and `release.sh` reports
+that failure only as a skipped step. Reading the registry cannot drift from
+it, and a wrapped long command name can no longer drop a row.
 """
 
-import os
-import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -20,52 +26,20 @@ OUTPUT = WIKI_DIR / "Command-Reference.md"
 sys.path.insert(0, str(REPO_ROOT))
 
 try:
-    from repo_signal.cli import HELP_TEXT
+    from repo_signal.commands import COMMANDS
 except ImportError:
-    print("[error] Could not import repo_signal.cli — run from repo root with the package installed.")
+    print("[error] Could not import repo_signal.commands — run from repo root with the package installed.")
     sys.exit(1)
 
 
-def parse_commands(help_text: str) -> list[dict]:
-    """Extract command name, short description, and example from HELP_TEXT."""
-    commands = []
-
-    # Parse Commands: block
-    commands_block = re.search(r"Commands:\n(.*?)(?:\n\n|\Z)", help_text, re.DOTALL)
-    if not commands_block:
-        return commands
-
-    for line in commands_block.group(1).splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        # "name   description" — name is first word(s) before 3+ spaces
-        match = re.match(r"^(\S[\w-]*(?:\s+\S[\w-]*)?)\s{2,}(.+)$", line)
-        if match:
-            commands.append({"name": match.group(1).strip(), "desc": match.group(2).strip()})
-
-    # Attach examples
-    examples_block = re.search(r"Examples:\n(.*?)(?:\n\n|\Z)", help_text, re.DOTALL)
-    if examples_block:
-        example_lines = [l.strip() for l in examples_block.group(1).splitlines() if l.strip()]
-        for cmd in commands:
-            for ex in example_lines:
-                if ex.startswith(f"repo-signal {cmd['name'].split()[0]}"):
-                    cmd["example"] = ex
-                    break
-
-    return commands
+def usage_lines() -> list[str]:
+    lines = [f"repo-signal {line}" for command in COMMANDS for line in command.usage]
+    lines.append("repo-signal --help")
+    lines.append("repo-signal --version")
+    return lines
 
 
-def parse_usage(help_text: str) -> list[str]:
-    """Extract Usage: lines."""
-    block = re.search(r"Usage:\n(.*?)(?:\n\n|\Z)", help_text, re.DOTALL)
-    if not block:
-        return []
-    return [l.strip() for l in block.group(1).splitlines() if l.strip()]
-
-
-def write_reference(commands: list[dict], usage_lines: list[str]) -> None:
+def write_reference() -> None:
     WIKI_DIR.mkdir(parents=True, exist_ok=True)
 
     lines = [
@@ -75,31 +49,29 @@ def write_reference(commands: list[dict], usage_lines: list[str]) -> None:
         "## Usage\n",
         "```\n",
     ]
-    for u in usage_lines:
-        lines.append(f"{u}\n")
+    for line in usage_lines():
+        lines.append(f"{line}\n")
     lines += ["```\n", "\n---\n", "## Commands\n"]
     lines += [
         "| Command | Description | Example |\n",
         "|---|---|---|\n",
     ]
-    for cmd in commands:
-        example = f"`{cmd.get('example', '—')}`" if cmd.get("example") else "—"
-        lines.append(f"| `{cmd['name']}` | {cmd['desc']} | {example} |\n")
+    for command in COMMANDS:
+        example = f"`repo-signal {command.examples[0]}`" if command.examples else "—"
+        lines.append(f"| `{command.name}` | {command.summary} | {example} |\n")
 
     lines += [
         "\n---\n",
-        f"_Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} — {len(commands)} commands_\n",
+        f"_Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} — {len(COMMANDS)} commands_\n",
     ]
 
     OUTPUT.write_text("".join(lines), encoding="utf-8")
     print(f"[ok] Written: {OUTPUT}")
-    print(f"[ok] Commands: {len(commands)}")
+    print(f"[ok] Commands: {len(COMMANDS)}")
 
 
 if __name__ == "__main__":
-    commands = parse_commands(HELP_TEXT)
-    usage = parse_usage(HELP_TEXT)
-    if not commands:
-        print("[warn] No commands parsed — check HELP_TEXT format in cli.py")
+    if not COMMANDS:
+        print("[warn] The command registry is empty — check repo_signal/commands.py")
         sys.exit(1)
-    write_reference(commands, usage)
+    write_reference()

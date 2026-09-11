@@ -753,7 +753,9 @@ them.
   classifiers listed Python 3.11 only, while `requires-python` is `>=3.11` and
   CI runs the full suite on 3.11 and 3.12. The metadata under-claimed what is
   actually verified; the 3.12 classifier is now declared
-- [ ] GitHub Actions are green before release
+- [x] GitHub Actions are green before release — Tests (3.11 and 3.12), Docs
+  consistency, Packaging, Generated examples, Publish checklist and
+  Markdownlint all pass on the release-closure branch
 
 ### Non-goals
 

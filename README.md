@@ -236,7 +236,7 @@ integrations keep a reliable contract.
 
 ---
 
-## v1.7.0 status
+## v1.7.1 status
 
 - [x] 4 stable JSON contracts: `inspect.v1`, `doctor.v1`, `report.v1`, `suggest.v1`
 - [x] 2 documented export contracts: `repo-review.v1`, `memory-observation.v1`

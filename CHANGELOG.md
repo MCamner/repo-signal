@@ -2,6 +2,23 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [1.7.1] - 2026-09-15
+
+### Fixed
+
+- `TestMqAgentIntegration` asserted that an empty `OPENAI_VECTOR_STORE_ID`
+  makes mq-agent report `missing-vector-store`. mq-agent changed that on
+  2026-09-12: an empty or whitespace-only value now means its canonical store,
+  and the status line names where the id came from. The assertion described a
+  contract that no longer existed, and it blocked `release-check.sh` on main.
+  Both halves are now asserted — absence resolves to the canonical store, and
+  an explicit id still wins — against the source label rather than the
+  canonical id, which is mq-agent's constant and not this repo's to repeat.
+
+  It went stale unnoticed for three months because the class is skipped unless
+  `mq-agent` is on `PATH`, and no workflow installs it. The tests only ever run
+  on a developer machine.
+
 ## [1.7.0] - 2026-09-11
 
 ### Added

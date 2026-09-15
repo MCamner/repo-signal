@@ -236,16 +236,51 @@ import shutil
     reason="mq-agent not installed in this environment",
 )
 class TestMqAgentIntegration:
-    def test_mq_agent_memory_status_reports_correctly(self):
-        env = {**os.environ, "OPENAI_VECTOR_STORE_ID": ""}
+    """How mq-agent resolves the store repo-signal uploads into.
+
+    These drive the installed mq-agent rather than importing it, because that
+    is what an operator gets. They therefore only run where mq-agent is on
+    PATH — CI does not install it, so a change on that side shows up here only
+    when someone runs the suite locally. That is how the assertion below went
+    stale for three months.
+
+    It asserted `missing-vector-store` for an empty OPENAI_VECTOR_STORE_ID.
+    mq-agent changed that in #285 (2026-09-12, "give mq-agent's memory a name
+    and show where it came from"): an empty or whitespace-only value now means
+    the canonical store rather than no store. The old assertion described a
+    contract that no longer existed, so it was debt rather than coverage.
+
+    The status line reports the store *and where its id came from*. The source
+    label is what is asserted here; the canonical id itself is mq-agent's
+    constant, and repeating it would couple this repo to a value it does not
+    own.
+    """
+
+    def _status(self, **env_overrides: str) -> str:
         result = subprocess.run(
             ["mq-agent", "memory", "status", str(REPO_ROOT)],
             capture_output=True,
             text=True,
-            env=env,
+            env={**os.environ, **env_overrides},
         )
-        assert result.returncode == 0
-        assert "missing-vector-store" in result.stdout
+        assert result.returncode == 0, result.stderr
+        return result.stdout
+
+    def test_an_empty_vector_store_id_means_the_canonical_store(self):
+        """Absence is not a missing store — it is the default one."""
+        assert "(canonical)" in self._status(OPENAI_VECTOR_STORE_ID="")
+
+    def test_a_whitespace_only_vector_store_id_is_also_absence(self):
+        """Stated because " " is the value a half-set shell variable leaves."""
+        assert "(canonical)" in self._status(OPENAI_VECTOR_STORE_ID="   ")
+
+    def test_an_explicit_vector_store_id_wins(self):
+        """The half that must keep working for repo-signal's own uploads."""
+        stdout = self._status(OPENAI_VECTOR_STORE_ID="vs_explicit_probe")
+
+        assert "vs_explicit_probe" in stdout
+        assert "(OPENAI_VECTOR_STORE_ID)" in stdout
+        assert "(canonical)" not in stdout
 
     def test_mq_agent_memory_build_dry_run(self):
         result = subprocess.run(

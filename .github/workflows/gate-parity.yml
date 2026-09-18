@@ -1,0 +1,22 @@
+name: Release gate parity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate gate parity
+        run: python3 scripts/check-gate-parity.py
+
+      - name: Test gate parity failures
+        run: python3 scripts/check-gate-parity.py --self-test

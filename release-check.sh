@@ -7,6 +7,9 @@
 #   exits 0 (the `status` field carries the verdict). Consumed by mq-agent's
 #   `stack release --all --preflight`. --dry-run is accepted; this check never
 #   mutates the tree.
+#
+# scripts/check-gate-parity.py documents CI-only release assertions, including
+# isolated packaging and the Python matrix; they are not implied by READY.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -63,6 +66,12 @@ fi
 
 say "--- Docs and version consistency ---"
 run "check-docs-consistency.sh" bash scripts/check-docs-consistency.sh
+
+say "--- Read-only CI assertions ---"
+run "check-generated-examples.sh" env PYTHON_BIN="$PYTHON_BIN" bash scripts/check-generated-examples.sh
+run "check-skills.sh" bash scripts/check-skills.sh
+run "publish-checklist" "$PYTHON_BIN" -m repo_signal.cli publish-checklist . --fail-under 14
+run "check-gate-parity.py" "$PYTHON_BIN" scripts/check-gate-parity.py
 
 say "--- Tests ---"
 run "pytest" "$PYTHON_BIN" -m pytest -q

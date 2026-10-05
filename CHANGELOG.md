@@ -2,6 +2,17 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [Unreleased]
+
+### Added
+
+- Contract tests for the two records repo-signal produces for mqobsidian:
+  `memory-observation.v1` (from `inspect`) and `repo-review.v1` (the committed
+  review-export fixture) are validated against the schemas themselves, vendored
+  byte-identical in `schemas/vendor/`, instead of only against hand-copied key
+  lists. CI checks out mqobsidian and fails on drift between the copies and the
+  owner's files. New `test` extra (`pytest`, `jsonschema`) for the suite.
+
 ## [1.7.1] - 2026-09-15
 
 ### Fixed

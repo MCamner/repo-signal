@@ -43,6 +43,12 @@ ai = [
 vector = [
   "chromadb>=0.5"
 ]
+# The test suite validates produced records against vendored mqobsidian
+# schemas, which needs jsonschema; it is a test dependency, not a runtime one.
+test = [
+  "pytest",
+  "jsonschema>=4.18"
+]
 
 [project.scripts]
 repo-signal = "repo_signal.cli:main"

@@ -33,10 +33,26 @@ jobs:
       - name: Install package
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e .
-          python -m pip install pytest
+          python -m pip install -e ".[test]"
+
+      # repo-signal produces memory-observation.v1 and repo-review.v1, which
+      # mqobsidian owns. tests/test_vendored_contracts.py compares the copies in
+      # schemas/vendor/ with these; only the two schema files are checked out,
+      # so nothing foreign lands in a tree repo-signal inspects.
+      - name: Check out canonical mqobsidian contracts
+        uses: actions/checkout@v4
+        with:
+          repository: MCamner/mqobsidian
+          ref: main
+          path: .canonical/mqobsidian
+          sparse-checkout: |
+            schemas/memory-observation.v1.json
+            schemas/repo-review.v1.json
+          sparse-checkout-cone-mode: false
 
       - name: Run tests
+        env:
+          MQ_CANONICAL_MQOBSIDIAN_ROOT: ${{ github.workspace }}/.canonical/mqobsidian
         run: |
           python -m pytest tests/ -v
 
@@ -65,8 +81,7 @@ jobs:
         working-directory: zeta-checkout
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e .
-          python -m pip install pytest
+          python -m pip install -e ".[test]"
 
       - name: Run tests
         working-directory: zeta-checkout

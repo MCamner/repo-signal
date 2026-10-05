@@ -23,7 +23,8 @@ CI_ONLY = {
 STEPS = {
     "examples.yml": ["Check out repository", "Set up Python", "Install package",
                      "Check generated examples", "Check skills consistency"],
-    "tests.yml": ["Check out repository", "Set up Python", "Install package", "Run tests",
+    "tests.yml": ["Check out repository", "Set up Python", "Install package",
+                  "Check out canonical mqobsidian contracts", "Run tests",
                   "Check out repository under a different directory name", "Set up Python",
                   "Install package", "Run tests", "Check out repository", "Set up Python",
                   "Install package", "Docs and version consistency"],

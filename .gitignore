@@ -16,3 +16,7 @@ dist/
 # Local editor and MCP configuration
 .cursor/
 .mcp.json
+
+# Generated agent context stays local: no decided public agent surface
+# (mqobsidian ADR-006 P5). Regenerate with `mq-agent context prepare`.
+.mq/context/

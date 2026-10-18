@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `repo-signal export PATH` without `--output` now writes the packs into
+  `PATH/.repo-signal/exports/`. The CLI passed a cwd-relative default, so
+  exporting another repo overwrote the index of whatever checkout the shell
+  stood in. An explicit relative `--output` still resolves from the cwd.
+
 ### Added
 
 - Contract tests for the two records repo-signal produces for mqobsidian:

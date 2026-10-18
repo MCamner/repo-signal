@@ -81,9 +81,11 @@ def format_export_result(result: dict[str, Any], output_format: str = "text") ->
     return "\n".join(lines)
 
 
-def _parse_args(args: list[str]) -> tuple[Path, Path, list[str] | None, str]:
+def _parse_args(args: list[str]) -> tuple[Path, Path | None, list[str] | None, str]:
     repo = Path(".")
-    output_dir = Path(DEFAULT_OUTPUT_DIR)
+    # None lets export_packs place the packs inside the target repo. A
+    # cwd-relative default wrote another repo's packs wherever the shell stood.
+    output_dir: Path | None = None
     packs: list[str] | None = None
     output_format = "text"
 

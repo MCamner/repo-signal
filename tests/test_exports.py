@@ -294,3 +294,36 @@ def test_cli_export_json_format(minimal_repo: Path, tmp_path: Path):
     assert proc.returncode == 0, proc.stderr
     data = json.loads(proc.stdout)
     assert data["schema"] == "export-packs.v1"
+
+
+def test_cli_export_without_output_writes_into_the_target_repo(minimal_repo: Path, tmp_path: Path):
+    # Without --output the CLI used to pass a cwd-relative default, so
+    # `repo-signal export /other/repo` wrote that repo's packs into whatever
+    # directory the operator stood in — overwriting another checkout's index.
+    import subprocess, sys
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir()
+    proc = subprocess.run(
+        [sys.executable, "-m", "repo_signal.cli", "export", str(minimal_repo), "--symbol-index"],
+        capture_output=True, text=True, cwd=elsewhere,
+        env={**__import__("os").environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1])},
+    )
+    assert proc.returncode == 0, proc.stderr
+    written = minimal_repo / ".repo-signal" / "exports" / "symbol_index.json"
+    assert written.is_file()
+    assert json.loads(written.read_text())["repo_name"] == minimal_repo.name
+    assert not (elsewhere / ".repo-signal").exists()
+
+
+def test_cli_explicit_relative_output_still_resolves_from_cwd(minimal_repo: Path, tmp_path: Path):
+    import subprocess, sys
+    cwd = tmp_path / "cwd"
+    cwd.mkdir()
+    proc = subprocess.run(
+        [sys.executable, "-m", "repo_signal.cli", "export", str(minimal_repo),
+         "--symbol-index", "--output", "packs"],
+        capture_output=True, text=True, cwd=cwd,
+        env={**__import__("os").environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1])},
+    )
+    assert proc.returncode == 0, proc.stderr
+    assert (cwd / "packs" / "symbol_index.json").is_file()

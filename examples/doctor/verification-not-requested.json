@@ -1,0 +1,12 @@
+{
+  "status": "NOT_VERIFIED",
+  "source": "mq-agent",
+  "reason": "not_requested",
+  "scope": "changed_files_against_HEAD",
+  "code_status": null,
+  "receipt_id": null,
+  "fingerprint": null,
+  "head": null,
+  "base": null,
+  "next_action": "Run doctor --verification to validate existing local evidence."
+}

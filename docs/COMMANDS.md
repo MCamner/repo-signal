@@ -124,6 +124,7 @@ Usage:
 repo-signal doctor
 repo-signal doctor ~/some-repo
 repo-signal doctor --json
+repo-signal doctor . --verification --json
 repo-signal doctor . --format json
 ```
 
@@ -133,6 +134,10 @@ Output:
 - JSON with schema version `doctor.v1`
 
 See [DOCTOR_SCHEMA.md](DOCTOR_SCHEMA.md) for the machine-readable contract.
+
+Scores describe static structure. `--verification` reads existing mq-agent
+verification evidence without running checks. Missing or stale evidence never
+becomes a PASS from a high score. See [Doctor schema](DOCTOR_SCHEMA.md).
 
 ## repo-signal publish-checklist
 

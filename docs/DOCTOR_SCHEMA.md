@@ -54,7 +54,8 @@ repo-signal doctor ~/some-repo --format json
 | `schema_version` | string | Legacy alias for `schema`. Same value. |
 | `repo` | object | Repository identity and project classification. |
 | `summary` | object | Scan summary, language counts, and Git state. |
-| `scores` | object | Readiness scores grouped by area. |
+| `scores` | object | Static structural scores grouped by area; not execution evidence. |
+| `verification` | object | Additive local receipt-validation summary; see below. |
 | `key_signals` | object | Entry points, tooling, symbol count, and graph edge count. |
 | `readme` | object | README presence and checklist status. |
 | `suggested_skills` | array | Suggested Codex skills for follow-up work. |
@@ -122,3 +123,41 @@ Each score object has this shape:
 Breaking changes should bump `schema_version`. Additive fields may appear without a version bump.
 
 For a fuller narrative description, see [DOCTOR_JSON.md](DOCTOR_JSON.md).
+
+## Verification evidence (additive)
+
+```bash
+repo-signal doctor . --verification --json
+```
+
+Without `--verification`, `verification.status` is `NOT_VERIFIED` and no
+mq-agent process is started. With the flag, repo-signal invokes the installed
+`mq-agent verify-changes <repo> --check-receipt --json` with a 30-second timeout.
+It validates existing evidence only: no tests, receipt writes, cloud calls or
+GitHub queries. mq-agent owns checksum and current-snapshot validation.
+
+| Field | Meaning |
+| --- | --- |
+| `status` | `PASS`, `FAIL`, `STALE` or `NOT_VERIFIED`. |
+| `code_status` | Producer code status, or null when unavailable/invalid. A code PASS can coexist with overall NOT_VERIFIED. |
+| `reason` | Fixed reason code; no raw provider errors or paths. |
+| `source` | Always `mq-agent`. |
+| `scope` | Always `changed_files_against_HEAD`; not full-repository coverage. |
+| `receipt_id`, `fingerprint` | Validated-producer references, or null. |
+| `head`, `base` | Producer Git object IDs, or null. |
+| `next_action` | Advisory text; never executed. |
+
+`MISSING`, `NO_CHANGES`, `PLAN`, `ERROR`, `INCOMPLETE`, unavailable/older mq-agent,
+invalid JSON, timeout, oversized output and inconsistent PASS responses all map
+to `NOT_VERIFIED`. PASS requires a nonempty passing check set, no uncovered files
+and no unverified runtime data. The adapter emits references and summary only;
+raw check output, filenames and provider stderr are discarded.
+
+The four numerical scores and existing `doctor.v1` fields remain compatible.
+They measure structure, even at 100/100. Doctor still exits 0 when a report was
+produced; automation must inspect `verification.status`, not its exit code or
+structure score, to make a verification decision. This is local changed-file
+evidence against HEAD, not a full-suite, CI, release approval or authenticity
+attestation. Only invoke a trusted mq-agent installation from PATH.
+
+Example verification object: [not requested](../examples/doctor/verification-not-requested.json).

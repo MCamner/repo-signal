@@ -72,7 +72,7 @@ Use `repo-signal` from the root of any local Git repository. The normal loop is:
 repo-signal analyze              # orient around repo type, stack and focus areas
 repo-signal inspect              # fast status and recommended next commit
 repo-signal review-export .      # write repo-review.v1 to mqobsidian/reviews
-repo-signal doctor               # full repo health, docs, release and AI-readiness check
+repo-signal doctor               # static repo health, docs, release and AI-readiness signals
 repo-signal publish-checklist .  # public release-readiness gate
 ```
 
@@ -235,6 +235,15 @@ When changing CLI output, update the matching docs and examples so agent
 integrations keep a reliable contract.
 
 ---
+
+## Local verification evidence (development)
+
+`repo-signal doctor . --verification --json` separates structural scores from
+mq-agent's validation of an existing changed-file receipt. Without this opt-in,
+verification is `NOT_VERIFIED`. Tests and CI are never inferred to have passed
+from file presence or a 100/100 score. mq-agent with `verify-changes` support
+must be installed; no checks are executed by doctor.
+See [Doctor schema](docs/DOCTOR_SCHEMA.md#verification-evidence-additive).
 
 ## v1.8.0 status
 

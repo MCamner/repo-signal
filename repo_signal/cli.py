@@ -1261,13 +1261,19 @@ def generate_roadmap_plan(repo: Path) -> str:
 
     return "\n".join(lines)
 
-def parse_doctor_args(args: list[str]) -> tuple[Path, str]:
+def parse_doctor_args(args: list[str]) -> tuple[Path, str, bool]:
     repo = Path.cwd()
     output_format = "markdown"
+    verification = False
     index = 0
 
     while index < len(args):
         arg = args[index]
+
+        if arg == "--verification":
+            verification = True
+            index += 1
+            continue
 
         if arg == "--json":
             output_format = "json"
@@ -1302,7 +1308,7 @@ def parse_doctor_args(args: list[str]) -> tuple[Path, str]:
         print("Available formats: markdown, json")
         raise SystemExit(2)
 
-    return repo, output_format
+    return repo, output_format, verification
 
 
 def demo_text() -> str:
@@ -1670,8 +1676,8 @@ def main() -> None:
         return
 
     if command == "doctor":
-        doctor_path, doctor_format = parse_doctor_args(sys.argv[2:])
-        print(doctor_repo(doctor_path, output_format=doctor_format))
+        doctor_path, doctor_format, verification = parse_doctor_args(sys.argv[2:])
+        print(doctor_repo(doctor_path, output_format=doctor_format, verification=verification))
         return
 
     if command == "readme":

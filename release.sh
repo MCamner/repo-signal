@@ -5,6 +5,9 @@
 # Usage:
 #   ./release.sh             # run all checks, no publish
 #   ./release.sh --publish   # run checks, tag, push, create GitHub release
+#   ./release.sh --publish-wiki
+#                            # after a PR release is merged and tagged: push
+#                            # the wiki Command-Reference for v<VERSION>
 #
 set -euo pipefail
 
@@ -12,8 +15,10 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT_DIR"
 
 PUBLISH=0
+PUBLISH_WIKI=0
 for arg in "$@"; do
   [[ "$arg" == "--publish" || "$arg" == "--github-release" ]] && PUBLISH=1
+  [[ "$arg" == "--publish-wiki" ]] && PUBLISH_WIKI=1
 done
 
 if [[ -z "${PYTHON_BIN:-}" ]]; then
@@ -37,6 +42,62 @@ section() {
   printf '%0.s-' $(seq 1 ${#1})
   echo
 }
+
+# Regenerates the wiki Command-Reference and compares it with the wiki remote.
+# With push=1 it commits and pushes a changed page. Returns 0 when the wiki is
+# current (or was just pushed), 2 when it differs and push=0, 1 on failure.
+# The push belongs after the tag: until then the code does not carry VERSION.
+wiki_command_ref() {
+  local push="$1"
+  local version remote wiki_tmp generated rc=0
+  version="$(tr -d '[:space:]' < VERSION)"
+  remote="${REPO_SIGNAL_WIKI_REMOTE:-git@github.com:MCamner/repo-signal.wiki.git}"
+  generated="$HOME/repo-signal.wiki/Command-Reference.md"
+
+  "$PYTHON_BIN" tools/generate_wiki_command_ref.py > /tmp/repo-signal-wiki.txt 2>&1 || return 1
+  [[ -f "$generated" ]] || return 1
+
+  wiki_tmp="$(mktemp -d)"
+  if ! git clone --quiet "$remote" "$wiki_tmp" 2>/dev/null; then
+    rm -rf "$wiki_tmp"
+    return 1
+  fi
+
+  cp "$generated" "$wiki_tmp/Command-Reference.md"
+  git -C "$wiki_tmp" add Command-Reference.md
+  if git -C "$wiki_tmp" diff --cached --quiet; then
+    rc=0
+  elif [[ "$push" == "1" ]]; then
+    if git -C "$wiki_tmp" commit --quiet -m "Update Command-Reference for v${version}" \
+      && git -C "$wiki_tmp" push --quiet; then
+      rc=0
+    else
+      rc=1
+    fi
+  else
+    rc=2
+  fi
+  rm -rf "$wiki_tmp"
+  return "$rc"
+}
+
+if [[ "$PUBLISH_WIKI" == "1" ]]; then
+  WIKI_VERSION="$(tr -d '[:space:]' < VERSION)"
+  if [[ -n "$(git status --porcelain)" ]]; then
+    echo "ERROR: Working tree has uncommitted changes." >&2
+    exit 1
+  fi
+  if ! git rev-parse -q --verify "refs/tags/v${WIKI_VERSION}" >/dev/null; then
+    echo "ERROR: Tag v${WIKI_VERSION} does not exist. Tag the merge commit first." >&2
+    exit 1
+  fi
+  if wiki_command_ref 1; then
+    echo "Wiki Command-Reference is current for v${WIKI_VERSION}."
+    exit 0
+  fi
+  echo "ERROR: Wiki Command-Reference was not updated." >&2
+  exit 1
+fi
 
 # ── Version sync ─────────────────────────────────────────────────────────────
 
@@ -312,31 +373,13 @@ section "README score"
 
 section "Wiki Command-Reference"
 
-if "$PYTHON_BIN" tools/generate_wiki_command_ref.py > /tmp/repo-signal-wiki.txt 2>&1; then
-  WIKI_TMP="$(mktemp -d)"
-  if git clone --quiet git@github.com:MCamner/repo-signal.wiki.git "$WIKI_TMP" 2>/dev/null; then
-    GENERATED="$HOME/repo-signal.wiki/Command-Reference.md"
-    [[ -f "$GENERATED" ]] || GENERATED="$WIKI_TMP/Command-Reference.md"
-    cp "$GENERATED" "$WIKI_TMP/Command-Reference.md" 2>/dev/null || true
-    cd "$WIKI_TMP"
-    git add Command-Reference.md
-    if git diff --cached --quiet; then
-      ok "Wiki Command-Reference unchanged"
-    elif [[ "$PUBLISH" == "1" ]]; then
-      git commit -m "Update Command-Reference for v${VERSION_FILE}"
-      git push --quiet
-      ok "Wiki Command-Reference pushed"
-    else
-      warn "Wiki Command-Reference has changes — will be pushed on --publish"
-    fi
-    cd "$ROOT_DIR"
-    rm -rf "$WIKI_TMP"
-  else
-    warn "Could not clone wiki repo — skipping"
-    rm -rf "$WIKI_TMP"
-  fi
+if wiki_command_ref 0; then
+  ok "Wiki Command-Reference unchanged"
 else
-  warn "Wiki generator failed — skipping"
+  case $? in
+    2) warn "Wiki Command-Reference has changes — pushed after the tag" ;;
+    *) warn "Wiki Command-Reference could not be checked — skipping" ;;
+  esac
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
@@ -365,6 +408,8 @@ if [[ "$PUBLISH" == "0" ]]; then
   echo
   echo "Dry run complete. To tag and publish:"
   echo "  ./release.sh --publish"
+  echo "After a pull-request release is merged and tagged:"
+  echo "  ./release.sh --publish-wiki"
   exit 0
 fi
 
@@ -374,6 +419,12 @@ echo "Publishing v${VERSION_FILE}..."
 git tag -m "v${VERSION_FILE}" "v${VERSION_FILE}"
 git push
 git push origin "v${VERSION_FILE}"
+
+if wiki_command_ref 1; then
+  echo "  Wiki Command-Reference is current."
+else
+  echo "  [WARN] Wiki Command-Reference was not updated — run ./release.sh --publish-wiki" >&2
+fi
 
 NOTES="$("$PYTHON_BIN" - "$VERSION_FILE" <<'PY'
 import re, sys

@@ -90,6 +90,24 @@ def test_publish_wiki_refuses_without_tag(tmp_path: Path) -> None:
     assert _git(remote, "rev-parse", "refs/heads/master") == before
 
 
+def test_publish_wiki_refuses_when_head_is_not_the_tag(tmp_path: Path) -> None:
+    # The 1.8.0 attempt: the bump was skipped, VERSION still said 1.7.1, and
+    # v1.7.1 existed — on an older commit. The gate only asked whether the tag
+    # existed, so it published HEAD's page labelled as v1.7.1.
+    repo, remote, env = _setup(tmp_path)
+    subprocess.run(["git", "tag", "-a", "v1.0.0", "-m", "v1.0.0"], cwd=repo, check=True, env=env)
+    (repo / "later.txt").write_text("later\n")
+    subprocess.run(["git", "add", "-A"], cwd=repo, check=True, env=env)
+    subprocess.run(["git", "commit", "-qm", "later"], cwd=repo, check=True, env=env)
+    before = _git(remote, "rev-parse", "refs/heads/master")
+
+    result = _run(repo, env)
+
+    assert result.returncode != 0
+    assert "HEAD is not v1.0.0" in result.stdout + result.stderr
+    assert _git(remote, "rev-parse", "refs/heads/master") == before
+
+
 def test_publish_wiki_pushes_after_tag(tmp_path: Path) -> None:
     repo, remote, env = _setup(tmp_path)
     subprocess.run(["git", "tag", "-a", "v1.0.0", "-m", "v1.0.0"], cwd=repo, check=True, env=env)

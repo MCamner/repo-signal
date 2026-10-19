@@ -91,6 +91,12 @@ if [[ "$PUBLISH_WIKI" == "1" ]]; then
     echo "ERROR: Tag v${WIKI_VERSION} does not exist. Tag the merge commit first." >&2
     exit 1
   fi
+  # The tag existing is not enough: if the bump was skipped, VERSION still
+  # names the previous release, whose tag sits on an older commit.
+  if [[ "$(git rev-parse "v${WIKI_VERSION}^{commit}")" != "$(git rev-parse HEAD)" ]]; then
+    echo "ERROR: HEAD is not v${WIKI_VERSION}. Publish from the tagged commit." >&2
+    exit 1
+  fi
   if wiki_command_ref 1; then
     echo "Wiki Command-Reference is current for v${WIKI_VERSION}."
     exit 0

@@ -17,7 +17,7 @@
 ### Added
 
 - `release.sh --publish-wiki`: post-merge step for pull-request releases.
-  Requires tag `v<VERSION>` and a clean tree, then pushes the wiki
+  Requires a clean tree and tag `v<VERSION>` on HEAD, then pushes the wiki
   Command-Reference and fails if it was not updated. Releases land through
   pull requests, and the wiki push lived only in `--publish`, so 1.4.2 through
   1.7.1 shipped without a wiki update (16 of 26 commands published).

@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-10-19
+
 ### Fixed
 
 - `repo-signal export PATH` without `--output` now writes the packs into

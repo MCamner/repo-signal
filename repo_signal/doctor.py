@@ -5,6 +5,7 @@ from typing import Any
 from repo_signal.core.models import Repository
 from repo_signal.core.scanner import scan_repository
 from repo_signal.readme_score import score_readme
+from repo_signal.verification import verification_evidence
 
 
 def yes_no(value: bool) -> str:
@@ -184,6 +185,7 @@ def build_doctor_result_from_repo(repo: Repository, readme_result: dict[str, Any
     return {
         "schema": "doctor.v1",
         "schema_version": "doctor.v1",
+        "verification": verification_evidence(repo.path),
         "repo": {
             "name": repo.name,
             "path": str(repo.path),
@@ -240,7 +242,8 @@ def build_doctor_result_from_repo(repo: Repository, readme_result: dict[str, Any
             "summary": (
                 f"This repo is a {repo.project_type}. "
                 f"Repo health is {status_label(health_score)} ({health_score}/100). "
-                f"Release maturity is {status_label(release_score)} ({release_score}/100). "
+                f"Structural release maturity is {status_label(release_score)} ({release_score}/100); "
+                "test and CI execution is not established by this score. "
                 f"Docs quality is {status_label(docs_score)} ({docs_score}/100). "
                 f"AI readiness is {status_label(ai_score)} ({ai_score}/100)."
             ),
@@ -249,10 +252,13 @@ def build_doctor_result_from_repo(repo: Repository, readme_result: dict[str, Any
     }
 
 
-def build_doctor_result(repo_path: str | Path = ".") -> dict[str, Any]:
+def build_doctor_result(repo_path: str | Path = ".", *, verification: bool = False) -> dict[str, Any]:
     repo = scan_repository(repo_path)
     readme_result = score_readme(str(repo.path))
-    return build_doctor_result_from_repo(repo, readme_result)
+    result = build_doctor_result_from_repo(repo, readme_result)
+    if verification:
+        result["verification"] = verification_evidence(repo.path, enabled=True)
+    return result
 
 
 def format_doctor_report_from_result(result: dict[str, Any]) -> str:
@@ -284,7 +290,9 @@ def format_doctor_report_from_result(result: dict[str, Any]) -> str:
     lines.append(f"- Working tree changes: `{summary['working_tree_changes']}`")
     lines.append("")
 
-    lines.append("## Scores")
+    lines.append("## Structural scores")
+    lines.append("")
+    lines.append("File presence and static structure only; these scores do not prove tests or CI passed.")
     lines.append("")
     lines.append("| Area | Score | Status | Evidence |")
     lines.append("|---|---:|---|---|")
@@ -294,6 +302,13 @@ def format_doctor_report_from_result(result: dict[str, Any]) -> str:
     lines.append(f"| AI readiness | {ai['score']}/100 | {ai['status']} | {format_evidence(ai['evidence'])} |")
     lines.append("")
 
+    verification = result.get("verification", {"status": "NOT_VERIFIED", "reason": "not_requested"})
+    lines.append("## Verification evidence")
+    lines.append("")
+    lines.append(f"- Status: `{verification['status']}` ({verification['reason']})")
+    lines.append("- Scope: changed files against HEAD; not a full-suite or CI verdict.")
+    lines.append(f"- Next action: {verification.get('next_action', 'Validate existing evidence with mq-agent.')}")
+    lines.append("")
     lines.append("## Key Signals")
     lines.append("")
     lines.append(
@@ -341,14 +356,14 @@ def format_doctor_json(result: dict[str, Any]) -> str:
     return json.dumps(result, indent=2, sort_keys=True)
 
 
-def doctor_repo(repo_path: str | Path = ".", output_format: str = "markdown") -> str:
+def doctor_repo(repo_path: str | Path = ".", output_format: str = "markdown", *, verification: bool = False) -> str:
     normalized = output_format.lower()
     if normalized == "text":
         normalized = "markdown"
     if normalized not in {"markdown", "json"}:
         raise ValueError(f"Unknown doctor format: {output_format}")
 
-    result = build_doctor_result(repo_path)
+    result = build_doctor_result(repo_path, verification=verification)
 
     if normalized == "json":
         return format_doctor_json(result)

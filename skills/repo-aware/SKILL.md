@@ -140,7 +140,12 @@ For implementation, include:
 
 ## Repo-signal integration
 
-Use `repo-signal doctor` as the readiness summary.
+Use `repo-signal doctor` for static structural signals. Scores do not prove that
+tests or CI passed. When verification evidence is needed, use
+`repo-signal doctor . --verification --json` and inspect `verification.status`.
+This asks mq-agent to validate an existing receipt only; it never runs checks.
+Treat NOT_VERIFIED or STALE as missing current evidence, even at 100/100.
+See [doctor verification contract](../../docs/DOCTOR_SCHEMA.md).
 
 Treat its suggested skills as routing hints:
 

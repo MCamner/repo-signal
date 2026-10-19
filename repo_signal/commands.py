@@ -98,7 +98,7 @@ COMMANDS: tuple[Command, ...] = (
     Command(
         name="doctor",
         summary="Diagnose repo health, release maturity, docs quality, AI readiness, and skills",
-        usage=("doctor [path] [--format markdown|json] [--json]",),
+        usage=("doctor [path] [--format markdown|json] [--json] [--verification]",),
         examples=("doctor",),
     ),
     Command(

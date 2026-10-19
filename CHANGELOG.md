@@ -16,6 +16,12 @@
 
 ### Added
 
+- `doctor --verification` consumes mq-agent's read-only validation of an existing
+  HEAD-based changed-file receipt. Additive `doctor.v1.verification` distinguishes
+  PASS, FAIL, STALE and NOT_VERIFIED independently of unchanged structural scores.
+  Default doctor performs no provider call. Missing, partial, malformed or
+  unavailable evidence never passes. Text reports explicitly label static scores.
+
 - `release.sh --publish-wiki`: post-merge step for pull-request releases.
   Requires tag `v<VERSION>` and a clean tree, then pushes the wiki
   Command-Reference and fails if it was not updated. Releases land through

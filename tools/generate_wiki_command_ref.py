@@ -16,7 +16,6 @@ it, and a wrapped long command name can no longer drop a row.
 """
 
 import sys
-from datetime import datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -62,7 +61,9 @@ def write_reference() -> None:
 
     lines += [
         "\n---\n",
-        f"_Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} — {len(COMMANDS)} commands_\n",
+        # The version, not the clock: a timestamp made every run differ, so the
+        # release check always saw a wiki change.
+        f"_Generated for v{(REPO_ROOT / 'VERSION').read_text(encoding='utf-8').strip()} — {len(COMMANDS)} commands_\n",
     ]
 
     OUTPUT.write_text("".join(lines), encoding="utf-8")

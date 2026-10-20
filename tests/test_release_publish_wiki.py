@@ -120,3 +120,56 @@ def test_publish_wiki_pushes_after_tag(tmp_path: Path) -> None:
     )
     assert "stub for 1.0.0" in _git(remote, "show", "refs/heads/master:Command-Reference.md")
     assert _git(repo, "status", "--porcelain") == ""
+
+
+def test_publish_refuses_direct_push_when_contract_says_pull_request(tmp_path: Path) -> None:
+    # Releases land through pull requests, and `--publish` pushes main and the
+    # tag itself. With the contract declaring pull_request it must refuse
+    # before any check runs, as macos-scripts' release.sh does.
+    repo, _remote, env = _setup(tmp_path)
+    (repo / ".mq").mkdir()
+    (repo / ".mq" / "repo-contract.json").write_text('{"release_mode": "pull_request"}\n')
+    subprocess.run(["git", "add", "-A"], cwd=repo, check=True, env=env)
+    subprocess.run(["git", "commit", "-qm", "contract"], cwd=repo, check=True, env=env)
+
+    result = subprocess.run(
+        ["bash", "release.sh", "--publish"], cwd=repo, env=env, capture_output=True, text=True
+    )
+
+    assert result.returncode != 0
+    assert "release_mode is pull_request" in result.stdout + result.stderr
+    assert _git(repo, "tag", "--list") == ""
+
+
+def test_generated_reference_is_stable_between_runs(tmp_path: Path) -> None:
+    # A wall-clock timestamp made every run differ, so the release check always
+    # reported a wiki change and every --publish-wiki pushed a commit.
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "gen", REPO_ROOT / "tools" / "generate_wiki_command_ref.py"
+    )
+    gen = importlib.util.module_from_spec(spec)
+    assert spec.loader
+    spec.loader.exec_module(gen)
+    gen.WIKI_DIR = tmp_path
+    gen.OUTPUT = tmp_path / "Command-Reference.md"
+
+    gen.write_reference()
+    first = gen.OUTPUT.read_text(encoding="utf-8")
+
+    # A later wall clock between the two runs must not change the page.
+    import datetime as _dt
+
+    class _Later(_dt.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return _dt.datetime(2099, 1, 1, 12, 0)
+
+    gen.datetime = _Later
+    gen.write_reference()
+    second = gen.OUTPUT.read_text(encoding="utf-8")
+
+    assert first == second
+    version = (REPO_ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    assert f"v{version}" in first

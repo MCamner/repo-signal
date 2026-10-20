@@ -5,6 +5,8 @@
 # Usage:
 #   ./release.sh             # run all checks, no publish
 #   ./release.sh --publish   # run checks, tag, push, create GitHub release
+#                            # (refused when .mq/repo-contract.json says
+#                            # release_mode: pull_request)
 #   ./release.sh --publish-wiki
 #                            # after a PR release is merged and tagged: push
 #                            # the wiki Command-Reference for v<VERSION>
@@ -103,6 +105,17 @@ if [[ "$PUBLISH_WIKI" == "1" ]]; then
   fi
   echo "ERROR: Wiki Command-Reference was not updated." >&2
   exit 1
+fi
+
+# `--publish` tags and pushes main itself. When the contract says releases land
+# through pull requests, that path must not exist (same rule as macos-scripts).
+if [[ "$PUBLISH" == "1" ]]; then
+  RELEASE_MODE="$("$PYTHON_BIN" -c "import json,sys; print(json.load(open(sys.argv[1])).get('release_mode','direct'))" .mq/repo-contract.json 2>/dev/null || echo direct)"
+  if [[ "$RELEASE_MODE" == "pull_request" ]]; then
+    echo "ERROR: release_mode is pull_request in .mq/repo-contract.json — --publish would push main." >&2
+    echo "Open a release PR, merge it, tag the merge commit, then run ./release.sh --publish-wiki." >&2
+    exit 1
+  fi
 fi
 
 # ── Version sync ─────────────────────────────────────────────────────────────

@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `.mq/repo-contract.json` declares `release_mode: pull_request`, which is how
+  every release since 1.5.0 has landed. `./release.sh --publish` now refuses
+  in that mode instead of pushing main, and points to the PR flow and
+  `--publish-wiki`.
+
+### Fixed
+
+- The wiki Command-Reference ends with the repo version instead of a
+  wall-clock timestamp. Every run produced a different page, so the release
+  check always reported a wiki change and every `--publish-wiki` pushed a
+  commit.
+
 ### Added
 
 - `doctor --verification` consumes mq-agent's read-only validation of an existing

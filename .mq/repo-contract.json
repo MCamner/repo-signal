@@ -8,5 +8,5 @@
     "publish_checklist.v1"
   ],
   "next_focus": "",
-  "release_mode": "direct"
+  "release_mode": "pull_request"
 }

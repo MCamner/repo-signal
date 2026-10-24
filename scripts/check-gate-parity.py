@@ -40,6 +40,7 @@ CI_COMMANDS = {
 }
 LOCAL_COMMANDS = {
     "docs": 'run "check-docs-consistency.sh" bash scripts/check-docs-consistency.sh',
+    "releases": 'run "check-github-releases.sh" bash scripts/check-github-releases.sh',
     "tests": 'run "pytest" "$PYTHON_BIN" -m pytest -q',
     "examples": 'run "check-generated-examples.sh" env PYTHON_BIN="$PYTHON_BIN" bash scripts/check-generated-examples.sh',
     "skills": 'run "check-skills.sh" bash scripts/check-skills.sh',

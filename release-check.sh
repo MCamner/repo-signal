@@ -26,7 +26,6 @@ for arg in "$@"; do
     *) echo "usage: ./release-check.sh [--dry-run] [--json]" >&2; exit 2 ;;
   esac
 done
-: "$DRY_RUN"
 
 BLOCKERS=()
 say()  { [[ "$JSON" -eq 1 ]] || echo "$1"; }
@@ -66,6 +65,16 @@ fi
 
 say "--- Docs and version consistency ---"
 run "check-docs-consistency.sh" bash scripts/check-docs-consistency.sh
+
+say "--- GitHub release publication ---"
+# Is VERSION already published, and was the previous CHANGELOG version ever
+# published. Network, so --dry-run, --json (the stack preflight) and CI skip it;
+# main sits between releases there and the answer would always be "bump".
+if [[ "$DRY_RUN" -eq 1 || "$JSON" -eq 1 || -n "${CI:-}" ]]; then
+  say "  skip: GitHub release lookup (dry-run, --json or CI)"
+else
+  run "check-github-releases.sh" bash scripts/check-github-releases.sh
+fi
 
 say "--- Read-only CI assertions ---"
 run "check-generated-examples.sh" env PYTHON_BIN="$PYTHON_BIN" bash scripts/check-generated-examples.sh

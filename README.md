@@ -3,7 +3,7 @@
 [![Tests](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/tests.yml)
 [![PyPI publish](https://github.com/MCamner/repo-signal/actions/workflows/pypi.yml/badge.svg)](https://github.com/MCamner/repo-signal/actions/workflows/pypi.yml)
 [![Release](https://img.shields.io/github/v/release/MCamner/repo-signal?label=release)](https://github.com/MCamner/repo-signal/releases)
-[![Version](https://img.shields.io/badge/version-1.8.0-blue)](VERSION)
+[![Version](https://img.shields.io/badge/version-1.9.0-blue)](VERSION)
 
 **What problem does this solve?**
 You have a local repo — maybe a prototype, a side project, or a tool in progress.
@@ -245,11 +245,11 @@ from file presence or a 100/100 score. mq-agent with `verify-changes` support
 must be installed; no checks are executed by doctor.
 See [Doctor schema](docs/DOCTOR_SCHEMA.md#verification-evidence-additive).
 
-## v1.8.0 status
+## v1.9.0 status
 
 - [x] 4 stable JSON contracts: `inspect.v1`, `doctor.v1`, `report.v1`, `suggest.v1`
 - [x] 2 documented export contracts: `repo-review.v1`, `memory-observation.v1`
-- [x] Full test suite passes — `398 passed, 221 subtests` on Python 3.11 and
+- [x] Full test suite passes — `431 passed, 221 subtests` on Python 3.11 and
   3.12, and from a checkout directory that is not named `repo-signal`
 - [x] Schema checks in `release.sh` for all four stable contracts, plus an
   `mqobsidian export contracts` section covering both export paths

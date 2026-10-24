@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-10-24
+
 ### Changed
 
 - `.mq/repo-contract.json` declares `release_mode: pull_request`, which is how

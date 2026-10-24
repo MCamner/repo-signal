@@ -42,7 +42,7 @@ Report the fixture, before/after result, compatibility impact and checks run.
 Scoring indicates repository signals; it is not evidence that tests passed,
 that a security review happened, or that a release was authorized.
 
-## Routing examples
+## Evals
 
 - "README score counts a missing section" → use this skill.
 - "Change the readiness threshold" → use this skill.
